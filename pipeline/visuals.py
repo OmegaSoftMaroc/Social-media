@@ -35,8 +35,9 @@ def generate_image(prompt: str, out_path: str, api_key: str | None = None) -> st
     resp = requests.post(
         IDEOGRAM_ENDPOINT,
         headers={"Api-Key": key},
-        data={"prompt": prompt, "aspect_ratio": VISUAL_ASPECT,
-              "rendering_speed": "DEFAULT"},
+        files={"prompt": (None, prompt),
+               "aspect_ratio": (None, VISUAL_ASPECT),
+               "rendering_speed": (None, "DEFAULT")},
         timeout=120,
     )
     resp.raise_for_status()
