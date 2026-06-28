@@ -25,7 +25,8 @@ GOOGLE_SA_KEY = "config/google-service-account.json"
 # Feuille « Omega Media AI - Planning Editorial ».
 GOOGLE_SHEET_ID = "13TXa567fJnd3rUyDwl_sUMMHVlY_HUUPB5bW5C5-XjQ"
 GOOGLE_SCOPES = [
-    "https://www.googleapis.com/auth/spreadsheets",
+    # 'drive' seul suffit (couvre aussi l'API Sheets) et correspond au scope
+    # autorisé dans la délégation domain-wide.
     "https://www.googleapis.com/auth/drive",
 ]
 # Délégation à l'échelle du domaine : le compte de service agit AU NOM de cet
