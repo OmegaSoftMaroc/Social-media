@@ -115,6 +115,21 @@ def send_telegram(text: str) -> None:
     )
 
 
+def push_to_sheet(ideas: list[dict], date: str) -> int:
+    """Écrit les idées dans l'onglet 01_Idees (best-effort : n'interrompt pas le pipeline).
+
+    Telegram reste le canal prioritaire ; un échec Sheets est loggué puis ignoré.
+    """
+    try:
+        from pipeline.google_workspace import append_ideas
+        n = append_ideas(ideas, date)
+        print(f"[orchestrator] {n} idée(s) écrite(s) dans 01_Idees")
+        return n
+    except Exception as exc:  # noqa: BLE001 — best-effort
+        print(f"[orchestrator] écriture Sheet ignorée (erreur : {exc})")
+        return 0
+
+
 def main(base: Path, workspace: str, date: str, briefs_root: Path | None = None) -> int:
     """Pipeline complet. Retourne le nombre d'idées proposées."""
     base = Path(base)
@@ -132,6 +147,7 @@ def main(base: Path, workspace: str, date: str, briefs_root: Path | None = None)
 
     idees = proposals.get("idees", [])
     if idees:
+        push_to_sheet(idees, date)
         send_telegram(render_proposal_message(proposals))
 
     archive_processed([it["video_id"] for it in items if it.get("video_id")],
