@@ -18,3 +18,13 @@ IDEAS_PER_RUN = (3, 5)
 
 # Fenêtre de récence RSS (heures)
 RECENCY_HOURS = 25
+
+# --- Google Workspace (feuille « Planning Editorial » + Drive) ---------------
+# Clé du compte de service (relative au cwd = racine du profil au runtime).
+GOOGLE_SA_KEY = "config/google-service-account.json"
+# Feuille « Omega Media AI - Planning Editorial ».
+GOOGLE_SHEET_ID = "13TXa567fJnd3rUyDwl_sUMMHVlY_HUUPB5bW5C5-XjQ"
+GOOGLE_SCOPES = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive",
+]
