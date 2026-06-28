@@ -109,3 +109,19 @@ def create_doc_in_folder(name: str, markdown_text: str, folder_id: str) -> dict:
             "parents": [folder_id]}
     return drive_service().files().create(
         body=meta, media_body=media, fields="id,name,webViewLink").execute()
+
+
+def download_file(file_id: str, out_path: str) -> str:
+    """Télécharge un fichier binaire Drive (ex. une image) vers `out_path`."""
+    import io
+    from googleapiclient.http import MediaIoBaseDownload
+
+    request = drive_service().files().get_media(fileId=file_id)
+    buffer = io.BytesIO()
+    downloader = MediaIoBaseDownload(buffer, request)
+    done = False
+    while not done:
+        _, done = downloader.next_chunk()
+    with open(out_path, "wb") as fh:
+        fh.write(buffer.getvalue())
+    return out_path

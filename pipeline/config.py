@@ -39,3 +39,5 @@ BRAND_STYLE = (
     "dark navy blue and teal palette with a bright energetic accent color, "
     "subtle geometric shapes, generous negative space, high quality"
 )
+# Photo d'Abdelilah à incruster en rond, coin bas-droite (Drive: Ressources/image/akahji.png)
+BRAND_PHOTO_FILE_ID = "1VxNIKwm0NPfuzdQFhpBFSOTBuafRaXtW"
