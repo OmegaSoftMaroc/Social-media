@@ -1,0 +1,29 @@
+[Unit]
+Description=Hermes Agent Gateway - Profil social-media (OmegaSocialMediaBot)
+After=network-online.target hermes-gateway.service
+Wants=network-online.target
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+Type=simple
+User=hermes
+Group=hermes
+Environment="HOME=/opt/hermes"
+Environment="USER=hermes"
+Environment="LOGNAME=hermes"
+Environment="PATH=/opt/hermes/hermes-agent/.venv/bin:/opt/hermes/hermes-agent/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+Environment="VIRTUAL_ENV=/opt/hermes/hermes-agent/.venv"
+Environment="HERMES_HOME=/opt/hermes/data"
+ExecStart=/opt/hermes/data/profiles/social-media/start-gateway.sh --replace
+WorkingDirectory=/opt/hermes/hermes-agent
+Restart=on-failure
+RestartSec=30
+KillMode=mixed
+KillSignal=SIGTERM
+TimeoutStopSec=210
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

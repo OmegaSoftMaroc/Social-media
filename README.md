@@ -63,5 +63,12 @@ Idée (Telegram) → qualifier (thème/audience/confidentialité) → déléguer
 ## Confidentialité
 Secteur pêche + données clients OmegaSoft : niveau `prudent` par défaut. En `prudent`, aucun nom de client / chiffre / détail interne. Voir `Hermes social media/philosophy/rules.md`.
 
+## Déploiement (vers le profil Hermes)
+Le profil `social-media` tourne sur `/opt/hermes` via un **service systemd dédié** (`deploy/hermes-gateway-social-media.service`) — distinct du gateway principal.
+
+- **Déployer / mettre à jour la définition** : `./deploy.sh` (idempotent — resynchronise SOUL/philosophy/agent depuis ce dépôt, préserve les données vivantes `decisions.jsonl`/`preferences.md`).
+- **Recharger après un changement de SOUL** : `sudo systemctl restart hermes-gateway-social-media` — **jamais** `hermes-gateway` (c'est le profil principal, un autre bot).
+- `deploy/SOUL.md` = prompt opératif machine-spécifique (chemins `/opt/hermes`, commande d'invocation avec `HOME=/opt/hermes`). `Hermes social media/soul.md` = doctrine portable.
+
 ## Branche de travail
 Développement sur `dev-kahaji` (charte OmegaSoft : jamais de commit direct sur `main`).
