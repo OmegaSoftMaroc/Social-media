@@ -64,6 +64,9 @@ def make_visual(idea: dict, out_path: str) -> str:
 
 
 def main(n: int) -> int:
+    from dotenv import load_dotenv
+    load_dotenv("/opt/hermes/data/.env")
+    load_dotenv(str(PROFILE / "config" / ".env"))
     idea, variants, slug = develop(n)
     outdir = PROFILE / "briefs" / "output" / slug
     outdir.mkdir(parents=True, exist_ok=True)
