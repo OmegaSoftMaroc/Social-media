@@ -55,10 +55,17 @@ sudo mkdir -p "$WS/.claude/agents" "$WS/philosophy" "$WS/memory" "$WS/output"
 # --- 3. Définition (toujours resynchronisée) --------------------------------
 echo "Synchronisation de la définition :"
 sync_def "$SRC_SOUL"  "$PROFILE/SOUL.md"
-sync_def "$SRC_AGENT" "$WS/.claude/agents/editorial-writer.md"
+for f in "$REPO/.claude/agents/"*.md; do sync_def "$f" "$WS/.claude/agents/$(basename "$f")"; done
 for f in "$SRC_PHIL"/*.md; do sync_def "$f" "$WS/philosophy/$(basename "$f")"; done
 sync_def "$REPO/README.md"      "$WS/README.md"
 sync_def "$SRC_MEM/README.md"   "$WS/memory/README.md"
+
+# --- 3b. Pipeline Phase 2 (scripts versionnés) ------------------------------
+echo "Synchronisation du pipeline :"
+sudo mkdir -p "$PROFILE/pipeline" "$PROFILE/briefs/incoming" "$PROFILE/briefs/processed" "$PROFILE/briefs/proposals"
+sudo install -m 644 "$REPO/pipeline/"*.py "$PROFILE/pipeline/"
+sudo install -m 644 "$REPO/pipeline/requirements.txt" "$PROFILE/pipeline/"
+echo "  def   $PROFILE/pipeline/*.py"
 
 # --- 4. Données vivantes (créées seulement si absentes) ---------------------
 echo "Données vivantes :"
@@ -68,7 +75,7 @@ sudo test -e "$WS/memory/decisions.jsonl" \
   || { sudo install -m 644 /dev/null "$WS/memory/decisions.jsonl"; echo "  seed  $WS/memory/decisions.jsonl"; }
 
 # --- 5. Propriété -----------------------------------------------------------
-sudo chown -R "$OWNER" "$WS" "$PROFILE/SOUL.md"
+sudo chown -R "$OWNER" "$WS" "$PROFILE/SOUL.md" "$PROFILE/pipeline" "$PROFILE/briefs"
 
 echo ""
 echo "✅ Déploiement terminé."

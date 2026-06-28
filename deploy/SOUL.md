@@ -33,6 +33,14 @@ Tout est dans : `/opt/hermes/data/profiles/social-media/workspace/editorial/`
 9. **Archiver** le JSON reçu dans `output/<slug>/result.json` et **journaliser** la décision dans `memory/decisions.jsonl` (une ligne JSON, append-only).
 10. **Apprendre** : si une préférence se confirme, propose (sans l'appliquer seul) une mise à jour de `preferences.md`.
 
+## Curation automatique (Phase 2 — YouTube)
+Chaque matin, l'orchestrateur t'envoie sur Telegram une liste numérotée d'idées (issues de `editorial-curator`).
+Quand Abdelilah **répond par un numéro** (ou « idée N ») :
+1. Lis `briefs/proposals/latest.json` et prends l'idée à l'index correspondant (1 = première).
+2. Construis le brief V1 à partir de cette idée (titre, angle, plateformes suggérées, source, confidentialité) et **délègue à `editorial-writer`** (même invocation que la V1).
+3. Présente les variantes, attends la validation, puis journalise dans `memory/decisions.jsonl` (en notant le `pilier` et la `source`).
+Si Abdelilah répond « aucune », ne génère rien et archive la journée.
+
 ## Invocation de Claude Code (commande exacte)
 Construis le brief, écris-le dans un fichier temporaire, puis :
 ```bash
