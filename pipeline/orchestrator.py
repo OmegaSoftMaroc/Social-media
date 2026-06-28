@@ -60,3 +60,68 @@ def archive_processed(video_ids: list[str], incoming_dir: Path, processed_dir: P
         src = incoming_dir / f"{vid}.json"
         if src.exists():
             shutil.move(str(src), str(processed_dir / f"{vid}.json"))
+
+
+def _extract_json_block(text: str) -> dict:
+    """Extrait le dernier bloc ```json ... ``` de la sortie de l'agent."""
+    start = text.rfind("```json")
+    if start == -1:
+        raise ValueError("Aucun bloc JSON dans la sortie du curator")
+    body = text[start + len("```json"):]
+    end = body.find("```")
+    return json.loads(body[:end if end != -1 else None])
+
+
+def call_curator(workspace: str, items: list[dict]) -> dict:
+    """Appelle l'agent editorial-curator via Claude Code (HOME=/opt/hermes requis).
+
+    Les opportunités sont passées DANS le prompt (découplage des chemins). L'agent
+    lit pillars.md et decisions.jsonl relativement à `workspace` (workspace/editorial).
+    """
+    import os
+    prompt = (
+        "Voici les opportunités détectées (JSON) :\n"
+        + json.dumps(items, ensure_ascii=False)
+        + "\nLis 'philosophy/pillars.md' et, si présent, 'memory/decisions.jsonl'. "
+        "Propose 3-5 idées classées par pilier."
+    )
+    cmd = ["claude", "-p", prompt, "--agent", "editorial-curator",
+           "--permission-mode", "dontAsk", "--max-turns", "6"]
+    out = subprocess.run(cmd, cwd=workspace, capture_output=True, text=True,
+                         timeout=300, env={**os.environ, "HOME": "/opt/hermes"})
+    return _extract_json_block(out.stdout)
+
+
+def send_telegram(text: str) -> None:
+    """Envoie un message sur le canal Telegram du profil via `hermes send`."""
+    subprocess.run(
+        ["hermes", "--profile", "social-media", "send", "--platform", "telegram", text],
+        env={**__import__("os").environ, "HOME": "/opt/hermes",
+             "HERMES_HOME": "/opt/hermes/data"},
+        timeout=60, check=False,
+    )
+
+
+def main(base: Path, workspace: str, date: str, briefs_root: Path | None = None) -> int:
+    """Pipeline complet. Retourne le nombre d'idées proposées."""
+    base = Path(base)
+    briefs = Path(briefs_root) if briefs_root else base / "briefs"
+    incoming, processed, proposals_dir = (
+        briefs / "incoming", briefs / "processed", briefs / "proposals")
+
+    items = load_incoming(incoming)
+    if not items:
+        print("[orchestrator] file incoming vide — rien à proposer")
+        return 0
+
+    proposals = call_curator(workspace, items)
+    write_proposals(proposals, proposals_dir, date=date)
+
+    idees = proposals.get("idees", [])
+    if idees:
+        send_telegram(render_proposal_message(proposals))
+
+    archive_processed([it["video_id"] for it in items if it.get("video_id")],
+                      incoming, processed)
+    print(f"[orchestrator] {len(idees)} idée(s) proposée(s) pour le {date}")
+    return len(idees)
