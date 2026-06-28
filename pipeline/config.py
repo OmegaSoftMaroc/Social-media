@@ -28,3 +28,14 @@ GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
 ]
+
+# --- Génération visuelle (Ideogram) -----------------------------------------
+# Clé lue depuis l'environnement / config/.env : IDEOGRAM_API_KEY
+IDEOGRAM_ENDPOINT = "https://api.ideogram.ai/v1/ideogram-v3/generate"
+VISUAL_ASPECT = "4x5"  # portrait LinkedIn 1080x1350
+# Identité visuelle de marque (à ajuster avec Abdelilah : couleurs réelles OmegaSoft)
+BRAND_STYLE = (
+    "professional B2B tech illustration, clean and modern, minimal, "
+    "dark navy blue and teal palette with a bright energetic accent color, "
+    "subtle geometric shapes, generous negative space, high quality"
+)
