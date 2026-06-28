@@ -86,3 +86,56 @@ def composite_photo_bottom_right(base_path: str, photo_path: str, out_path: str,
     base.alpha_composite(ring, pos)
     base.convert("RGB").save(out_path, "PNG")
     return out_path
+
+
+def _load_font(size: int):
+    from PIL import ImageFont
+    for path in ("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
+                 "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"):
+        try:
+            return ImageFont.truetype(path, size)
+        except OSError:
+            continue
+    return ImageFont.load_default()
+
+
+def add_headline(base_path: str, headline: str, out_path: str,
+                 text_color=(255, 255, 255), band_color=(11, 22, 46, 175)) -> str:
+    """Incruste une accroche courte en haut du visuel (texte net via police TTF).
+
+    Bandeau navy translucide + texte blanc, replié sur plusieurs lignes au besoin.
+    """
+    from PIL import Image, ImageDraw
+
+    img = Image.open(base_path).convert("RGBA")
+    width, height = img.size
+    margin = int(width * 0.07)
+    max_w = width - 2 * margin
+    font = _load_font(int(width * 0.075))
+    draw = ImageDraw.Draw(img)
+
+    # repli du texte sur la largeur disponible
+    lines, current = [], ""
+    for word in headline.split():
+        trial = (current + " " + word).strip()
+        if draw.textlength(trial, font=font) <= max_w:
+            current = trial
+        else:
+            if current:
+                lines.append(current)
+            current = word
+    if current:
+        lines.append(current)
+
+    line_h = int(font.size * 1.25)
+    band_h = margin + len(lines) * line_h + margin // 2
+    band = Image.new("RGBA", (width, band_h), band_color)
+    img.alpha_composite(band, (0, 0))
+
+    y = margin
+    for line in lines:
+        draw.text((margin, y), line, font=font, fill=text_color)
+        y += line_h
+
+    img.convert("RGB").save(out_path, "PNG")
+    return out_path
