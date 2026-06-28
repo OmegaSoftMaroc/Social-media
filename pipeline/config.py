@@ -4,10 +4,10 @@
 
 # handle YouTube → channel_id (résolu une fois, hardcodé pour éviter yt-dlp)
 KNOWN_IDS = {
-    "@nateherk": "UCBcRF18a7Qf58cCRy5xuWwQ",
-    "@adev_cpl": "UCnXNIFvxP_x_LnJQNlOJFBg",
-    "@ParlonsIATech": "UCBt6l-PqxDKVHcBTuEZASpw",
-    "@Shubham_Sharma": "UCIz_lJqEoBT_yFxl0Y8HIEQ",
+    "@nateherk": "UC2ojq-nuP8ceeHqiroeKhBA",
+    "@adev_cpl": "UCoWs1E6OLTqv6BMUjgZENMw",
+    "@ParlonsIATech": "UCrRlS6QE1DsKnLDksvaBkKA",
+    "@Shubham_Sharma": "UCLKx4-_XO5sR0AO0j8ye7zQ",
 }
 
 # Chaînes suivies (orientées IA/tech → pilier 1 majoritaire)
