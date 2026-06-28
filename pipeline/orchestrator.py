@@ -79,11 +79,13 @@ def call_curator(workspace: str, items: list[dict]) -> dict:
     lit pillars.md et decisions.jsonl relativement à `workspace` (workspace/editorial).
     """
     import os
+    from pipeline.config import IDEAS_PER_RUN
+    lo, hi = IDEAS_PER_RUN
     prompt = (
         "Voici les opportunités détectées (JSON) :\n"
         + json.dumps(items, ensure_ascii=False)
         + "\nLis 'philosophy/pillars.md' et, si présent, 'memory/decisions.jsonl'. "
-        "Propose 3-5 idées classées par pilier."
+        + f"Propose {lo}-{hi} idées d'actualité classées par pilier."
     )
     cmd = ["claude", "-p", prompt, "--agent", "editorial-curator",
            "--permission-mode", "dontAsk", "--max-turns", "6"]

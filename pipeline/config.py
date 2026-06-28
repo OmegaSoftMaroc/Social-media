@@ -14,7 +14,7 @@ KNOWN_IDS = {
 CHANNELS = list(KNOWN_IDS.keys())
 
 # Nombre d'idées proposées par run (min, max)
-IDEAS_PER_RUN = (3, 5)
+IDEAS_PER_RUN = (5, 7)
 
 # Fenêtre de récence RSS (heures)
 RECENCY_HOURS = 25

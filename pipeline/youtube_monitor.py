@@ -158,5 +158,39 @@ def main() -> int:
     return written
 
 
+def ingest_latest_per_channel() -> int:
+    """Force l'ingestion de la DERNIÈRE vidéo de chaque chaîne (ignore seen/récence).
+
+    Pour un run manuel d'actualité. Retourne le nombre d'items écrits.
+    """
+    from dotenv import load_dotenv
+    from pipeline.config import CHANNELS, KNOWN_IDS
+
+    load_dotenv("/opt/hermes/data/.env")
+    load_dotenv("/opt/hermes/data/profiles/social-media/config/.env")
+    api_key = os.environ.get("OPENROUTER_API_KEY", "")
+
+    base = Path(os.environ.get("HERMES_PROFILE",
+               "/opt/hermes/data/profiles/social-media"))
+    incoming = base / "briefs" / "incoming"
+    now_iso = datetime.now().isoformat(timespec="seconds")
+    written = 0
+
+    for handle in CHANNELS:
+        channel_id = KNOWN_IDS.get(handle)
+        if not channel_id:
+            continue
+        videos = fetch_rss(channel_id)
+        if not videos:
+            continue
+        v = videos[0]  # la plus récente
+        resume = summarize_with_gemini(handle, v["titre"], v["description"], api_key)
+        write_incoming_item(make_incoming_item(v, handle, resume, now_iso), incoming)
+        written += 1
+
+    print(f"[youtube_monitor] {written} dernière(s) vidéo(s) ingérée(s) (mode latest)")
+    return written
+
+
 if __name__ == "__main__":
     raise SystemExit(0 if main() >= 0 else 1)

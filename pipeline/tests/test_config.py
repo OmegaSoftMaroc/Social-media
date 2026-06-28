@@ -7,4 +7,4 @@ def test_channels_have_known_ids():
 
 
 def test_ideas_per_run_range():
-    assert IDEAS_PER_RUN == (3, 5)
+    assert IDEAS_PER_RUN == (5, 7)
