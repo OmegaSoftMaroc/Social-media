@@ -70,5 +70,12 @@ Le profil `social-media` tourne sur `/opt/hermes` via un **service systemd dédi
 - **Recharger après un changement de SOUL** : `sudo systemctl restart hermes-gateway-social-media` — **jamais** `hermes-gateway` (c'est le profil principal, un autre bot).
 - `deploy/SOUL.md` = prompt opératif machine-spécifique (chemins `/opt/hermes`, commande d'invocation avec `HOME=/opt/hermes`). `Hermes social media/soul.md` = doctrine portable.
 
+### Cron quotidien (Phase 2 — pipeline YouTube)
+Le pipeline tourne chaque matin à **07:30** via un cron système (utilisateur `hermes`) qui lance `pipeline/run_daily` : détection des nouvelles vidéos → curation (3-5 idées par pilier) → envoi Telegram. Installation idempotente :
+```bash
+./deploy/install-cron.sh
+```
+Logs : `/opt/hermes/data/profiles/social-media/logs/youtube-curation.log`. Prérequis : `deploy.sh` exécuté + venv `pipeline/.venv` créé côté serveur (`pip install -r pipeline/requirements.txt`).
+
 ## Branche de travail
 Développement sur `dev-kahaji` (charte OmegaSoft : jamais de commit direct sur `main`).
