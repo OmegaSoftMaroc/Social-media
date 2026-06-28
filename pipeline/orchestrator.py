@@ -31,7 +31,7 @@ def render_proposal_message(proposals: dict) -> str:
     idees = proposals.get("idees", [])
     if not idees:
         return "🟡 Aucune idée de publication aujourd'hui (pas de nouvelle source pertinente)."
-    lines = ["💡 *Idées de publication du jour* — réponds avec un numéro :", ""]
+    lines = ["💡 Idées de publication du jour — réponds avec un numéro :", ""]
     for i, idee in enumerate(idees, start=1):
         lines.append(f"{i}. [P{idee.get('pilier','?')}] {idee.get('titre','(sans titre)')}")
     reco = proposals.get("recommandation") or {}
@@ -99,8 +99,16 @@ def send_telegram(text: str) -> None:
     `--to telegram` cible le canal par défaut du profil (TELEGRAM_HOME_CHANNEL).
     """
     import os
+    from dotenv import dotenv_values
+    profile = "/opt/hermes/data/profiles/social-media"
     hermes_bin = "/opt/hermes/hermes-agent/.venv/bin/hermes"
     env = {**os.environ, "HOME": "/opt/hermes", "HERMES_HOME": "/opt/hermes/data"}
+    # Le token Telegram du profil vit dans config/.env (sourcé par le gateway au runtime) ;
+    # `hermes send` standalone ne le lit pas → on l'injecte dans l'environnement.
+    creds = dotenv_values(f"{profile}/config/.env")
+    for key in ("TELEGRAM_BOT_TOKEN", "TELEGRAM_HOME_CHANNEL", "TELEGRAM_ALLOWED_USERS"):
+        if creds.get(key):
+            env[key] = creds[key]
     subprocess.run(
         [hermes_bin, "--profile", "social-media", "send", "--to", "telegram", text],
         env=env, timeout=60, check=True,
