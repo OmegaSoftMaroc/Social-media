@@ -93,12 +93,17 @@ def call_curator(workspace: str, items: list[dict]) -> dict:
 
 
 def send_telegram(text: str) -> None:
-    """Envoie un message sur le canal Telegram du profil via `hermes send`."""
+    """Envoie un message sur le canal Telegram (home channel) du profil via `hermes send`.
+
+    Lève une exception si l'envoi échoue → l'orchestrateur n'archivera pas (rejouable).
+    `--to telegram` cible le canal par défaut du profil (TELEGRAM_HOME_CHANNEL).
+    """
+    import os
+    hermes_bin = "/opt/hermes/hermes-agent/.venv/bin/hermes"
+    env = {**os.environ, "HOME": "/opt/hermes", "HERMES_HOME": "/opt/hermes/data"}
     subprocess.run(
-        ["hermes", "--profile", "social-media", "send", "--platform", "telegram", text],
-        env={**__import__("os").environ, "HOME": "/opt/hermes",
-             "HERMES_HOME": "/opt/hermes/data"},
-        timeout=60, check=False,
+        [hermes_bin, "--profile", "social-media", "send", "--to", "telegram", text],
+        env=env, timeout=60, check=True,
     )
 
 
