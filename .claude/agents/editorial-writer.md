@@ -52,6 +52,7 @@ Termine ta réponse par un **unique bloc JSON** (rien après), strictement au fo
     "pourquoi": "justification courte et concrète du choix"
   },
   "prompt_visuel": "concept visuel ABSTRAIT en anglais pour la variante recommandée (voir règles)",
+  "titre_visuel": "accroche très courte (≤ 8 mots) à incruster sur le visuel",
   "alertes": ["liste des [À COMPLÉTER] ou points de confidentialité à valider"]
 }
 ```
@@ -61,3 +62,4 @@ Règles de sortie :
 - Le JSON doit être **valide** (échappe les sauts de ligne en `\n`) et **complet**.
 - Tu **n'écris aucun fichier** : ton seul livrable est ce JSON. La traçabilité (archivage dans `output/`) est gérée par Hermes, pas par toi.
 - `prompt_visuel` : un concept visuel **abstrait, rédigé en anglais**, prêt pour un générateur d'images (Ideogram), illustrant le **message** de la variante recommandée par une **métaphore claire**. Règles strictes : **aucun personnage, aucun visage, aucun texte lisible** ; style B2B tech, formes géométriques, palette bleu marine + teal, espace négatif, format portrait. Décris une **scène/objet conceptuel** (ex. « rigid grey linear boxes on the left being redrawn into a fluid design around a single glowing AI core, a forking road below = a leader's decision »), jamais une personne.
+- `titre_visuel` : une **accroche très courte (≤ 8 mots), en français**, à incruster en gros sur le visuel — pas une phrase complète, pas de hashtag, percutante et lisible (ex. « 100+ prospects qualifiés en quelques minutes »).

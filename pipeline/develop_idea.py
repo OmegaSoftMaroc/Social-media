@@ -16,7 +16,7 @@ from pipeline.google_workspace import (
     download_file, pilier_nom, find_or_create_folder, upload_file,
 )
 from pipeline.visuals import (
-    build_visual_prompt, generate_image, composite_photo_bottom_right,
+    build_visual_prompt, generate_image, composite_photo_bottom_right, add_headline,
 )
 
 PROFILE = Path("/opt/hermes/data/profiles/social-media")
@@ -56,12 +56,14 @@ def develop(n: int) -> tuple[dict, dict, str]:
     return idea, _extract_json(out.stdout), brief["slug"]
 
 
-def make_visual(visual_prompt: str, out_path: str) -> str:
-    """Génère le visuel (fond abstrait + photo incrustée) depuis un prompt visuel."""
+def make_visual(visual_prompt: str, headline: str, out_path: str) -> str:
+    """Génère le visuel : fond abstrait + accroche texte incrustée + photo en rond."""
     photo = "/tmp/brand_photo.png"
     download_file(BRAND_PHOTO_FILE_ID, photo)
     base = "/tmp/visual_base.png"
     generate_image(visual_prompt, base)
+    if headline:
+        add_headline(base, headline, base)
     return composite_photo_bottom_right(base, photo, out_path)
 
 
@@ -75,7 +77,8 @@ def main(n: int) -> int:
     (outdir / "variants.json").write_text(
         json.dumps(variants, ensure_ascii=False, indent=2), encoding="utf-8")
     visual_prompt = variants.get("prompt_visuel") or build_visual_prompt(idea)
-    visual_path = make_visual(visual_prompt, str(outdir / "visual.png"))
+    headline = variants.get("titre_visuel") or idea.get("titre", "")
+    visual_path = make_visual(visual_prompt, headline, str(outdir / "visual.png"))
     folder_id = find_or_create_folder("Visuels", GOOGLE_SOURCES_PARENT)
     uploaded = upload_file(f"{slug}.png", visual_path, folder_id)
     print("IDEE:", idea.get("titre"))
