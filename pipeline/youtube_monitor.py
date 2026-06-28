@@ -107,3 +107,56 @@ def summarize_with_gemini(chaine: str, titre: str, description: str, api_key: st
     )
     resp.raise_for_status()
     return resp.json()["choices"][0]["message"]["content"].strip()
+
+
+def load_seen(path: Path) -> dict:
+    path = Path(path)
+    if path.exists():
+        try:
+            return json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            return {}
+    return {}
+
+
+def save_seen(seen: dict, path: Path) -> None:
+    Path(path).write_text(json.dumps(seen, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def main() -> int:
+    """Exécution réelle : RSS → résumé → écriture incoming. Retourne le nb d'items écrits."""
+    from dotenv import load_dotenv
+    from pipeline.config import CHANNELS, KNOWN_IDS, RECENCY_HOURS
+
+    load_dotenv("/opt/hermes/data/.env")
+    load_dotenv("/opt/hermes/data/profiles/social-media/config/.env")
+    api_key = os.environ.get("OPENROUTER_API_KEY", "")
+
+    base = Path(os.environ.get("HERMES_PROFILE",
+               "/opt/hermes/data/profiles/social-media"))
+    incoming = base / "briefs" / "incoming"
+    seen_path = base / "scripts" / "seen_videos.json"
+    seen_path.parent.mkdir(parents=True, exist_ok=True)
+
+    seen = load_seen(seen_path)
+    now_iso = datetime.now().isoformat(timespec="seconds")
+    written = 0
+
+    for handle in CHANNELS:
+        channel_id = KNOWN_IDS.get(handle)
+        if not channel_id:
+            continue
+        for v in select_new_videos(fetch_rss(channel_id), seen, hours=RECENCY_HOURS):
+            resume = summarize_with_gemini(handle, v["titre"], v["description"], api_key)
+            item = make_incoming_item(v, handle, resume, now_iso)
+            write_incoming_item(item, incoming)
+            seen[v["id"]] = {"titre": v["titre"], "chaine": handle, "vu_le": now_iso}
+            written += 1
+
+    save_seen(seen, seen_path)
+    print(f"[youtube_monitor] {written} nouvelle(s) opportunité(s) écrite(s) dans {incoming}")
+    return written
+
+
+if __name__ == "__main__":
+    raise SystemExit(0 if main() >= 0 else 1)
