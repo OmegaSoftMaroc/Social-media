@@ -41,3 +41,8 @@ BRAND_STYLE = (
 )
 # Photo d'Abdelilah à incruster en rond, coin bas-droite (Drive: Ressources/image/akahji.png)
 BRAND_PHOTO_FILE_ID = "1VxNIKwm0NPfuzdQFhpBFSOTBuafRaXtW"
+# Exclusions Ideogram (negative_prompt) : pas de personnage ni de texte sur le fond
+VISUAL_NEGATIVE = (
+    "person, people, human, face, portrait, man, woman, silhouette, "
+    "text, letters, words, typography, captions, watermark, signature, logo"
+)

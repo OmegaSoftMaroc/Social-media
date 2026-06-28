@@ -6,7 +6,7 @@ Clé via la variable d'environnement IDEOGRAM_API_KEY (config/.env du profil).
 """
 from __future__ import annotations
 
-from pipeline.config import BRAND_STYLE, VISUAL_ASPECT, IDEOGRAM_ENDPOINT
+from pipeline.config import BRAND_STYLE, VISUAL_ASPECT, IDEOGRAM_ENDPOINT, VISUAL_NEGATIVE
 
 
 def build_visual_prompt(idea: dict) -> str:
@@ -38,6 +38,7 @@ def generate_image(prompt: str, out_path: str, api_key: str | None = None) -> st
         IDEOGRAM_ENDPOINT,
         headers={"Api-Key": key},
         files={"prompt": (None, prompt),
+               "negative_prompt": (None, VISUAL_NEGATIVE),
                "aspect_ratio": (None, VISUAL_ASPECT),
                "rendering_speed": (None, "DEFAULT")},
         timeout=120,
