@@ -28,6 +28,11 @@ GOOGLE_SCOPES = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive",
 ]
+# Délégation à l'échelle du domaine : le compte de service agit AU NOM de cet
+# utilisateur (fichiers créés lui appartiennent). Mettre "" pour désactiver.
+GOOGLE_IMPERSONATE = "a.kahaji@omegasoft.ma"
+# Dossier racine des sources (contient Articles, Videos, Recherche… et Visuels)
+GOOGLE_SOURCES_PARENT = "1CLXIjvxD3Y5jolA9FcX9WTfM_k46Bum4"
 
 # --- Génération visuelle (Ideogram) -----------------------------------------
 # Clé lue depuis l'environnement / config/.env : IDEOGRAM_API_KEY

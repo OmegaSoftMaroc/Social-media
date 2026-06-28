@@ -10,7 +10,9 @@ testables sans les bibliothèques Google installées.
 """
 from __future__ import annotations
 
-from pipeline.config import GOOGLE_SA_KEY, GOOGLE_SHEET_ID, GOOGLE_SCOPES
+from pipeline.config import (
+    GOOGLE_SA_KEY, GOOGLE_SHEET_ID, GOOGLE_SCOPES, GOOGLE_IMPERSONATE,
+)
 
 # Numéro de pilier → libellé (cf. philosophy/pillars.md)
 PILIERS = {
@@ -57,8 +59,11 @@ def idea_to_idees_row(idea: dict, date: str, index: int) -> list[str]:
 
 def _credentials():
     from google.oauth2 import service_account
-    return service_account.Credentials.from_service_account_file(
+    creds = service_account.Credentials.from_service_account_file(
         GOOGLE_SA_KEY, scopes=GOOGLE_SCOPES)
+    if GOOGLE_IMPERSONATE:
+        creds = creds.with_subject(GOOGLE_IMPERSONATE)
+    return creds
 
 
 def sheets_service():
@@ -125,3 +130,25 @@ def download_file(file_id: str, out_path: str) -> str:
     with open(out_path, "wb") as fh:
         fh.write(buffer.getvalue())
     return out_path
+
+
+def find_or_create_folder(name: str, parent_id: str) -> str:
+    """Retourne l'id d'un sous-dossier `name` (le crée s'il n'existe pas)."""
+    q = (f"name = '{name}' and mimeType = 'application/vnd.google-apps.folder' "
+         f"and '{parent_id}' in parents")
+    res = drive_service().files().list(q=q, fields="files(id)").execute().get("files", [])
+    if res:
+        return res[0]["id"]
+    meta = {"name": name, "mimeType": "application/vnd.google-apps.folder",
+            "parents": [parent_id]}
+    return drive_service().files().create(body=meta, fields="id").execute()["id"]
+
+
+def upload_file(name: str, local_path: str, parent_id: str,
+                mime: str = "image/png") -> dict:
+    """Téléverse un fichier local dans un dossier Drive. Retourne {id,name,webViewLink}."""
+    from googleapiclient.http import MediaFileUpload
+    media = MediaFileUpload(local_path, mimetype=mime, resumable=False)
+    meta = {"name": name, "parents": [parent_id]}
+    return drive_service().files().create(
+        body=meta, media_body=media, fields="id,name,webViewLink").execute()
