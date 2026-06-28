@@ -84,3 +84,28 @@ def append_ideas(ideas: list[dict], date: str) -> int:
         body={"values": rows},
     ).execute()
     return len(rows)
+
+
+def list_folder(folder_id: str) -> list[dict]:
+    """Liste les fichiers d'un dossier Drive (id, name, mimeType)."""
+    res = drive_service().files().list(
+        q=f"'{folder_id}' in parents and trashed = false",
+        fields="files(id,name,mimeType)", pageSize=200,
+    ).execute()
+    return res.get("files", [])
+
+
+def create_doc_in_folder(name: str, markdown_text: str, folder_id: str) -> dict:
+    """Crée un Google Doc (converti depuis markdown) dans un dossier Drive.
+
+    Retourne {id, name, webViewLink}. Démontre la création de fichiers et la
+    gestion de l'arborescence Drive par le pipeline.
+    """
+    from googleapiclient.http import MediaInMemoryUpload
+    media = MediaInMemoryUpload(markdown_text.encode("utf-8"),
+                                mimetype="text/markdown", resumable=False)
+    meta = {"name": name,
+            "mimeType": "application/vnd.google-apps.document",
+            "parents": [folder_id]}
+    return drive_service().files().create(
+        body=meta, media_body=media, fields="id,name,webViewLink").execute()
