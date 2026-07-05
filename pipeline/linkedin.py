@@ -12,6 +12,7 @@ CONFIG_ENV = "/opt/hermes/data/profiles/social-media/config/.env"
 TOKEN_URL = "https://www.linkedin.com/oauth/v2/accessToken"
 USERINFO_URL = "https://api.linkedin.com/v2/userinfo"
 POSTS_URL = "https://api.linkedin.com/v2/ugcPosts"
+REGISTER_URL = "https://api.linkedin.com/v2/assets?action=registerUpload"
 
 
 def _env() -> dict:
@@ -59,6 +60,62 @@ def publish_text(text: str, access_token: str | None = None,
             "com.linkedin.ugc.ShareContent": {
                 "shareCommentary": {"text": text},
                 "shareMediaCategory": "NONE",
+            }
+        },
+        "visibility": {"com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"},
+    }
+    r = requests.post(POSTS_URL, json=body, timeout=30, headers={
+        "Authorization": f"Bearer {token}",
+        "X-Restli-Protocol-Version": "2.0.0",
+        "Content-Type": "application/json",
+    })
+    r.raise_for_status()
+    return {"status": r.status_code, "post_id": r.headers.get("x-restli-id")}
+
+
+def _register_image_upload(token: str, urn: str):
+    """Enregistre un upload image, retourne (upload_url, asset_urn)."""
+    import requests
+    body = {"registerUploadRequest": {
+        "recipes": ["urn:li:digitalmediaRecipe:feedshare-image"],
+        "owner": urn,
+        "serviceRelationships": [
+            {"relationshipType": "OWNER", "identifier": "urn:li:userGeneratedContent"}
+        ],
+    }}
+    r = requests.post(REGISTER_URL, json=body, timeout=30, headers={
+        "Authorization": f"Bearer {token}", "Content-Type": "application/json"})
+    r.raise_for_status()
+    val = r.json()["value"]
+    upload_url = val["uploadMechanism"][
+        "com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"]["uploadUrl"]
+    return upload_url, val["asset"]
+
+
+def publish_image_post(text: str, image_path: str, access_token: str | None = None,
+                       person_urn: str | None = None) -> dict:
+    """Publie un post avec image (visibilité PUBLIC). APRÈS validation."""
+    import requests
+    c = _env()
+    token = access_token or c.get("LINKEDIN_ACCESS_TOKEN")
+    urn = person_urn or c.get("LINKEDIN_PERSON_URN")
+    if not token or not urn:
+        raise RuntimeError("LINKEDIN_ACCESS_TOKEN / LINKEDIN_PERSON_URN manquant")
+
+    upload_url, asset = _register_image_upload(token, urn)
+    with open(image_path, "rb") as fh:
+        requests.put(upload_url, data=fh.read(),
+                     headers={"Authorization": f"Bearer {token}"}, timeout=60).raise_for_status()
+
+    body = {
+        "author": urn,
+        "lifecycleState": "PUBLISHED",
+        "specificContent": {
+            "com.linkedin.ugc.ShareContent": {
+                "shareCommentary": {"text": text},
+                "shareMediaCategory": "IMAGE",
+                "media": [{"status": "READY", "media": asset,
+                           "title": {"text": "Visuel OmegaSoft"}}],
             }
         },
         "visibility": {"com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"},
