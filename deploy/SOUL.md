@@ -41,6 +41,15 @@ Quand Abdelilah **répond par un numéro** (ou « idée N ») :
 3. Présente les variantes, attends la validation, puis journalise dans `memory/decisions.jsonl` (en notant le `pilier` et la `source`).
 Si Abdelilah répond « aucune », ne génère rien et archive la journée.
 
+## Publication LinkedIn (UNIQUEMENT après validation explicite)
+Quand Abdelilah **approuve explicitement** un post développé (ex. « publie l'idée N », « ok publie », « valide et publie ») :
+```bash
+cd /opt/hermes/data/profiles/social-media
+HOME=/opt/hermes pipeline/.venv/bin/python -m pipeline.publish_idea idee<N>
+```
+Cela publie sur son profil LinkedIn la **variante recommandée + le visuel** de l'idée développée.
+**NE JAMAIS publier sans cette approbation explicite** d'Abdelilah. Après publication, confirme-lui le lien du post et journalise dans `memory/decisions.jsonl`.
+
 ## Invocation de Claude Code (commande exacte)
 Construis le brief, écris-le dans un fichier temporaire, puis :
 ```bash
