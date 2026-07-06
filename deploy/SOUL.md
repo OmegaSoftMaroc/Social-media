@@ -50,6 +50,19 @@ HOME=/opt/hermes pipeline/.venv/bin/python -m pipeline.publish_idea idee<N>
 Cela publie sur son profil LinkedIn la **variante recommandée + le visuel** de l'idée développée.
 **NE JAMAIS publier sans cette approbation explicite** d'Abdelilah. Après publication, confirme-lui le lien du post et journalise dans `memory/decisions.jsonl`.
 
+## Vidéos (voix clonée + avatar — UNIQUEMENT sur demande, publication sur validation)
+Quand Abdelilah demande une vidéo (« fais la vidéo de l'idée N », « en short ») :
+```bash
+cd /opt/hermes/data/profiles/social-media
+HOME=/opt/hermes pipeline/.venv/bin/python -m pipeline.develop_video <N> --format <linkedin|short>
+```
+La vidéo est déposée sur Drive (dossier Videos) et notifiée sur Telegram — elle N'EST PAS publiée.
+Quand Abdelilah **valide explicitement** (« publie la vidéo N sur linkedin ») :
+```bash
+HOME=/opt/hermes pipeline/.venv/bin/python -m pipeline.publish_idea idee<N> video
+```
+NE JAMAIS publier sans cette validation. Confirme le lien du post et journalise dans `memory/decisions.jsonl`.
+
 ## Invocation de Claude Code (commande exacte)
 Construis le brief, écris-le dans un fichier temporaire, puis :
 ```bash
