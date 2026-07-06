@@ -4,11 +4,17 @@ import {
   calculateCaptionedVideoMetadata,
   captionedVideoSchema,
 } from "./CaptionedVideo";
+import {
+  PresenterPiP,
+  calculatePresenterPiPMetadata,
+  presenterPiPSchema,
+} from "./PresenterPiP";
 
 // Each <Composition> is an entry in the sidebar!
 
 export const RemotionRoot: React.FC = () => {
   return (
+    <>
     <Composition
       id="CaptionedVideo"
       component={CaptionedVideo}
@@ -22,5 +28,17 @@ export const RemotionRoot: React.FC = () => {
         src: staticFile("input.mp4"),
       }}
     />
+    <Composition
+      id="PresenterPiP"
+      component={PresenterPiP}
+      calculateMetadata={calculatePresenterPiPMetadata}
+      schema={presenterPiPSchema}
+      width={1080}
+      height={1920}
+      defaultProps={{
+        src: staticFile("input.mp4"),
+      }}
+    />
+    </>
   );
 };
