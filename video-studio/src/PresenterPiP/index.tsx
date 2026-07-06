@@ -57,27 +57,59 @@ const groupSentences = (captions: Caption[]): Sentence[] => {
   return sentences;
 };
 
-// Illustration par phrase : pictogramme choisi selon les mots-clés du propos
-const EMOJI_RULES: [RegExp, string][] = [
-  [/prospect|client|vente|commercial/i, "🎯"],
-  [/donn[ée]e|data|fichier|crm|base/i, "📊"],
-  [/agent|ia\b|intelligence|robot|automatis/i, "🤖"],
-  [/pme|industri|usine|entreprise|atelier/i, "🏭"],
-  [/question|pourquoi|comment|demandez/i, "❓"],
-  [/commenc|d[ée]marr|lanc|premier/i, "🚀"],
-  [/temps|heure|matin|quotidien|jour/i, "⏱️"],
-  [/argent|co[ûu]t|budget|roi|rentab/i, "💰"],
-  [/propre|nettoy|qualit|fiab/i, "✅"],
-  [/outil|brancher|connect|syst[èe]me/i, "🔌"],
-  [/id[ée]e|r[ée]fl[ée]ch|pens/i, "💡"],
-  [/r[ée]sultat|gagn|efficac|performan/i, "📈"],
+// Icônes line-art raffinées (SVG, traits fins, couleurs marque) — affichées en
+// bas à gauche UNIQUEMENT quand un mot-clé du propos le justifie (sinon rien).
+type IconKey = "target" | "chart" | "chip" | "factory" | "rocket" | "check" | "plug" | "bulb";
+
+const ICON_RULES: [RegExp, IconKey][] = [
+  [/prospect|client|vente|commercial/i, "target"],
+  [/donn[ée]e|data|fichier|crm|base/i, "chart"],
+  [/agent|\bia\b|intelligence|automatis/i, "chip"],
+  [/pme|industri|usine|atelier/i, "factory"],
+  [/commenc|d[ée]marr|lanc/i, "rocket"],
+  [/propre|nettoy|qualit|fiab/i, "check"],
+  [/brancher|connect|outil|syst[èe]me/i, "plug"],
+  [/id[ée]e|r[ée]fl[ée]ch|conseil/i, "bulb"],
 ];
 
-const emojiFor = (sentence: Sentence, index: number): string => {
-  for (const [re, emoji] of EMOJI_RULES) {
-    if (re.test(sentence.text)) return emoji;
+const iconFor = (sentence: Sentence): IconKey | null => {
+  for (const [re, key] of ICON_RULES) {
+    if (re.test(sentence.text)) return key;
   }
-  return ["💡", "🔍", "🧭", "⚙️"][index % 4]; // variation si aucun mot-clé
+  return null; // pas pertinent → pas d'icône
+};
+
+// Tracés SVG minimalistes (viewBox 24x24, stroke uniquement)
+const ICON_PATHS: Record<IconKey, React.ReactNode> = {
+  target: (<>
+    <circle cx="12" cy="12" r="9" /><circle cx="12" cy="12" r="5" />
+    <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none" />
+  </>),
+  chart: (<>
+    <path d="M4 20V6" /><path d="M4 20h16" />
+    <path d="M8 16v-5" /><path d="M12 16V8" /><path d="M16 16v-3" />
+  </>),
+  chip: (<>
+    <rect x="7" y="7" width="10" height="10" rx="1.5" />
+    <path d="M10 7V4M14 7V4M10 20v-3M14 20v-3M7 10H4M7 14H4M20 10h-3M20 14h-3" />
+  </>),
+  factory: (<>
+    <path d="M4 20V10l5 3v-3l5 3v-3l6 4v6" /><path d="M4 20h16" />
+  </>),
+  rocket: (<>
+    <path d="M12 3c3 2 4 6 4 9l-4 4-4-4c0-3 1-7 4-9Z" />
+    <path d="M8 12l-3 3 3 .5M16 12l3 3-3 .5M12 16v4" />
+  </>),
+  check: (<>
+    <circle cx="12" cy="12" r="9" /><path d="M8 12.5l2.6 2.6L16 9.5" />
+  </>),
+  plug: (<>
+    <path d="M9 3v5M15 3v5" /><path d="M7 8h10v3a5 5 0 0 1-10 0V8Z" /><path d="M12 16v5" />
+  </>),
+  bulb: (<>
+    <path d="M9 18h6M10 21h4" />
+    <path d="M12 3a6 6 0 0 1 3.5 10.9c-.8.6-1.5 1.2-1.5 2.1h-4c0-.9-.7-1.5-1.5-2.1A6 6 0 0 1 12 3Z" />
+  </>),
 };
 
 // Fond animé discret : anneaux et formes qui dérivent lentement (teal sur navy)
@@ -120,8 +152,10 @@ const SentenceStack: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
 
   return (
     <div style={{
-      position: "absolute", top: 110, left: 60, right: 60,
-      display: "flex", flexDirection: "column", gap: 34,
+      // Texte centré sur le « tableau » : zone au-dessus du PiP, centrage vertical
+      position: "absolute", top: 90, left: 60, right: 60, bottom: 470,
+      display: "flex", flexDirection: "column", gap: 40,
+      justifyContent: "center",
       fontFamily: TheBoldFont, textAlign: "center",
     }}>
       {visible.map((s, vi) => {
@@ -171,8 +205,8 @@ const SentenceStack: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
   );
 };
 
-// Illustration centrale : pictogramme de la phrase courante, pop + flottement
-const Illustration: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
+// Badge icône raffiné, bas-gauche — seulement quand le propos le justifie
+const CornerIcon: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const nowMs = (frame / fps) * 1000;
@@ -183,32 +217,29 @@ const Illustration: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
   }
   const sentence = sentences[currentIdx];
   if (!sentence) return null;
+  const icon = iconFor(sentence);
+  if (!icon) return null; // pas pertinent → rien
 
   const sentenceStartFrame = (sentence.startMs / 1000) * fps;
   const pop = spring({
     frame: Math.max(frame - sentenceStartFrame, 0), fps,
-    config: { damping: 12, stiffness: 120 }, durationInFrames: 18,
+    config: { damping: 200 }, durationInFrames: 12,
   });
-  const float = 10 * Math.sin(frame / 18);
 
   return (
     <div style={{
-      position: "absolute", top: "50%", left: 0, right: 0,
-      display: "flex", justifyContent: "center", alignItems: "center",
+      position: "absolute", left: 56, bottom: 190,
+      width: 128, height: 128, borderRadius: 28,
+      background: `${NAVY_LIGHT}E6`, border: `2px solid ${TEAL}66`,
+      boxShadow: "0 10px 30px rgba(0,0,0,0.4)",
+      display: "flex", alignItems: "center", justifyContent: "center",
+      opacity: pop, transform: `scale(${0.85 + 0.15 * pop})`,
     }}>
-      {/* halo de marque derrière le pictogramme */}
-      <div style={{
-        position: "absolute", width: 420, height: 420, borderRadius: "50%",
-        background: `radial-gradient(circle, ${TEAL}2E 0%, transparent 70%)`,
-        transform: `scale(${pop})`,
-      }} />
-      <div style={{
-        fontSize: 300,
-        transform: `scale(${pop}) translateY(${float}px)`,
-        filter: "drop-shadow(0 18px 40px rgba(0,0,0,0.45))",
-      }}>
-        {emojiFor(sentence, currentIdx)}
-      </div>
+      <svg width="72" height="72" viewBox="0 0 24 24" fill="none"
+        stroke={TEAL} strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+        style={{ color: TEAL }}>
+        {ICON_PATHS[icon]}
+      </svg>
     </div>
   );
 };
@@ -243,7 +274,7 @@ export const PresenterPiP: React.FC<{ src: string }> = ({ src }) => {
     <AbsoluteFill>
       <AnimatedBackground />
       <SentenceStack sentences={sentences} />
-      <Illustration sentences={sentences} />
+      <CornerIcon sentences={sentences} />
 
       {/* Clone en petit, rond, bas-droite (fournit aussi la piste audio).
           Cadrage : zoom fort + recadrage vers le visage (retour Abdelilah). */}
