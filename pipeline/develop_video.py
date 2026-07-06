@@ -89,6 +89,20 @@ def upload_to_drive(path: Path, name: str) -> str:
     return f.get("webViewLink", "")
 
 
+def make_video_from_text(script_text: str, out_path: Path, fmt: str) -> Path:
+    """Mode voix HeyGen : texte → TTS intégré + avatar → mp4 (sans ElevenLabs)."""
+    from pipeline.heygen import create_video_from_text, wait_and_download
+    video_id = create_video_from_text(script_text, fmt)
+    return Path(wait_and_download(video_id, str(out_path)))
+
+
+def use_heygen_voice() -> bool:
+    """Vrai si on utilise la voix HeyGen (pas de voix ElevenLabs configurée)."""
+    import os
+    return bool(os.environ.get("HEYGEN_VOICE_ID")) and \
+        not os.environ.get("ELEVENLABS_VOICE_ID")
+
+
 def load_idea(n: int, base: Path) -> dict:
     data = json.loads((Path(base) / "briefs" / "proposals" / "latest.json")
                       .read_text(encoding="utf-8"))
@@ -98,6 +112,9 @@ def load_idea(n: int, base: Path) -> dict:
 def main(n: int, fmt: str, base: Path = PROFILE) -> int:
     if fmt not in VIDEO_FORMATS:
         raise SystemExit(f"format inconnu : {fmt} (linkedin|short)")
+    from dotenv import load_dotenv
+    load_dotenv("/opt/hermes/data/.env")
+    load_dotenv(str(PROFILE / "config" / ".env"))
     try:
         idea = load_idea(n, base)
         slug = f"idee{n}"
@@ -120,13 +137,17 @@ def main(n: int, fmt: str, base: Path = PROFILE) -> int:
             paths["script"].write_text(
                 json.dumps(script, ensure_ascii=False, indent=2), encoding="utf-8")
 
-        if paths["audio"].exists():
-            print("[video] audio réutilisé")
+        if use_heygen_voice():
+            # Voix HeyGen intégrée : pas d'étape TTS séparée
+            if not paths["video"].exists():
+                make_video_from_text(script["script"], paths["video"], fmt)
         else:
-            make_audio(script["script"], paths["audio"])
-
-        if not paths["video"].exists():
-            make_video(script, paths["audio"], paths["video"], fmt)
+            if paths["audio"].exists():
+                print("[video] audio réutilisé")
+            else:
+                make_audio(script["script"], paths["audio"])
+            if not paths["video"].exists():
+                make_video(script, paths["audio"], paths["video"], fmt)
 
         link = upload_to_drive(paths["video"], f"{slug}-{fmt}.mp4")
         send_telegram(render_video_notification(script, link))

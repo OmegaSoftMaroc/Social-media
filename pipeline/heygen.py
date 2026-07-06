@@ -28,6 +28,21 @@ def build_video_payload(audio_asset_id: str, avatar_id: str, fmt: str) -> dict:
     }
 
 
+def build_text_video_payload(script_text: str, voice_id: str, avatar_id: str,
+                             fmt: str) -> dict:
+    """Payload /v2/video/generate en mode voix HeyGen (TTS intégré, sans ElevenLabs)."""
+    dimension = VIDEO_FORMATS[fmt]["dimension"]  # KeyError si format inconnu
+    return {
+        "video_inputs": [{
+            "character": {"type": "avatar", "avatar_id": avatar_id,
+                          "avatar_style": "normal"},
+            "voice": {"type": "text", "voice_id": voice_id,
+                      "input_text": script_text},
+        }],
+        "dimension": dimension,
+    }
+
+
 def parse_video_status(resp: dict) -> tuple[str, str | None]:
     """(statut, info) — info = video_url si completed, message si failed, sinon None."""
     data = resp.get("data") or {}
@@ -70,6 +85,23 @@ def create_video(audio_asset_id: str, fmt: str, api_key: str | None = None,
     resp = requests.post(HEYGEN_GENERATE_URL, timeout=60,
                          headers={"x-api-key": _key(api_key)},
                          json=build_video_payload(audio_asset_id, avatar, fmt))
+    resp.raise_for_status()
+    return resp.json()["data"]["video_id"]
+
+
+def create_video_from_text(script_text: str, fmt: str, api_key: str | None = None,
+                           avatar_id: str | None = None,
+                           voice_id: str | None = None) -> str:
+    """Génération en mode voix HeyGen (texte → TTS intégré). Retourne le video_id."""
+    import os
+    import requests
+    avatar = avatar_id or os.environ.get("HEYGEN_AVATAR_ID", "")
+    voice = voice_id or os.environ.get("HEYGEN_VOICE_ID", "")
+    if not avatar or not voice:
+        raise RuntimeError("HEYGEN_AVATAR_ID / HEYGEN_VOICE_ID manquant")
+    resp = requests.post(HEYGEN_GENERATE_URL, timeout=60,
+                         headers={"x-api-key": _key(api_key)},
+                         json=build_text_video_payload(script_text, voice, avatar, fmt))
     resp.raise_for_status()
     return resp.json()["data"]["video_id"]
 

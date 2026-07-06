@@ -37,6 +37,7 @@ def test_main_skips_existing_artifacts(tmp_path, monkeypatch):
     paths["audio"].write_bytes(b"mp3")
 
     calls = {"script": 0, "tts": 0, "video": 0}
+    monkeypatch.setattr(dv, "use_heygen_voice", lambda: False)  # mode ElevenLabs forcé
     monkeypatch.setattr(dv, "call_scriptwriter",
                         lambda *a, **k: calls.__setitem__("script", 1) or {})
     monkeypatch.setattr(dv, "make_audio",
@@ -49,3 +50,30 @@ def test_main_skips_existing_artifacts(tmp_path, monkeypatch):
 
     assert dv.main(1, "short", base=tmp_path) == 0
     assert calls == {"script": 0, "tts": 0, "video": 1}  # script+audio réutilisés
+
+
+def test_main_heygen_voice_skips_tts(tmp_path, monkeypatch):
+    """Mode voix HeyGen : pas de TTS séparé, vidéo générée depuis le texte."""
+    proposals = tmp_path / "briefs" / "proposals"
+    proposals.mkdir(parents=True)
+    (proposals / "latest.json").write_text(json.dumps(
+        {"idees": [{"id": "idee-1", "pilier": 1, "titre": "T", "angle": "A"}]}),
+        encoding="utf-8")
+    paths = dv.artifact_paths(tmp_path, "idee1")
+    paths["script"].parent.mkdir(parents=True)
+    paths["script"].write_text(json.dumps(
+        {"format": "short", "script": "s", "titre": "T", "description": "d"}),
+        encoding="utf-8")
+
+    calls = {"tts": 0, "text_video": 0}
+    monkeypatch.setattr(dv, "use_heygen_voice", lambda: True)
+    monkeypatch.setattr(dv, "make_audio",
+                        lambda *a, **k: calls.__setitem__("tts", 1))
+    monkeypatch.setattr(dv, "make_video_from_text",
+                        lambda text, out, fmt: calls.__setitem__("text_video", 1)
+                        or Path(out).write_bytes(b"v"))
+    monkeypatch.setattr(dv, "upload_to_drive", lambda p, name: "https://drive/ok")
+    monkeypatch.setattr(dv, "send_telegram", lambda t: None)
+
+    assert dv.main(1, "short", base=tmp_path) == 0
+    assert calls == {"tts": 0, "text_video": 1}  # aucun appel ElevenLabs

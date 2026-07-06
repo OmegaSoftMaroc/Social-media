@@ -37,3 +37,13 @@ def test_parse_video_status_failed_with_error():
 def test_parse_video_status_processing():
     status, info = parse_video_status({"data": {"status": "processing"}})
     assert status == "processing" and info is None
+
+
+def test_build_text_video_payload():
+    from pipeline.heygen import build_text_video_payload
+    p = build_text_video_payload("Bonjour à tous.", "voiceZ", "avatarX", "short")
+    inp = p["video_inputs"][0]
+    assert inp["character"]["avatar_id"] == "avatarX"
+    assert inp["voice"] == {"type": "text", "voice_id": "voiceZ",
+                            "input_text": "Bonjour à tous."}
+    assert p["dimension"] == {"width": 720, "height": 1280}
