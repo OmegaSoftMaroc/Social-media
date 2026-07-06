@@ -127,3 +127,59 @@ def publish_image_post(text: str, image_path: str, access_token: str | None = No
     })
     r.raise_for_status()
     return {"status": r.status_code, "post_id": r.headers.get("x-restli-id")}
+
+
+def _register_video_upload(token: str, urn: str):
+    """Enregistre un upload vidéo, retourne (upload_url, asset_urn)."""
+    import requests
+    body = {"registerUploadRequest": {
+        "recipes": ["urn:li:digitalmediaRecipe:feedshare-video"],
+        "owner": urn,
+        "serviceRelationships": [
+            {"relationshipType": "OWNER", "identifier": "urn:li:userGeneratedContent"}
+        ],
+    }}
+    r = requests.post(REGISTER_URL, json=body, timeout=30, headers={
+        "Authorization": f"Bearer {token}", "Content-Type": "application/json"})
+    r.raise_for_status()
+    val = r.json()["value"]
+    upload_url = val["uploadMechanism"][
+        "com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest"]["uploadUrl"]
+    return upload_url, val["asset"]
+
+
+def publish_video_post(text: str, video_path: str, access_token: str | None = None,
+                       person_urn: str | None = None) -> dict:
+    """Publie un post vidéo (PUBLIC). APRÈS validation explicite uniquement."""
+    import requests
+    c = _env()
+    token = access_token or c.get("LINKEDIN_ACCESS_TOKEN")
+    urn = person_urn or c.get("LINKEDIN_PERSON_URN")
+    if not token or not urn:
+        raise RuntimeError("LINKEDIN_ACCESS_TOKEN / LINKEDIN_PERSON_URN manquant")
+
+    upload_url, asset = _register_video_upload(token, urn)
+    with open(video_path, "rb") as fh:
+        requests.put(upload_url, data=fh.read(), timeout=300,
+                     headers={"Authorization": f"Bearer {token}"}).raise_for_status()
+
+    body = {
+        "author": urn,
+        "lifecycleState": "PUBLISHED",
+        "specificContent": {
+            "com.linkedin.ugc.ShareContent": {
+                "shareCommentary": {"text": text},
+                "shareMediaCategory": "VIDEO",
+                "media": [{"status": "READY", "media": asset,
+                           "title": {"text": "Vidéo OmegaSoft"}}],
+            }
+        },
+        "visibility": {"com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC"},
+    }
+    r = requests.post(POSTS_URL, json=body, timeout=30, headers={
+        "Authorization": f"Bearer {token}",
+        "X-Restli-Protocol-Version": "2.0.0",
+        "Content-Type": "application/json",
+    })
+    r.raise_for_status()
+    return {"status": r.status_code, "post_id": r.headers.get("x-restli-id")}
