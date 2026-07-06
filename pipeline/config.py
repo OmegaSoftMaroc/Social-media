@@ -52,3 +52,22 @@ VISUAL_NEGATIVE = (
     "person, people, human, face, portrait, man, woman, silhouette, "
     "text, letters, words, typography, captions, watermark, signature, logo"
 )
+
+# --- Vidéo (ElevenLabs + HeyGen) ----------------------------------------------
+# Clés dans config/.env : ELEVENLABS_API_KEY, ELEVENLABS_VOICE_ID,
+#                         HEYGEN_API_KEY, HEYGEN_AVATAR_ID
+ELEVENLABS_TTS_URL = "https://api.elevenlabs.io/v1/text-to-speech/{voice_id}"
+ELEVENLABS_MODEL = "eleven_multilingual_v2"
+HEYGEN_UPLOAD_URL = "https://upload.heygen.com/v1/asset"
+HEYGEN_GENERATE_URL = "https://api.heygen.com/v2/video/generate"
+HEYGEN_STATUS_URL = "https://api.heygen.com/v1/video_status.get"
+
+# Formats de sortie : calibrage script (mots) + dimensions vidéo
+VIDEO_FORMATS = {
+    "linkedin": {"dimension": {"width": 1280, "height": 720},
+                 "target_words": (150, 220)},   # ~60-90 s parlées
+    "short": {"dimension": {"width": 720, "height": 1280},
+              "target_words": (70, 110)},        # ~30-45 s, 9:16
+}
+VIDEO_POLL_S = 20       # intervalle de polling HeyGen
+VIDEO_TIMEOUT_S = 900   # 15 min max par vidéo
