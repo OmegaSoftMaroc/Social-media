@@ -16,7 +16,11 @@ première personne, rythme), PAS un post lu.
 - `linkedin` : 150-220 mots (≈ 60-90 s parlées). Ton posé, pédagogique.
 - `short` : 70-110 mots (≈ 30-45 s). Rythme rapide, punchy.
 - Structure : HOOK (< 3 s, une phrase qui accroche) → corps (2-3 points concrets)
-  → CTA final (question ou invitation à commenter/suivre).
+  → CHUTE FORTE : une conviction ou un conseil qui reste en tête.
+- **RÈGLE ABSOLUE (préférence stricte d'Abdelilah) : JAMAIS d'appel à l'engagement.**
+  Interdits : « dites-le-moi en commentaire », « partagez », « abonnez-vous »,
+  « qu'en pensez-vous ? », « suivez-moi », et toute variante. On termine par une
+  affirmation, jamais par une sollicitation.
 
 ## Règles
 - Français oral naturel. Aucun emoji, aucun hashtag, aucune didascalie dans `script`
