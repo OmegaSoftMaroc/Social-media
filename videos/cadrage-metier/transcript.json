@@ -1,0 +1,497 @@
+[
+ {
+  "text": "On",
+  "start": 0.12,
+  "end": 0.2
+ },
+ {
+  "text": "me",
+  "start": 0.2,
+  "end": 0.24
+ },
+ {
+  "text": "demande",
+  "start": 0.24,
+  "end": 0.69
+ },
+ {
+  "text": "souvent",
+  "start": 0.69,
+  "end": 1.14
+ },
+ {
+  "text": "quel",
+  "start": 1.14,
+  "end": 1.39
+ },
+ {
+  "text": "est",
+  "start": 1.39,
+  "end": 1.58
+ },
+ {
+  "text": "le",
+  "start": 1.58,
+  "end": 1.7
+ },
+ {
+  "text": "meilleur",
+  "start": 1.7,
+  "end": 2.21
+ },
+ {
+  "text": "modèle",
+  "start": 2.21,
+  "end": 2.65
+ },
+ {
+  "text": "d'IA,",
+  "start": 2.65,
+  "end": 3.04
+ },
+ {
+  "text": "mauvaise",
+  "start": 3.04,
+  "end": 3.36
+ },
+ {
+  "text": "question.",
+  "start": 3.36,
+  "end": 3.86
+ },
+ {
+  "text": "Les",
+  "start": 3.86,
+  "end": 4.16
+ },
+ {
+  "text": "modèles",
+  "start": 4.16,
+  "end": 4.58
+ },
+ {
+  "text": "se",
+  "start": 4.58,
+  "end": 4.71
+ },
+ {
+  "text": "ressemblent",
+  "start": 4.71,
+  "end": 5.51
+ },
+ {
+  "text": "et",
+  "start": 5.51,
+  "end": 5.58
+ },
+ {
+  "text": "dans",
+  "start": 5.58,
+  "end": 5.83
+ },
+ {
+  "text": "6",
+  "start": 5.83,
+  "end": 6.02
+ },
+ {
+  "text": "mois,",
+  "start": 6.02,
+  "end": 6.42
+ },
+ {
+  "text": "ils",
+  "start": 6.42,
+  "end": 6.63
+ },
+ {
+  "text": "seront",
+  "start": 6.63,
+  "end": 6.97
+ },
+ {
+  "text": "tous",
+  "start": 6.97,
+  "end": 7.19
+ },
+ {
+  "text": "dépassés.",
+  "start": 7.19,
+  "end": 7.8
+ },
+ {
+  "text": "Ce",
+  "start": 7.8,
+  "end": 7.99
+ },
+ {
+  "text": "n'est",
+  "start": 7.99,
+  "end": 8.25
+ },
+ {
+  "text": "pas",
+  "start": 8.25,
+  "end": 8.45
+ },
+ {
+  "text": "là",
+  "start": 8.45,
+  "end": 8.65
+ },
+ {
+  "text": "que",
+  "start": 8.65,
+  "end": 8.85
+ },
+ {
+  "text": "ta",
+  "start": 8.85,
+  "end": 8.98
+ },
+ {
+  "text": "PME",
+  "start": 8.98,
+  "end": 9.17
+ },
+ {
+  "text": "va",
+  "start": 9.17,
+  "end": 9.3
+ },
+ {
+  "text": "faire",
+  "start": 9.3,
+  "end": 9.64
+ },
+ {
+  "text": "la",
+  "start": 9.64,
+  "end": 9.8
+ },
+ {
+  "text": "différence.",
+  "start": 9.8,
+  "end": 10.8
+ },
+ {
+  "text": "Ce",
+  "start": 10.8,
+  "end": 11.17
+ },
+ {
+  "text": "qui",
+  "start": 11.17,
+  "end": 11.26
+ },
+ {
+  "text": "te",
+  "start": 11.26,
+  "end": 11.44
+ },
+ {
+  "text": "rend",
+  "start": 11.44,
+  "end": 11.81
+ },
+ {
+  "text": "unique,",
+  "start": 11.81,
+  "end": 12.67
+ },
+ {
+  "text": "c'est",
+  "start": 12.67,
+  "end": 13.0
+ },
+ {
+  "text": "ton",
+  "start": 13.0,
+  "end": 13.16
+ },
+ {
+  "text": "métier,",
+  "start": 13.16,
+  "end": 14.03
+ },
+ {
+  "text": "tes",
+  "start": 14.03,
+  "end": 14.06
+ },
+ {
+  "text": "process,",
+  "start": 14.06,
+  "end": 14.73
+ },
+ {
+  "text": "tes",
+  "start": 14.73,
+  "end": 15.1
+ },
+ {
+  "text": "données,",
+  "start": 15.1,
+  "end": 15.96
+ },
+ {
+  "text": "tes",
+  "start": 15.96,
+  "end": 15.98
+ },
+ {
+  "text": "règles.",
+  "start": 15.98,
+  "end": 16.6
+ },
+ {
+  "text": "Ça,",
+  "start": 16.6,
+  "end": 16.99
+ },
+ {
+  "text": "aucun",
+  "start": 16.99,
+  "end": 17.41
+ },
+ {
+  "text": "concurrent",
+  "start": 17.41,
+  "end": 18.13
+ },
+ {
+  "text": "ne",
+  "start": 18.13,
+  "end": 18.38
+ },
+ {
+  "text": "peut",
+  "start": 18.38,
+  "end": 18.62
+ },
+ {
+  "text": "le",
+  "start": 18.62,
+  "end": 18.74
+ },
+ {
+  "text": "copier",
+  "start": 18.74,
+  "end": 19.2
+ },
+ {
+  "text": "en",
+  "start": 19.2,
+  "end": 19.44
+ },
+ {
+  "text": "un",
+  "start": 19.44,
+  "end": 19.5
+ },
+ {
+  "text": "clic.",
+  "start": 19.5,
+  "end": 20.1
+ },
+ {
+  "text": "La",
+  "start": 20.1,
+  "end": 20.36
+ },
+ {
+  "text": "vraie",
+  "start": 20.36,
+  "end": 20.59
+ },
+ {
+  "text": "force,",
+  "start": 20.59,
+  "end": 21.08
+ },
+ {
+  "text": "ce",
+  "start": 21.08,
+  "end": 21.23
+ },
+ {
+  "text": "n'est",
+  "start": 21.23,
+  "end": 21.58
+ },
+ {
+  "text": "pas",
+  "start": 21.58,
+  "end": 21.79
+ },
+ {
+  "text": "de",
+  "start": 21.79,
+  "end": 22.12
+ },
+ {
+  "text": "brancher",
+  "start": 22.12,
+  "end": 22.5
+ },
+ {
+  "text": "le",
+  "start": 22.5,
+  "end": 22.64
+ },
+ {
+  "text": "dernier",
+  "start": 22.64,
+  "end": 23.14
+ },
+ {
+  "text": "modèle",
+  "start": 23.14,
+  "end": 23.64
+ },
+ {
+  "text": "à",
+  "start": 23.64,
+  "end": 23.89
+ },
+ {
+  "text": "la",
+  "start": 23.89,
+  "end": 23.92
+ },
+ {
+  "text": "mode.",
+  "start": 23.92,
+  "end": 24.5
+ },
+ {
+  "text": "C'est",
+  "start": 24.5,
+  "end": 24.83
+ },
+ {
+  "text": "de",
+  "start": 24.83,
+  "end": 24.95
+ },
+ {
+  "text": "savoir",
+  "start": 24.95,
+  "end": 25.36
+ },
+ {
+  "text": "exactement",
+  "start": 25.36,
+  "end": 26.05
+ },
+ {
+  "text": "quel",
+  "start": 26.05,
+  "end": 26.45
+ },
+ {
+  "text": "problème",
+  "start": 26.45,
+  "end": 26.92
+ },
+ {
+  "text": "tu",
+  "start": 26.92,
+  "end": 27.05
+ },
+ {
+  "text": "résous",
+  "start": 27.05,
+  "end": 27.6
+ },
+ {
+  "text": "et",
+  "start": 27.73,
+  "end": 27.86
+ },
+ {
+  "text": "comment",
+  "start": 27.86,
+  "end": 28.2
+ },
+ {
+  "text": "ton",
+  "start": 28.2,
+  "end": 28.51
+ },
+ {
+  "text": "métier",
+  "start": 28.51,
+  "end": 28.87
+ },
+ {
+  "text": "fonctionne",
+  "start": 28.87,
+  "end": 29.54
+ },
+ {
+  "text": "vraiment.",
+  "start": 29.54,
+  "end": 30.3
+ },
+ {
+  "text": "Le",
+  "start": 30.3,
+  "end": 30.49
+ },
+ {
+  "text": "modèle,",
+  "start": 30.49,
+  "end": 31.11
+ },
+ {
+  "text": "c'est",
+  "start": 31.11,
+  "end": 31.5
+ },
+ {
+  "text": "un",
+  "start": 31.5,
+  "end": 31.65
+ },
+ {
+  "text": "outil.",
+  "start": 31.65,
+  "end": 32.3
+ },
+ {
+  "text": "Le",
+  "start": 32.3,
+  "end": 32.42
+ },
+ {
+  "text": "cadrage",
+  "start": 32.42,
+  "end": 32.84
+ },
+ {
+  "text": "métier,",
+  "start": 32.84,
+  "end": 33.38
+ },
+ {
+  "text": "c'est",
+  "start": 33.38,
+  "end": 33.68
+ },
+ {
+  "text": "ton",
+  "start": 33.68,
+  "end": 33.86
+ },
+ {
+  "text": "actif",
+  "start": 33.86,
+  "end": 34.16
+ },
+ {
+  "text": "durable.",
+  "start": 34.16,
+  "end": 34.8
+ }
+]

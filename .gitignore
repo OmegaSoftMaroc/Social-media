@@ -1,1 +1,8 @@
 .credentials.md
+videos/*/public/*.mp4
+videos/*/public/*.mp3
+videos/*/audio.mp3
+videos/*/output.mp4
+video-studio/public/*.mp4
+video-studio/public/*.json
+hyper-studio/node_modules/
