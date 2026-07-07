@@ -35,9 +35,14 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
     mot-clé du propos le justifie (cible/graph/puce/usine/fusée/check/prise/ampoule) — jamais d'émoji.
   - **Clone en rond bas-droite** : Ø380px, liseré blanc 7px, zoom ×2.05, cadrage visage
     (objectPosition center 30% / origin center 34%).
-  - Signature bas-gauche (2 lignes, préférence validée 2026-07-07) :
-    « **Abdelilah Kahaji** / Enseignant-Chercheur | Expert en Systèmes d'Information & Intelligence Artificielle ».
-    Cette signature s'applique à TOUS les templates vidéo.
+  - Signature bas-gauche — RÈGLE STRICTE : **exactement 2 lignes** —
+    ligne 1 « **Abdelilah Kahaji** », ligne 2 (une seule ligne, jamais de retour) :
+    « Enseignant-Chercheur | Expert en Systèmes d'Information & Intelligence Artificielle ».
+    S'applique à TOUS les templates vidéo.
+  - RÈGLE STRICTE (remarque récurrente d'Abdelilah) : dans tout PiP rond, le **visage
+    doit être centré dans le cercle** (yeux ≈ mi-hauteur). Toujours vérifier sur une
+    frame rendue avant le rendu final ; ajuster object-position/zoom selon le cadrage
+    source (chaque vidéo HeyGen a un cadrage différent).
   - Chute du script = conviction (JAMAIS de « dites-le-moi en commentaire »).
 - **Specs** : 1080×1920 (9:16), whisper `small` FR (passer à `medium` si transcription imparfaite).
 - **Exemple validé & publié** : idee2 v4 — LinkedIn `urn:li:ugcPost:7480042921208139777`.
