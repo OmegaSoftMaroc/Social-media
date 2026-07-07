@@ -300,9 +300,11 @@ export const PresenterPiP: React.FC<{ src: string }> = ({ src }) => {
         color: `${WHITE}D9`, fontSize: 30, letterSpacing: 1,
       }}>
         Abdelilah Kahaji
-        {/* Règle Abdelilah : signature sur EXACTEMENT 2 lignes (titre sur une seule ligne) */}
-        <div style={{ marginTop: 8, fontSize: 18, letterSpacing: 0.3, color: `${WHITE}99`, whiteSpace: "nowrap" }}>
-          Enseignant-Chercheur | Expert en Systèmes d'Information & Intelligence Artificielle
+        {/* Règle Abdelilah (2026-07-07, précisée) : titre sur DEUX lignes distinctes */}
+        <div style={{ marginTop: 8, fontSize: 19, letterSpacing: 0.3, color: `${WHITE}99`, lineHeight: 1.4 }}>
+          Enseignant-Chercheur
+          <br />
+          Expert en Systèmes d'Information & Intelligence Artificielle
         </div>
       </div>
     </AbsoluteFill>

@@ -35,9 +35,10 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
     mot-clé du propos le justifie (cible/graph/puce/usine/fusée/check/prise/ampoule) — jamais d'émoji.
   - **Clone en rond bas-droite** : Ø380px, liseré blanc 7px, zoom ×2.05, cadrage visage
     (objectPosition center 30% / origin center 34%).
-  - Signature bas-gauche — RÈGLE STRICTE : **exactement 2 lignes** —
-    ligne 1 « **Abdelilah Kahaji** », ligne 2 (une seule ligne, jamais de retour) :
-    « Enseignant-Chercheur | Expert en Systèmes d'Information & Intelligence Artificielle ».
+  - Signature bas-gauche — RÈGLE STRICTE (précisée 2026-07-07) : **exactement 3 lignes** —
+    ligne 1 « **Abdelilah Kahaji** » ·
+    ligne 2 « Enseignant-Chercheur » ·
+    ligne 3 « Expert en Systèmes d'Information & Intelligence Artificielle ».
     S'applique à TOUS les templates vidéo.
   - RÈGLE STRICTE (remarque récurrente d'Abdelilah) : dans tout PiP rond, le **visage
     doit être centré dans le cercle** (yeux ≈ mi-hauteur). Toujours vérifier sur une
