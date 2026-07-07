@@ -294,12 +294,15 @@ export const PresenterPiP: React.FC<{ src: string }> = ({ src }) => {
         />
       </div>
 
-      {/* Signature discrète */}
+      {/* Signature (préférence Abdelilah 2026-07-07 : nom + titre professionnel) */}
       <div style={{
         position: "absolute", left: 56, bottom: 96, fontFamily: TheBoldFont,
-        color: `${WHITE}B0`, fontSize: 30, letterSpacing: 1,
+        color: `${WHITE}D9`, fontSize: 30, letterSpacing: 1,
       }}>
-        Abdelilah Kahaji — OmegaSoft
+        Abdelilah Kahaji
+        <div style={{ marginTop: 8, fontSize: 19, letterSpacing: 0.5, color: `${WHITE}99`, maxWidth: 560 }}>
+          Enseignant-Chercheur | Expert en Systèmes d'Information & Intelligence Artificielle
+        </div>
       </div>
     </AbsoluteFill>
   );
