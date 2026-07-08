@@ -86,14 +86,23 @@ def fetch_rss(channel_id: str) -> list[dict]:
     return videos
 
 
-def summarize_with_gemini(chaine: str, titre: str, description: str, api_key: str) -> str:
-    """Résumé FR court via OpenRouter Gemini (appel réseau, non testé)."""
+def summarize_with_gemini(chaine: str, titre: str, description: str, api_key: str,
+                          transcript: str = "") -> str:
+    """Résumé FR court via OpenRouter Gemini (appel réseau, non testé).
+
+    Si `transcript` est fourni (transcription réelle), il sert de matière première
+    prioritaire — bien plus fidèle que la seule description.
+    """
     if not api_key:
         return "⚠️ Clé OpenRouter manquante — résumé non généré"
+    if transcript:
+        matiere = f"Transcription (extrait) :\n{transcript[:4000]}"
+    else:
+        matiere = f"Description : {description}"
     prompt = (
         "Tu es l'assistant éditorial de M. Abdelilah Kahaji (expert IA, consultant "
         "ERP/Odoo).\n"
-        f"Nouvelle vidéo YouTube de {chaine} :\nTitre : {titre}\nDescription : {description}\n\n"
+        f"Nouvelle vidéo YouTube de {chaine} :\nTitre : {titre}\n{matiere}\n\n"
         "En 3-4 phrases en français : (1) résume le sujet, (2) indique sa pertinence pour "
         "un expert IA / dirigeant d'ESN, (3) suggère un angle de contenu. Sois concis."
     )
@@ -147,8 +156,22 @@ def main() -> int:
         if not channel_id:
             continue
         for v in select_new_videos(fetch_rss(channel_id), seen, hours=RECENCY_HOURS):
-            resume = summarize_with_gemini(handle, v["titre"], v["description"], api_key)
+            # Transcript best-effort : grounde le résumé sur ce qui est réellement dit.
+            # Toute panne (IP bloquée, sous-titres désactivés…) → repli sur la description,
+            # jamais d'arrêt du run quotidien.
+            transcript_text = ""
+            try:
+                from pipeline.transcript import fetch_transcript
+                transcript_text = fetch_transcript(v["url"])["text"]
+            except Exception as exc:  # noqa: BLE001 — repli volontaire, best-effort
+                print(f"[youtube_monitor] transcript indisponible ({v['id']}): "
+                      f"{type(exc).__name__} → repli description")
+            resume = summarize_with_gemini(handle, v["titre"], v["description"], api_key,
+                                           transcript=transcript_text)
             item = make_incoming_item(v, handle, resume, now_iso)
+            if transcript_text:
+                item["transcript"] = transcript_text[:6000]
+                item["transcript_tronque"] = len(transcript_text) > 6000
             write_incoming_item(item, incoming)
             seen[v["id"]] = {"titre": v["titre"], "chaine": handle, "vu_le": now_iso}
             written += 1
