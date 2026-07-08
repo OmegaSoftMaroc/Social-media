@@ -1,24 +1,44 @@
-# Goal : Pipeline vidéo — développer T1→T7 sans arrêt, stop à T8 (clés API requises)
-Démarré : 2026-07-06 — Session : 1
-Plan de référence : docs/superpowers/plans/2026-07-06-video-pipeline.md
-Exécution : subagent-driven (1 implémenteur/tâche + revue contrôleur)
+# Goal : Nœud social-media opérationnel en autonomie (Telegram/Hermes → Claude Code)
+
+Démarré : 2026-07-08 — Session : 1 (run autonome /goal)
+(Goal précédent « pipeline vidéo T1→T8 » complété → archivé dans goal-state-2026-07-06-video-pipeline.md)
+
+**Règle directrice (Abdelilah) :** Hermes = intermédiaire intelligent. Il ne fait
+AUCUNE tâche : il interprète/reformule mes demandes en prompts, me remplace
+vis-à-vis de Claude Code, apprend (mémoire + skills), et passe le relais.
+**Toutes les tâches sont exécutées par Claude Code.** Donc le Claude Code que
+hermes invoque (HOME=/opt/hermes) doit être aussi capable que l'atelier root.
+
+**Critère de succès :** depuis Telegram (profil social-media), une demande de
+production vidéo est reformulée par hermes → déléguée à Claude Code → Claude Code
+dispose des skills + projet + toolchain pour produire le montage (presentateur-anime)
+→ mp4 livré. Preuve = 1 rendu de bout en bout déclenchable côté hermes.
 
 ## Lots
-- [x] T1 : Config vidéo — commit 03632a3, 25 tests verts
-- [x] T2 : Agent video-scriptwriter — commit 1818b8a, vérifié réel (94 mots, calibrage short OK)
-- [x] T3 : Connecteur ElevenLabs (TDD) — commit 1c367b2, 27 tests verts
-- [x] T4 : Connecteur HeyGen (TDD) — commit f378461, 33 tests verts
-- [x] T5 : Orchestrateur develop_video (TDD) — commit 8926637, 36 tests verts
-- [x] T6 : Publication LinkedIn vidéo — commit 814d0c4, 36 tests + imports OK
-- [x] T7 : Règles SOUL vidéo + push — fait en direct (contrôleur)
-- [x] T8 : COMPLÈTE (2026-07-06) — crédits API ajoutés ; test court OK (1,3 Mo) ; CHAÎNE COMPLÈTE OK : idée 2 → script (généré en local, workaround login serveur) → HeyGen (voix+avatar Abdelilah) → Drive Videos (1_nH9YBgJWimgzBU5peioY7yV2vDjIrC6) → notification Telegram. Publication : en attente de validation explicite (par design). Reste hors-scope run : re-login Claude serveur (scriptwriter via Telegram + cron quotidien). Détail historique : (ex-T8 partielle) — clés installées (HEYGEN_API_KEY/VOICE_ID + ELEVENLABS_API_KEY ; VOICE_ID ElevenLabs vide → mode voix HeyGen codé/testé, commit 4d413d1, 38 tests). AVATAR trouvé : « KHAJAI ABDELILAH » (b2f040e6...) déjà créé sur HeyGen → HEYGEN_AVATAR_ID enregistré. Test réel : requête ACCEPTÉE (video_id créé, payload/voix/avatar valides) mais génération refusée : « Insufficient credit — requires api credits » (plan: 200 crédits app, 0 crédits API). RESTE : (1) Abdelilah achète/active des crédits API HeyGen ; (2) re-login Claude serveur (« Not logged in », bloque scriptwriter + cron) ; puis chaîne complète + publication sur validation.
+- [x] Lot 1 : Skills copiées (19 skills vidéo : hyperframes*, talking-head-recut, embedded-captions, motion-graphics, remotion-to-hyperframes, media-use…) dans /opt/hermes/.claude/skills — assets (polices, gsap) + SKILL.md OK. Install LOCALE (pas canon).
+- [x] Lot 2 : Workspace /opt/hermes/work/Social-media (owned hermes, git dev-kahaji 86b05f2, video-studio + node_modules 622M + whisper 487M + 16 pipeline .py).
+- [x] Lot 3 : Toolchain OK sous hermes — Chrome Headless 149 démarre (0 lib manquante), Remotion 4.0.485 liste CaptionedVideo + PresenterPiP. ffmpeg/whisper via la copie.
+- [x] Lot 4 : Preuve OK — rendu PresenterPiP frames 0-60 → out/proof-hermes.mp4 (h264 1080x1920+aac). Helper montage-presentateur.sh testé bout-en-bout (transcription whisper réelle + rendu) → out/test-helper.mp4.
+- [x] Lot 5 : SOUL source + live enrichis (section « Montage presentateur-anime — DÉLÉGUÉ à Claude Code » : voie rapide helper / voie riche talking-head-recut, règles visuelles 3 lignes + visage centré + zéro CTA). Déployé via deploy.sh.
+
+## Statut : ✅ COMPLET — nœud social-media capable en autonomie (Telegram/Hermes → Claude Code)
+Verrou : SOUL lu à la création de session → la *connaissance* montage de hermes s'active au
+prochain reset de session (inactivité ou restart hermes-gateway-social-media) ; la *capacité*
+(skills+workspace+toolchain) est déjà opérationnelle.
+Décision de scope : « alerte Telegram sur échec » = pour l'automatisé (cron run_daily, déjà en
+place). Le montage est INTERACTIF (délégué par hermes à Claude Code qui rapporte nativement) →
+pas de cron montage, donc pas d'alerte dédiée nécessaire.
 
 ## Décisions prises en autonomie
-- 2026-07-06 : T5 — bug corrigé dans le test du plan (court-circuit `or` avec write_bytes truthy) : opérandes inversés par l'implémenteur, intention du test préservée.
-- 2026-07-06 : QA du run = suite pytest complète + vérifications locales réelles des agents (pas de staging web — projet pipeline serveur) ; push à T7.
-- 2026-07-06 : à T8, exécuter uniquement le déploiement des fichiers (deploy.sh, sans risque) + contrôle des clés, puis s'arrêter et guider Abdelilah.
+- 2026-07-08 : Skills HyperFrames installés LOCALEMENT sur hermes, PAS dans le canon
+  claude-code-config partagé (éviterait de polluer modoosoft/logico/etc.). Réversible.
+- 2026-07-08 : Workspace hermes = copie (rsync) du checkout root incluant node_modules
+  + whisper.cpp compilé (même machine, même arch) → parité garantie, pas de rebuild lourd.
 
 ## Points en suspens (non bloquants)
-- Refresh token LinkedIn (~03/09) non automatisé.
-- Clé Ideogram à régénérer (exposée) ; /opt/hermes/.env à vider (actions Abdelilah).
-- Panne curator serveur (re-login Claude) — même prérequis que T8.
+- Refresh token LinkedIn (~03/09) ; clé Ideogram à régénérer ; /opt/hermes/.env à vider (actions Abdelilah).
+
+## Environnement vérifié (2026-07-08)
+- Disque : 105 Go libres. Node v24.14.1, npm 11, npx skills 1.5.15.
+- ffmpeg 6.1.1 + ffprobe : système ✓. Chromium système : absent (Remotion DL son Chrome).
+- Root video-studio : node_modules 612M + whisper.cpp/ggml-small.bin présents.

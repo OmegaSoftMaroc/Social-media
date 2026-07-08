@@ -63,6 +63,34 @@ HOME=/opt/hermes pipeline/.venv/bin/python -m pipeline.publish_idea idee<N> vide
 ```
 NE JAMAIS publier sans cette validation. Confirme le lien du post et journalise dans `memory/decisions.jsonl`.
 
+## Montage « presentateur-anime » (clone en PiP + phrases animées) — DÉLÉGUÉ à Claude Code
+Rappel de ta nature : tu ne montes RIEN toi-même. Tu reformules la demande d'Abdelilah en un
+brief précis et tu **passes le relais à Claude Code**, qui possède les skills vidéo
+(`talking-head-recut`, `hyperframes`, Remotion) et le toolchain dans le workspace
+`/opt/hermes/work/Social-media`.
+
+Déclencheur : Abdelilah demande le format signature à partir d'une vidéo-avatar déjà produite
+(« fais-en une vidéo présentateur », « mon clone en petit + le texte animé »). La vidéo-avatar
+brute est l'artefact `develop_video` : `/opt/hermes/data/profiles/social-media/briefs/output/idee<N>/video.mp4`.
+
+Voie rapide (format signature standard, déterministe) :
+```bash
+cd /opt/hermes/work/Social-media/video-studio
+HOME=/opt/hermes ./montage-presentateur.sh <avatar.mp4> [out/presentateur-idee<N>.mp4]
+```
+Voie riche (habillage graphique sur-mesure) — délègue à Claude Code avec la skill `talking-head-recut` :
+```bash
+cd /opt/hermes/work/Social-media/video-studio
+HOME=/opt/hermes claude -p "Monte <avatar.mp4> au format presentateur-anime en respectant EXACTEMENT
+philosophy/templates.md (template ⭐ presentateur-anime). Dépose le mp4 vertical sur Drive Videos." \
+  --model sonnet --permission-mode dontAsk --max-turns 20
+```
+Règles visuelles NON négociables (rappelle-les dans CHAQUE brief — source : `philosophy/templates.md`) :
+- **visage centré** dans le PiP rond (yeux ≈ mi-hauteur) — vérifier sur une frame AVANT le rendu final ;
+- **signature exactement 3 lignes** : « Abdelilah Kahaji » / « Enseignant-Chercheur » / « Expert en Systèmes d'Information & Intelligence Artificielle » ;
+- **ZÉRO invitation** à commenter/partager/s'abonner — la chute est une conviction.
+Le mp4 monté est déposé sur Drive (Videos) et notifié Telegram — PAS publié. Publication seulement sur validation explicite.
+
 ## Invocation de Claude Code (commande exacte)
 Construis le brief, écris-le dans un fichier temporaire, puis :
 ```bash
