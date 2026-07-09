@@ -113,7 +113,7 @@ const ICON_PATHS: Record<IconKey, React.ReactNode> = {
 };
 
 // Fond animé discret : anneaux et formes qui dérivent lentement (teal sur navy)
-const AnimatedBackground: React.FC = () => {
+export const AnimatedBackground: React.FC = () => {
   const frame = useCurrentFrame();
   const drift = frame * 0.35;
   return (
@@ -138,7 +138,11 @@ const AnimatedBackground: React.FC = () => {
 };
 
 // Pile de phrases : la courante (kinétique, mot à mot) + les 2 précédentes (estompées)
-const SentenceStack: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
+// `bottomInset` réserve l'espace bas (470 = zone du PiP presentateur ; plus petit
+// quand il n'y a pas de PiP, le texte occupe alors davantage l'écran).
+export const SentenceStack: React.FC<{ sentences: Sentence[]; bottomInset?: number }> = ({
+  sentences, bottomInset = 470,
+}) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const nowMs = (frame / fps) * 1000;
@@ -152,8 +156,8 @@ const SentenceStack: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
 
   return (
     <div style={{
-      // Texte centré sur le « tableau » : zone au-dessus du PiP, centrage vertical
-      position: "absolute", top: 90, left: 60, right: 60, bottom: 470,
+      // Texte centré sur le « tableau », centrage vertical dans l'espace disponible
+      position: "absolute", top: 90, left: 60, right: 60, bottom: bottomInset,
       display: "flex", flexDirection: "column", gap: 40,
       justifyContent: "center",
       fontFamily: TheBoldFont, textAlign: "center",
@@ -206,7 +210,7 @@ const SentenceStack: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
 };
 
 // Badge icône raffiné, bas-gauche — seulement quand le propos le justifie
-const CornerIcon: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
+export const CornerIcon: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const nowMs = (frame / fps) * 1000;
@@ -244,13 +248,12 @@ const CornerIcon: React.FC<{ sentences: Sentence[] }> = ({ sentences }) => {
   );
 };
 
-export const PresenterPiP: React.FC<{ src: string }> = ({ src }) => {
+// Hook partagé : charge les captions (JSON whisper à côté du média) → phrases groupées.
+export const useSentences = (src: string): Sentence[] => {
   const [captions, setCaptions] = useState<Caption[]>([]);
   const { delayRender, continueRender } = useDelayRender();
   const [handle] = useState(() => delayRender());
-
-  const captionsFile = src.replace(/.mp4$/, ".json");
-
+  const captionsFile = src.replace(/\.(mp4|mp3|m4a|wav|webm|mov)$/i, ".json");
   const fetchCaptions = useCallback(async () => {
     try {
       await loadFont();
@@ -261,12 +264,29 @@ export const PresenterPiP: React.FC<{ src: string }> = ({ src }) => {
       cancelRender(e);
     }
   }, [captionsFile, continueRender, handle]);
-
   useEffect(() => {
     fetchCaptions();
   }, [fetchCaptions]);
+  return useMemo(() => groupSentences(captions), [captions]);
+};
 
-  const sentences = useMemo(() => groupSentences(captions), [captions]);
+// Signature bas-gauche — RÈGLE STRICTE Abdelilah (2026-07-07) : nom + titre sur 2 lignes.
+export const Signature: React.FC = () => (
+  <div style={{
+    position: "absolute", left: 56, bottom: 96, fontFamily: TheBoldFont,
+    color: `${WHITE}D9`, fontSize: 30, letterSpacing: 1,
+  }}>
+    Abdelilah Kahaji
+    <div style={{ marginTop: 8, fontSize: 19, letterSpacing: 0.3, color: `${WHITE}99`, lineHeight: 1.4 }}>
+      Enseignant-Chercheur
+      <br />
+      Expert en Systèmes d'Information & Intelligence Artificielle
+    </div>
+  </div>
+);
+
+export const PresenterPiP: React.FC<{ src: string }> = ({ src }) => {
+  const sentences = useSentences(src);
 
   const PIP = 380; // diamètre du rond avatar
 
@@ -294,19 +314,7 @@ export const PresenterPiP: React.FC<{ src: string }> = ({ src }) => {
         />
       </div>
 
-      {/* Signature (préférence Abdelilah 2026-07-07 : nom + titre professionnel) */}
-      <div style={{
-        position: "absolute", left: 56, bottom: 96, fontFamily: TheBoldFont,
-        color: `${WHITE}D9`, fontSize: 30, letterSpacing: 1,
-      }}>
-        Abdelilah Kahaji
-        {/* Règle Abdelilah (2026-07-07, précisée) : titre sur DEUX lignes distinctes */}
-        <div style={{ marginTop: 8, fontSize: 19, letterSpacing: 0.3, color: `${WHITE}99`, lineHeight: 1.4 }}>
-          Enseignant-Chercheur
-          <br />
-          Expert en Systèmes d'Information & Intelligence Artificielle
-        </div>
-      </div>
+      <Signature />
     </AbsoluteFill>
   );
 };

@@ -48,6 +48,21 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
 - **Specs** : 1080×1920 (9:16), whisper `small` FR (passer à `medium` si transcription imparfaite).
 - **Exemple validé & publié** : idee2 v4 — LinkedIn `urn:li:ugcPost:7480042921208139777`.
 
+## narration-animee — variante SANS avatar (voix + texte animé) (créé 2026-07-09)
+- **Usage** : même identité que presentateur-anime mais **sans le clone visage** — quand
+  Abdelilah veut la voix off + le texte animé, pas d'avatar à l'écran.
+- **Recette** : voix (audio ElevenLabs, ou vidéo dont on extrait l'audio) →
+  `video-studio` : `./montage-narration.sh <voix.mp3|video.mp4> [sortie] [--frames=A-B]`
+  (extrait l'audio en `public/narration.mp3` → `node sub.mjs` → `narration.json` → rendu
+  composition Remotion **NarrationAnimee**).
+- **Identique à presentateur-anime** : fond navy animé, pile de 3 phrases kinétiques
+  (accent/teal), icône line-art contextuelle bas-gauche, signature.
+- **Seule différence** : PAS de PiP rond ; le texte occupe davantage l'écran (bottomInset réduit).
+  Briques partagées exportées depuis `PresenterPiP` (AnimatedBackground/SentenceStack/CornerIcon/
+  Signature/useSentences) → une seule source de vérité.
+- **Règles communes** : signature (voir presentateur-anime), zéro CTA, whisper `small` FR.
+- **Specs** : 1080×1920 (9:16). Vérifié bout-en-bout sous hermes (2026-07-09).
+
 ## Comment ajouter un template
 1. Itérer le format avec Abdelilah jusqu'à validation explicite.
 2. L'ajouter ici (nom kebab-case, usage, recette, specs, exemple).

@@ -78,6 +78,11 @@ Voie rapide (format signature standard, déterministe) :
 cd /opt/hermes/work/Social-media/video-studio
 HOME=/opt/hermes ./montage-presentateur.sh <avatar.mp4> [out/presentateur-idee<N>.mp4]
 ```
+Variante **sans avatar** (texte animé + voix off, pas de visage — template `narration-animee`) :
+```bash
+cd /opt/hermes/work/Social-media/video-studio
+HOME=/opt/hermes ./montage-narration.sh <voix.mp3|video.mp4> [out/narration-idee<N>.mp4]
+```
 Voie riche (habillage graphique sur-mesure) — délègue à Claude Code avec la skill `talking-head-recut` :
 ```bash
 cd /opt/hermes/work/Social-media/video-studio

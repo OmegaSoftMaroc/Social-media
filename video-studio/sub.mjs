@@ -58,22 +58,15 @@ const subFile = async (filePath, fileName, folder) => {
   );
 };
 
+const MEDIA_EXT = [".mp4", ".webm", ".mkv", ".mov", ".mp3", ".wav", ".m4a"];
+
 const processVideo = async (fullPath, entry, directory) => {
-  if (
-    !fullPath.endsWith(".mp4") &&
-    !fullPath.endsWith(".webm") &&
-    !fullPath.endsWith(".mkv") &&
-    !fullPath.endsWith(".mov")
-  ) {
+  if (!MEDIA_EXT.some((ext) => fullPath.endsWith(ext))) {
     return;
   }
 
   const isTranscribed = existsSync(
-    fullPath
-      .replace(/.mp4$/, ".json")
-      .replace(/.mkv$/, ".json")
-      .replace(/.mov$/, ".json")
-      .replace(/.webm$/, ".json")
+    MEDIA_EXT.reduce((p, ext) => p.replace(new RegExp(`\\${ext}$`), ".json"), fullPath)
       .replace("webcam", "subs"),
   );
   if (isTranscribed) {
