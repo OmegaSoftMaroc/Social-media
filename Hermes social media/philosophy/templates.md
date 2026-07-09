@@ -57,7 +57,9 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
   composition Remotion **NarrationAnimee**).
 - **Identique à presentateur-anime** : fond navy animé, pile de 3 phrases kinétiques
   (accent/teal), icône line-art contextuelle bas-gauche, signature.
-- **Seule différence** : PAS de PiP rond ; le texte occupe davantage l'écran (bottomInset réduit).
+- **Différences avec presentateur-anime** : PAS d'avatar animé. À la place, une **photo de
+  profil statique** (rond bas-droite, Ø380, liseré blanc) — asset `public/brand-photo-crop.png`
+  (pré-recadré sur le visage, yeux à mi-hauteur). Signature bas-gauche comme d'habitude.
   Briques partagées exportées depuis `PresenterPiP` (AnimatedBackground/SentenceStack/CornerIcon/
   Signature/useSentences) → une seule source de vérité.
 - **Règles communes** : signature (voir presentateur-anime), zéro CTA, whisper `small` FR.

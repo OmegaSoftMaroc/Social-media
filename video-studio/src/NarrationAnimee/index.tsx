@@ -1,6 +1,6 @@
 import { getAudioDurationInSeconds } from "@remotion/media-utils";
 import React from "react";
-import { AbsoluteFill, Audio, CalculateMetadataFunction } from "remotion";
+import { AbsoluteFill, Audio, CalculateMetadataFunction, Img, staticFile } from "remotion";
 import { z } from "zod";
 import {
   AnimatedBackground,
@@ -10,11 +10,15 @@ import {
   useSentences,
 } from "../PresenterPiP";
 
-// Variante « sans avatar » du template presentateur-anime : mêmes fond animé, texte
-// kinétique centré, icône contextuelle et signature — MAIS pas de clone en PiP.
-// Seule la voix off (Audio) accompagne le texte. Entrée : un fichier audio (voix).
+const NAVY_LIGHT = "#122C4A";
+const WHITE = "#FFFFFF";
+
+// Variante du template presentateur-anime SANS avatar animé : fond animé, texte
+// kinétique centré, icône contextuelle, signature + VOIX off — et une PHOTO DE
+// PROFIL statique (rond bas-droite) en guise d'identité de marque (pas de visage animé).
 export const narrationAnimeeSchema = z.object({
   src: z.string(),
+  photo: z.string().optional(),
 });
 
 export const calculateNarrationAnimeeMetadata: CalculateMetadataFunction<
@@ -25,16 +29,38 @@ export const calculateNarrationAnimeeMetadata: CalculateMetadataFunction<
   return { fps, durationInFrames: Math.max(1, Math.floor(durationInSeconds * fps)) };
 };
 
-export const NarrationAnimee: React.FC<{ src: string }> = ({ src }) => {
+const PHOTO = 380; // diamètre du rond photo (aligné sur le PiP du presentateur)
+
+export const NarrationAnimee: React.FC<{ src: string; photo?: string }> = ({
+  src, photo = staticFile("brand-photo-crop.png"),
+}) => {
   const sentences = useSentences(src);
 
   return (
     <AbsoluteFill>
       <AnimatedBackground />
-      {/* Sans PiP, le texte occupe davantage l'écran (bottomInset réduit). */}
-      <SentenceStack sentences={sentences} bottomInset={240} />
+      {/* Espace réservé en bas pour la photo (comme le PiP du presentateur). */}
+      <SentenceStack sentences={sentences} bottomInset={470} />
       <CornerIcon sentences={sentences} />
       <Audio src={src} />
+
+      {/* Photo de profil statique, rond bas-droite. Cadrage zoomé sur le visage
+          (la source est une photo de conférence, pas un portrait serré). */}
+      <div style={{
+        position: "absolute", right: 44, bottom: 64,
+        width: PHOTO, height: PHOTO, borderRadius: "50%", overflow: "hidden",
+        border: `7px solid ${WHITE}`, boxShadow: "0 14px 44px rgba(0,0,0,0.55)",
+        background: NAVY_LIGHT,
+      }}>
+        <Img
+          src={photo}
+          style={{
+            width: "100%", height: "100%",
+            objectFit: "cover", objectPosition: "center",
+          }}
+        />
+      </div>
+
       <Signature />
     </AbsoluteFill>
   );
