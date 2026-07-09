@@ -64,6 +64,8 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
   Signature/useSentences) → une seule source de vérité.
 - **Règles communes** : signature (voir presentateur-anime), zéro CTA, whisper `small` FR.
 - **Specs** : 1080×1920 (9:16). Vérifié bout-en-bout sous hermes (2026-07-09).
+- **Exemple validé & publié** (2026-07-09, idée 1 « interprétabilité / audit des IA ») :
+  LinkedIn `urn:li:ugcPost:7480975831482376192` · YouTube Short `j3SlbnEpkaI`.
 
 ## Comment ajouter un template
 1. Itérer le format avec Abdelilah jusqu'à validation explicite.
