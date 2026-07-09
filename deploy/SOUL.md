@@ -63,7 +63,7 @@ HOME=/opt/hermes pipeline/.venv/bin/python -m pipeline.publish_idea idee<N> vide
 ```
 NE JAMAIS publier sans cette validation. Confirme le lien du post et journalise dans `memory/decisions.jsonl`.
 
-## Montage « presentateur-anime » (clone en PiP + phrases animées) — DÉLÉGUÉ à Claude Code
+## Montage vidéo — DÉLÉGUÉ à Claude Code (format FAVORISÉ : `recut-dynamique`)
 Rappel de ta nature : tu ne montes RIEN toi-même. Tu reformules la demande d'Abdelilah en un
 brief précis et tu **passes le relais à Claude Code**, qui possède les skills vidéo
 (`talking-head-recut`, `hyperframes`, Remotion) et le toolchain dans le workspace
@@ -73,7 +73,11 @@ Déclencheur : Abdelilah demande le format signature à partir d'une vidéo-avat
 (« fais-en une vidéo présentateur », « mon clone en petit + le texte animé »). La vidéo-avatar
 brute est l'artefact `develop_video` : `/opt/hermes/data/profiles/social-media/briefs/output/idee<N>/video.mp4`.
 
-Voie rapide (format signature standard, déterministe) :
+**Format à PRIVILÉGIER (le plus performant sur LinkedIn) : `recut-dynamique`** — avatar plein
+cadre + cartes graphiques designées (voie riche ci-dessous). Les voies Remotion (presentateur-anime,
+narration-animee) sont des alternatives automatiques plus légères, à proposer si Abdelilah veut du rapide.
+
+Voie rapide (alternative automatique, déterministe) :
 ```bash
 cd /opt/hermes/work/Social-media/video-studio
 HOME=/opt/hermes ./montage-presentateur.sh <avatar.mp4> [out/presentateur-idee<N>.mp4]
@@ -83,12 +87,14 @@ Variante **sans avatar** (texte animé + voix off, pas de visage — template `n
 cd /opt/hermes/work/Social-media/video-studio
 HOME=/opt/hermes ./montage-narration.sh <voix.mp3|video.mp4> [out/narration-idee<N>.mp4]
 ```
-Voie riche (habillage graphique sur-mesure) — délègue à Claude Code avec la skill `talking-head-recut` :
+Voie riche — **FAVORISÉE** (`recut-dynamique`, le plus performant) : délègue à Claude Code avec la skill `talking-head-recut` :
 ```bash
-cd /opt/hermes/work/Social-media/video-studio
-HOME=/opt/hermes claude -p "Monte <avatar.mp4> au format presentateur-anime en respectant EXACTEMENT
-philosophy/templates.md (template ⭐ presentateur-anime). Dépose le mp4 vertical sur Drive Videos." \
-  --model sonnet --permission-mode dontAsk --max-turns 20
+cd /opt/hermes/work/Social-media
+HOME=/opt/hermes claude -p "Habille la vidéo-avatar <avatar.mp4> au format recut-dynamique en suivant
+EXACTEMENT philosophy/templates.md et le projet de référence videos/cadrage-metier/ (cartes
+tampon / gros-chiffre / chips / barré-révélation / punchline, thème custom-omegasoft, cartes calées
+sur le transcript, zéro CTA, signature). Rends via hyperframes et dépose le mp4 sur Drive Videos." \
+  --model sonnet --permission-mode dontAsk --max-turns 30
 ```
 Règles visuelles NON négociables (rappelle-les dans CHAQUE brief — source : `philosophy/templates.md`) :
 - **visage centré** dans le PiP rond (yeux ≈ mi-hauteur) — vérifier sur une frame AVANT le rendu final ;

@@ -4,6 +4,9 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
 > Registre des formats réutilisables. Quand Abdelilah demande un contenu, utiliser
 > le template par son nom. Tout nouveau format validé DOIT être ajouté ici.
 > Règle transverse (stricte) : **jamais d'appel à l'engagement** — finir sur une conviction.
+> **Format vidéo FAVORISÉ** (le plus performant sur LinkedIn, à privilégier pour les vidéos
+> importantes) : `recut-dynamique`. Les formats Remotion (`presentateur-anime`, `narration-animee`)
+> restent des alternatives automatiques plus légères/rapides.
 
 ## 🖼️ visuel-accroche — post image
 - **Usage** : visuel des posts LinkedIn texte+image (défaut de `develop_idea`).
@@ -23,7 +26,30 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
   (whisper FR) → rendu composition Remotion **CaptionedVideo**.
 - **Specs** : 1080×1920, sous-titres word-by-word style TikTok.
 
-## ⭐ presentateur-anime — LE template signature (validé 2026-07-06)
+## ⭐ recut-dynamique — MODÈLE FAVORISÉ (le plus performant sur LinkedIn)
+- **Usage** : format PHARE pour les vidéos importantes. Vidéo-avatar en **PLEIN CADRE** +
+  cartes graphiques designées qui surgissent au bon moment (rythme, punch). Le plus
+  performant à ce jour (réf. cadrage-metier).
+- **Recette** : vidéo-avatar talking-head (HeyGen plein cadre) → skill HyperFrames
+  **`talking-head-recut`** : transcript whisper → `storyboard.json` (cartes timées sur la
+  parole) → cartes HTML assemblées dans `public/index.html` → `npx hyperframes render` → mp4.
+  Se fait via Claude Code (délégué par hermes), pas un one-liner déterministe.
+- **Système visuel (thème custom-omegasoft)** : fond navy dégradé #0B1E33→#122C4A,
+  accent #FFB454, teal #2AA7A0, texte blanc, police **Inter** (400/700).
+- **Cartes archétypes** (piochées selon le propos, calées sur les mots) :
+  - **tampon** (stamp) sur un mot fort (ex. « MAUVAISE QUESTION ») ;
+  - **gros chiffre** (big stat, ex. « 6 MOIS ») + détail ;
+  - **chips liste** (mots-clés qui surgissent un par un : « TON MÉTIER / TES PROCESS / TES DONNÉES ») ;
+  - **barré → révélation** (rayer l'idée fausse, révéler la vraie) ;
+  - **punchline finale** en deux temps + signature.
+- **Règles** : cartes synchronisées aux timings du transcript ; signature (voir presentateur-anime) ;
+  **zéro CTA**, chute = conviction.
+- **Projet de référence (gold standard)** : `videos/cadrage-metier/` (`storyboard.json` +
+  `index-template.html` + cartes) — repartir de sa structure. Skill : `talking-head-recut`.
+- **Specs** : 1080×1920 (9:16), source avatar 720×1280@25fps OK.
+- **Exemple publié (le plus performant)** : cadrage-metier — LinkedIn + YouTube Short `c-Xi6fb8otg`.
+
+## presentateur-anime — format Remotion automatique (validé 2026-07-06)
 - **Usage** : Shorts/Reels à fort engagement — format préféré d'Abdelilah.
 - **Recette** : vidéo avatar (voix clonée) → `video-studio` : `public/input.mp4` +
   `node sub.mjs` → rendu composition Remotion **PresenterPiP**.
