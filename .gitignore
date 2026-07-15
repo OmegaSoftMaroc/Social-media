@@ -6,3 +6,7 @@ videos/*/output.mp4
 video-studio/public/*.mp4
 video-studio/public/*.json
 hyper-studio/node_modules/
+
+# Bibliothèque de clips : binaires locaux, index versionné
+clip-library/clips/
+clip-library/thumbs/
