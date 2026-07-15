@@ -7,7 +7,7 @@ douce, SANS déformer la composition de l'illustration. Utilise la file d'attent
 
 Clé : variable d'environnement FAL_KEY (déposée par Abdelilah, jamais en clair ici).
 
-Usage : python -m pipeline.animate <image.png> <sortie.mp4> [--model kling|hailuo|luma|wan] [--prompt "..."]
+Usage : python -m pipeline.animate <image.png> <sortie.mp4> [--model kling|hailuo|luma|wan] [--prompt "..."] [--reuse-tags a,b,c]
 """
 from __future__ import annotations
 
@@ -158,16 +158,20 @@ def _main(argv: list[str]) -> int:
         print(__doc__)
         return 2
     image_path, out_path = argv[0], argv[1]
-    model, prompt = "kling-turbo", DEFAULT_PROMPT
+    model, prompt, reuse_tags = "kling-turbo", DEFAULT_PROMPT, None
     i = 2
     while i < len(argv):
         if argv[i] == "--model":
             model = argv[i + 1]; i += 2
         elif argv[i] == "--prompt":
             prompt = argv[i + 1]; i += 2
+        elif argv[i] == "--reuse-tags":
+            reuse_tags = [t.strip() for t in argv[i + 1].split(",") if t.strip()]
+            i += 2
         else:
             i += 1
-    out = animate_image(image_path, out_path, model=model, prompt=prompt)
+    out = animate_image(image_path, out_path, model=model, prompt=prompt,
+                        reuse_tags=reuse_tags)
     print("OK", out, os.path.getsize(out), "octets")
     return 0
 
