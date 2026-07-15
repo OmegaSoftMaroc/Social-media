@@ -157,11 +157,19 @@ def search(root: Path, tags: list[str] | None = None,
 
 
 def get(root: Path, clip_id: str) -> dict | None:
-    """Une entrée par id, ou None."""
+    """Une entrée de catalogue par id.
+
+    Args:
+        root: racine de la bibliothèque.
+        clip_id: id recherché.
+
+    Returns:
+        L'entrée correspondante, ou None si absente.
+    """
     return next((c for c in load_index(root)["clips"] if c["id"] == clip_id), None)
 
 
-def reuse(root: Path, clip_id: str, out_path) -> str:
+def reuse(root: Path, clip_id: str, out_path: Path | str) -> str:
     """Copie le clip catalogué vers out_path. Lève KeyError si id inconnu.
 
     Args:
@@ -178,3 +186,92 @@ def reuse(root: Path, clip_id: str, out_path) -> str:
     shutil.copyfile(Path(root) / entry["file"], out_path)
     logger.info("Clip réutilisé : %s -> %s", clip_id, out_path)
     return str(out_path)
+
+
+def _print_row(c: dict) -> None:
+    print(f"{c['id']:<32} {c['file']:<40} {','.join(c['tags'])}")
+
+
+def _main(argv: list[str]) -> int:
+    import argparse
+    import glob
+
+    p = argparse.ArgumentParser(prog="clip_library",
+                                description="Bibliothèque de clips réutilisables")
+    sub = p.add_subparsers(dest="cmd", required=True)
+
+    pa = sub.add_parser("add", help="cataloguer un clip")
+    pa.add_argument("mp4")
+    pa.add_argument("--tags", required=True, help="tags séparés par des virgules")
+    pa.add_argument("--desc", required=True)
+    pa.add_argument("--id", dest="clip_id", default=None)
+    pa.add_argument("--model", default=None)
+    pa.add_argument("--cost", dest="cost_usd", type=float, default=None)
+    pa.add_argument("--origin", dest="origin_video", default=None)
+
+    pi = sub.add_parser("ingest", help="importer en masse (glob) avec tags communs")
+    pi.add_argument("globs", nargs="+")
+    pi.add_argument("--tags", required=True)
+    pi.add_argument("--desc", default="")
+
+    ps = sub.add_parser("search", help="recherche texte (description/tags)")
+    ps.add_argument("text")
+
+    pl = sub.add_parser("list", help="lister (option filtre par tags)")
+    pl.add_argument("--tags", default=None)
+
+    psh = sub.add_parser("show", help="détail d'un clip")
+    psh.add_argument("clip_id")
+
+    args = p.parse_args(argv)
+    root = DEFAULT_ROOT
+
+    if args.cmd == "add":
+        tags = [t.strip() for t in args.tags.split(",") if t.strip()]
+        entry = add_clip(root, args.mp4, tags, args.desc, clip_id=args.clip_id,
+                         model=args.model, cost_usd=args.cost_usd,
+                         origin_video=args.origin_video)
+        print("OK", entry["id"])
+        return 0
+
+    if args.cmd == "ingest":
+        tags = [t.strip() for t in args.tags.split(",") if t.strip()]
+        files = [f for g in args.globs for f in sorted(glob.glob(g))]
+        if not files:
+            print("Aucun fichier ne correspond au(x) motif(s).")
+            return 1
+        for f in files:
+            desc = args.desc or Path(f).stem
+            add_clip(root, f, tags, desc)
+        print(f"OK {len(files)} clip(s) catalogué(s).")
+        return 0
+
+    if args.cmd == "search":
+        rows = search(root, text=args.text)
+        for c in rows:
+            _print_row(c)
+        print(f"— {len(rows)} résultat(s)")
+        return 0
+
+    if args.cmd == "list":
+        tags = [t.strip() for t in args.tags.split(",")] if args.tags else None
+        rows = search(root, tags=tags) if tags else load_index(root)["clips"]
+        for c in rows:
+            _print_row(c)
+        return 0
+
+    if args.cmd == "show":
+        entry = get(root, args.clip_id)
+        if entry is None:
+            print(f"clip inconnu : {args.clip_id}")
+            return 1
+        print(json.dumps(entry, ensure_ascii=False, indent=2))
+        return 0
+
+    return 2
+
+
+if __name__ == "__main__":
+    import sys
+    logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+    sys.exit(_main(sys.argv[1:]))

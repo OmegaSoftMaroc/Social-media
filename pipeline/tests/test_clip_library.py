@@ -117,3 +117,26 @@ def test_search_text_case_insensitive_on_tags(tmp_path, fake_mp4, monkeypatch):
     monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
     cl.add_clip(root, fake_mp4, ["Corporate", "Bleu"], "Un clip", clip_id="c1")
     assert [c["id"] for c in cl.search(root, text="corporate")] == ["c1"]
+
+
+def test_cli_add_then_search(tmp_path, fake_mp4, monkeypatch, capsys):
+    monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
+    monkeypatch.setattr(cl, "DEFAULT_ROOT", tmp_path / "lib")
+    assert cl._main(["add", str(fake_mp4), "--tags", "flux-donnees,bleu",
+                     "--desc", "Flux bleus"]) == 0
+    capsys.readouterr()
+    assert cl._main(["search", "flux"]) == 0
+    out = capsys.readouterr().out
+    assert "flux-bleus" in out
+
+
+def test_cli_ingest_glob(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
+    monkeypatch.setattr(cl, "DEFAULT_ROOT", tmp_path / "lib")
+    src = tmp_path / "src"
+    src.mkdir()
+    for name in ("a.mp4", "b.mp4"):
+        (src / name).write_bytes(b"X")
+    rc = cl._main(["ingest", str(src / "*.mp4"), "--tags", "abstrait-corporate"])
+    assert rc == 0
+    assert len(cl.load_index(tmp_path / "lib")["clips"]) == 2
