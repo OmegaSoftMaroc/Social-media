@@ -1,0 +1,132 @@
+{
+  "version": 1,
+  "clips": [
+    {
+      "id": "bouclier-dore-forteresse",
+      "file": "clips/bouclier-dore-forteresse.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "bouclier",
+        "cadenas",
+        "forteresse",
+        "arche",
+        "pyramide",
+        "securite",
+        "premium",
+        "or",
+        "rempart"
+      ],
+      "description": "Bouclier doré à serrure au sommet d'une pyramide sous une arche classique — forteresse/rempart (le moat)",
+      "thumb": "thumbs/bouclier-dore-forteresse.jpg",
+      "origin_video": "model-isnt-the-moat"
+    },
+    {
+      "id": "carte-monde-reseau-flux",
+      "file": "clips/carte-monde-reseau-flux.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "carte-monde",
+        "reseau-mondial",
+        "connexions",
+        "flux-donnees",
+        "autoroute-donnees",
+        "skyline",
+        "bleu"
+      ],
+      "description": "Carte du monde avec arcs de connexion et autoroute de données filant vers une skyline nocturne",
+      "thumb": "thumbs/carte-monde-reseau-flux.jpg",
+      "origin_video": "model-isnt-the-moat"
+    },
+    {
+      "id": "cloud-base-donnees-serveurs",
+      "file": "clips/cloud-base-donnees-serveurs.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "cloud",
+        "base-de-donnees",
+        "serveurs",
+        "infrastructure",
+        "cout",
+        "lueur-orange",
+        "flux",
+        "bleu"
+      ],
+      "description": "Cloud relié par une colonne lumineuse à une base de données (lueur orange) entre deux piles de serveurs",
+      "thumb": "thumbs/cloud-base-donnees-serveurs.jpg",
+      "origin_video": "model-isnt-the-moat"
+    },
+    {
+      "id": "contrat-dissout-gratte-ciel",
+      "file": "clips/contrat-dissout-gratte-ciel.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "gratte-ciel",
+        "document",
+        "contrat",
+        "particules",
+        "dissolution",
+        "teal",
+        "bleu-nuit",
+        "push-in"
+      ],
+      "description": "Document/contrat se désintégrant en particules teal au sommet d'un gratte-ciel corporate",
+      "thumb": "thumbs/contrat-dissout-gratte-ciel.jpg",
+      "origin_video": "model-isnt-the-moat"
+    },
+    {
+      "id": "couloir-tableaux-de-bord",
+      "file": "clips/couloir-tableaux-de-bord.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "tableaux-de-bord",
+        "dashboards",
+        "analytics",
+        "salle-controle",
+        "porte",
+        "graphiques",
+        "kpi",
+        "teal"
+      ],
+      "description": "Couloir s'ouvrant entre deux parois de tableaux de bord et graphiques — salle de contrôle analytics",
+      "thumb": "thumbs/couloir-tableaux-de-bord.jpg",
+      "origin_video": "model-isnt-the-moat"
+    },
+    {
+      "id": "serveur-bouclier-hologramme",
+      "file": "clips/serveur-bouclier-hologramme.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "isometrique",
+        "serveur",
+        "bouclier",
+        "hologramme",
+        "reseau-neuronal",
+        "ia",
+        "infrastructure",
+        "teal"
+      ],
+      "description": "Serveur isométrique protégé par un bouclier holographique, réseau neuronal sur la façade",
+      "thumb": "thumbs/serveur-bouclier-hologramme.jpg",
+      "origin_video": "model-isnt-the-moat"
+    },
+    {
+      "id": "serveur-cadenas-souverainete",
+      "file": "clips/serveur-cadenas-souverainete.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "isometrique",
+        "serveur",
+        "cadenas",
+        "securite",
+        "localisation",
+        "souverainete",
+        "cout",
+        "pieces",
+        "orange"
+      ],
+      "description": "Serveur isométrique avec pin de localisation, cadenas orange et pile de pièces — souveraineté/hébergement",
+      "thumb": "thumbs/serveur-cadenas-souverainete.jpg",
+      "origin_video": "model-isnt-the-moat"
+    }
+  ]
+}
