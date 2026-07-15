@@ -65,3 +65,48 @@ def test_add_clip_auto_id_collision_suffix(tmp_path, fake_mp4, monkeypatch):
     assert a["id"] == "meme-titre"
     assert b["id"] == "meme-titre-02"
     assert len(cl.load_index(root)["clips"]) == 2
+
+
+def _seed(root, fake_mp4, monkeypatch):
+    monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
+    cl.add_clip(root, fake_mp4, ["flux-donnees", "bleu", "push-in"],
+                "Flux bleus push-in", clip_id="a2")
+    cl.add_clip(root, fake_mp4, ["flux-donnees"], "Flux simple", clip_id="a1")
+    cl.add_clip(root, fake_mp4, ["logo", "sting"], "Logo sting", clip_id="b1")
+
+
+def test_search_ranks_by_tag_overlap(tmp_path, fake_mp4, monkeypatch):
+    root = tmp_path / "lib"
+    _seed(root, fake_mp4, monkeypatch)
+    res = cl.search(root, tags=["flux-donnees", "bleu"])
+    ids = [c["id"] for c in res]
+    assert ids == ["a2", "a1"]   # a2 (2 tags communs) avant a1 (1), b1 exclu
+
+
+def test_search_by_text_substring(tmp_path, fake_mp4, monkeypatch):
+    root = tmp_path / "lib"
+    _seed(root, fake_mp4, monkeypatch)
+    res = cl.search(root, text="sting")
+    assert [c["id"] for c in res] == ["b1"]
+
+
+def test_get(tmp_path, fake_mp4, monkeypatch):
+    root = tmp_path / "lib"
+    _seed(root, fake_mp4, monkeypatch)
+    assert cl.get(root, "a1")["description"] == "Flux simple"
+    assert cl.get(root, "inconnu") is None
+
+
+def test_reuse_copies_file(tmp_path, fake_mp4, monkeypatch):
+    root = tmp_path / "lib"
+    _seed(root, fake_mp4, monkeypatch)
+    out = tmp_path / "out.mp4"
+    cl.reuse(root, "a1", out)
+    assert out.read_bytes() == b"FAKEMP4DATA"
+
+
+def test_reuse_unknown_raises(tmp_path, fake_mp4, monkeypatch):
+    root = tmp_path / "lib"
+    _seed(root, fake_mp4, monkeypatch)
+    with pytest.raises(KeyError):
+        cl.reuse(root, "inconnu", tmp_path / "x.mp4")

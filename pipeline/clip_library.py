@@ -124,3 +124,57 @@ def add_clip(root: Path, mp4_path, tags: list[str], description: str, *,
     save_index(root, data)
     logger.info("Clip catalogué : %s (tags=%s)", cid, list(tags))
     return entry
+
+
+def search(root: Path, tags: list[str] | None = None,
+           text: str | None = None) -> list[dict]:
+    """Clips filtrés puis classés par recouvrement de tags (décroissant).
+
+    - `tags` : ne garde que les clips avec ≥ 1 tag commun, triés par nb de tags communs.
+    - `text` : sous-chaîne (insensible à la casse) dans description ou tags.
+    Les deux filtres se combinent. Sans critère : tous les clips.
+
+    Args:
+        root: racine de la bibliothèque.
+        tags: tags recherchés (recouvrement).
+        text: sous-chaîne à chercher dans description/tags.
+
+    Returns:
+        Liste d'entrées, classée par recouvrement de tags décroissant.
+    """
+    results = load_index(root)["clips"]
+    if text:
+        t = text.lower()
+        results = [c for c in results
+                   if t in c["description"].lower()
+                   or any(t in tag for tag in c["tags"])]
+    if tags:
+        wanted = set(tags)
+        results = [c for c in results if wanted & set(c["tags"])]
+        results = sorted(results, key=lambda c: len(wanted & set(c["tags"])),
+                         reverse=True)
+    return results
+
+
+def get(root: Path, clip_id: str) -> dict | None:
+    """Une entrée par id, ou None."""
+    return next((c for c in load_index(root)["clips"] if c["id"] == clip_id), None)
+
+
+def reuse(root: Path, clip_id: str, out_path) -> str:
+    """Copie le clip catalogué vers out_path. Lève KeyError si id inconnu.
+
+    Args:
+        root: racine de la bibliothèque.
+        clip_id: id du clip à réutiliser.
+        out_path: destination du clip copié.
+
+    Returns:
+        Le chemin de destination (str).
+    """
+    entry = get(root, clip_id)
+    if entry is None:
+        raise KeyError(f"clip inconnu : {clip_id}")
+    shutil.copyfile(Path(root) / entry["file"], out_path)
+    logger.info("Clip réutilisé : %s -> %s", clip_id, out_path)
+    return str(out_path)
