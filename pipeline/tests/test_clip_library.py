@@ -1,5 +1,7 @@
 from pathlib import Path
 
+import pytest
+
 import pipeline.clip_library as cl
 
 
@@ -21,9 +23,6 @@ def test_save_then_load_roundtrip_sorted(tmp_path):
 def test_slugify():
     assert cl.slugify("Flux de Données ! bleu") == "flux-de-donnees-bleu"
     assert cl.slugify("") == "clip"
-
-
-import pytest
 
 
 @pytest.fixture
