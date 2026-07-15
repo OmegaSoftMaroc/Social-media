@@ -75,6 +75,38 @@ def _payload(model_key: str, image_uri: str, prompt: str, duration: int) -> dict
     return body
 
 
+def _reuse_from_library(out_path: str, reuse_tags: list[str]) -> str | None:
+    """Réutilise un clip taggé de la bibliothèque vers out_path (aucun appel fal).
+
+    Itère les candidats (meilleur recouvrement d'abord), réutilise le premier dont le
+    binaire existe sur disque, et retourne out_path. Retourne None si aucun clip
+    réutilisable — l'appelant génère alors via fal.
+
+    Args:
+        out_path: destination du clip réutilisé.
+        reuse_tags: tags recherchés dans la bibliothèque.
+
+    Returns:
+        out_path si un clip a été réutilisé, sinon None.
+    """
+    # import différé : évite de charger clip_library quand reuse_tags n'est pas utilisé
+    from pipeline import clip_library
+    root = clip_library.DEFAULT_ROOT
+    for candidate in clip_library.search(root, tags=reuse_tags):
+        if not (root / candidate["file"]).exists():
+            # clip catalogué mais binaire absent (MP4 non versionnés) → candidat suivant
+            logger.warning("Clip %s absent du disque : on continue.", candidate["id"])
+            continue
+        clip_library.reuse(root, candidate["id"], out_path)
+        saved = candidate.get("cost_usd")
+        logger.info("Clip réutilisé depuis la bibliothèque : %s (tags=%s)%s",
+                    candidate["id"], candidate["tags"],
+                    f" — ~{saved} $ économisés" if saved else "")
+        return out_path
+    logger.info("Aucun clip réutilisable pour tags=%s : génération fal.", reuse_tags)
+    return None
+
+
 def animate_image(image_path: str, out_path: str, *, model: str = "kling-turbo",
                   prompt: str = DEFAULT_PROMPT, duration: int = 5,
                   key: str | None = None, poll_s: float = 5.0,
@@ -92,25 +124,11 @@ def animate_image(image_path: str, out_path: str, *, model: str = "kling-turbo",
         reuse_tags: si fourni, réutilise un clip taggé de la bibliothèque (aucun appel
             fal) quand un match existe ; sinon génère normalement.
     """
-    # Réutilisation : si un clip taggé correspond, on le copie et on ÉVITE l'appel fal.
+    # Réutilisation opt-in : un clip taggé de la bibliothèque évite l'appel fal.
     if reuse_tags:
-        # import différé : évite de charger clip_library quand reuse_tags n'est pas utilisé
-        from pipeline import clip_library
-        root = clip_library.DEFAULT_ROOT
-        for candidate in clip_library.search(root, tags=reuse_tags):
-            try:
-                clip_library.reuse(root, candidate["id"], out_path)
-            except OSError as exc:
-                # clip catalogué mais binaire absent (MP4 non versionnés) → candidat suivant
-                logger.warning("Clip %s introuvable sur disque (%s) : on continue.",
-                               candidate["id"], exc)
-                continue
-            saved = candidate.get("cost_usd")
-            logger.info("Clip réutilisé depuis la bibliothèque : %s (tags=%s)%s",
-                        candidate["id"], candidate["tags"],
-                        f" — ~{saved} $ économisés" if saved else "")
-            return out_path
-        logger.info("Aucun clip réutilisable pour tags=%s : génération fal.", reuse_tags)
+        reused = _reuse_from_library(out_path, reuse_tags)
+        if reused is not None:
+            return reused
 
     fal_key = key or os.environ.get("FAL_KEY", "")
     if not fal_key:
