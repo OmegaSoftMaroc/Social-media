@@ -53,3 +53,74 @@ def slugify(text: str) -> str:
         text = text.replace(a, b)
     s = re.sub(r"[^a-z0-9]+", "-", text).strip("-")
     return s or "clip"
+
+
+def make_thumb(mp4_path: Path, out_jpg: Path) -> bool:
+    """1er frame du clip en jpg via ffmpeg. Best-effort : échec = warning, non bloquant."""
+    out_jpg = Path(out_jpg)
+    out_jpg.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        subprocess.run(
+            ["ffmpeg", "-y", "-i", str(mp4_path), "-frames:v", "1", "-q:v", "3",
+             str(out_jpg)],
+            check=True, capture_output=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError) as exc:
+        logger.warning("Vignette non générée pour %s : %s", mp4_path, exc)
+        return False
+
+
+def _unique_id(base: str, existing: set[str]) -> str:
+    """base si libre, sinon base-02, base-03… (anti-collision)."""
+    if base not in existing:
+        return base
+    i = 2
+    while f"{base}-{i:02d}" in existing:
+        i += 1
+    return f"{base}-{i:02d}"
+
+
+def add_clip(root: Path, mp4_path, tags: list[str], description: str, *,
+             clip_id: str | None = None, thumb: bool = True, **meta) -> dict:
+    """Catalogue un clip : copie le mp4 dans clips/, génère la vignette, enregistre.
+
+    Idempotent sur `id` : réimporter le même `clip_id` met à jour l'entrée sans
+    dupliquer. Sans `clip_id`, l'id est un slug de la description (suffixe anti-collision).
+    `meta` (model, cost_usd, origin_video, source_still…) est fusionné si non-None.
+
+    Args:
+        root: racine de la bibliothèque (contient clips/, thumbs/, index.json).
+        mp4_path: chemin du clip source à cataloguer.
+        tags: mots-clés métier (recherche par recouvrement).
+        description: description humaine du clip.
+        clip_id: id explicite (sinon dérivé de la description).
+        thumb: générer la vignette (ffmpeg) si True.
+        **meta: métadonnées optionnelles (model, cost_usd, origin_video, source_still).
+
+    Returns:
+        L'entrée de catalogue créée/mise à jour.
+    """
+    root = Path(root)
+    (root / "clips").mkdir(parents=True, exist_ok=True)
+    data = load_index(root)
+    existing = {c["id"] for c in data["clips"]}
+
+    if clip_id and clip_id in existing:
+        cid = clip_id  # upsert idempotent
+    else:
+        base = slugify(clip_id or description or (tags[0] if tags else "clip"))
+        cid = _unique_id(base, existing)
+
+    dest = root / "clips" / f"{cid}.mp4"
+    shutil.copyfile(mp4_path, dest)
+
+    entry = {"id": cid, "file": f"clips/{cid}.mp4",
+             "tags": list(tags), "description": description}
+    if thumb and make_thumb(dest, root / "thumbs" / f"{cid}.jpg"):
+        entry["thumb"] = f"thumbs/{cid}.jpg"
+    entry.update({k: v for k, v in meta.items() if v is not None})
+
+    data["clips"] = [c for c in data["clips"] if c["id"] != cid] + [entry]
+    save_index(root, data)
+    logger.info("Clip catalogué : %s (tags=%s)", cid, list(tags))
+    return entry
