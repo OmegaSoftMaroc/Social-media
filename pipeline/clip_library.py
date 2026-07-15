@@ -147,7 +147,7 @@ def search(root: Path, tags: list[str] | None = None,
         t = text.lower()
         results = [c for c in results
                    if t in c["description"].lower()
-                   or any(t in tag for tag in c["tags"])]
+                   or any(t in tag.lower() for tag in c["tags"])]
     if tags:
         wanted = set(tags)
         results = [c for c in results if wanted & set(c["tags"])]

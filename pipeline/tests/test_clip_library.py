@@ -110,3 +110,10 @@ def test_reuse_unknown_raises(tmp_path, fake_mp4, monkeypatch):
     _seed(root, fake_mp4, monkeypatch)
     with pytest.raises(KeyError):
         cl.reuse(root, "inconnu", tmp_path / "x.mp4")
+
+
+def test_search_text_case_insensitive_on_tags(tmp_path, fake_mp4, monkeypatch):
+    root = tmp_path / "lib"
+    monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
+    cl.add_clip(root, fake_mp4, ["Corporate", "Bleu"], "Un clip", clip_id="c1")
+    assert [c["id"] for c in cl.search(root, text="corporate")] == ["c1"]
