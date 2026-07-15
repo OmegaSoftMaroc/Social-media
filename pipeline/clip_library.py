@@ -192,14 +192,66 @@ def _print_row(c: dict) -> None:
     print(f"{c['id']:<32} {c['file']:<40} {','.join(c['tags'])}")
 
 
-def _main(argv: list[str]) -> int:
-    import argparse
-    import glob
+def _split_tags(raw: str) -> list[str]:
+    """Découpe une liste de tags CSV (strip, ignore les vides)."""
+    return [t.strip() for t in raw.split(",") if t.strip()]
 
+
+def _cmd_add(root, args) -> int:
+    entry = add_clip(root, args.mp4, _split_tags(args.tags), args.desc,
+                     clip_id=args.clip_id, model=args.model,
+                     cost_usd=args.cost_usd, origin_video=args.origin_video)
+    print("OK", entry["id"])
+    return 0
+
+
+def _cmd_ingest(root, args) -> int:
+    import glob
+    files = [f for g in args.globs for f in sorted(glob.glob(g))]
+    if not files:
+        print("Aucun fichier ne correspond au(x) motif(s).")
+        return 1
+    tags = _split_tags(args.tags)
+    for f in files:
+        add_clip(root, f, tags, args.desc or Path(f).stem)
+    print(f"OK {len(files)} clip(s) catalogué(s).")
+    return 0
+
+
+def _cmd_search(root, args) -> int:
+    rows = search(root, text=args.text)
+    for c in rows:
+        _print_row(c)
+    print(f"— {len(rows)} résultat(s)")
+    return 0
+
+
+def _cmd_list(root, args) -> int:
+    tags = _split_tags(args.tags) if args.tags else None
+    rows = search(root, tags=tags) if tags else load_index(root)["clips"]
+    for c in rows:
+        _print_row(c)
+    return 0
+
+
+def _cmd_show(root, args) -> int:
+    entry = get(root, args.clip_id)
+    if entry is None:
+        print(f"clip inconnu : {args.clip_id}")
+        return 1
+    print(json.dumps(entry, ensure_ascii=False, indent=2))
+    return 0
+
+
+_COMMANDS = {"add": _cmd_add, "ingest": _cmd_ingest, "search": _cmd_search,
+             "list": _cmd_list, "show": _cmd_show}
+
+
+def _build_parser():
+    import argparse
     p = argparse.ArgumentParser(prog="clip_library",
                                 description="Bibliothèque de clips réutilisables")
     sub = p.add_subparsers(dest="cmd", required=True)
-
     pa = sub.add_parser("add", help="cataloguer un clip")
     pa.add_argument("mp4")
     pa.add_argument("--tags", required=True, help="tags séparés par des virgules")
@@ -208,67 +260,23 @@ def _main(argv: list[str]) -> int:
     pa.add_argument("--model", default=None)
     pa.add_argument("--cost", dest="cost_usd", type=float, default=None)
     pa.add_argument("--origin", dest="origin_video", default=None)
-
     pi = sub.add_parser("ingest", help="importer en masse (glob) avec tags communs")
     pi.add_argument("globs", nargs="+")
     pi.add_argument("--tags", required=True)
     pi.add_argument("--desc", default="")
-
     ps = sub.add_parser("search", help="recherche texte (description/tags)")
     ps.add_argument("text")
-
     pl = sub.add_parser("list", help="lister (option filtre par tags)")
     pl.add_argument("--tags", default=None)
-
     psh = sub.add_parser("show", help="détail d'un clip")
     psh.add_argument("clip_id")
+    return p
 
-    args = p.parse_args(argv)
-    root = DEFAULT_ROOT
 
-    if args.cmd == "add":
-        tags = [t.strip() for t in args.tags.split(",") if t.strip()]
-        entry = add_clip(root, args.mp4, tags, args.desc, clip_id=args.clip_id,
-                         model=args.model, cost_usd=args.cost_usd,
-                         origin_video=args.origin_video)
-        print("OK", entry["id"])
-        return 0
-
-    if args.cmd == "ingest":
-        tags = [t.strip() for t in args.tags.split(",") if t.strip()]
-        files = [f for g in args.globs for f in sorted(glob.glob(g))]
-        if not files:
-            print("Aucun fichier ne correspond au(x) motif(s).")
-            return 1
-        for f in files:
-            desc = args.desc or Path(f).stem
-            add_clip(root, f, tags, desc)
-        print(f"OK {len(files)} clip(s) catalogué(s).")
-        return 0
-
-    if args.cmd == "search":
-        rows = search(root, text=args.text)
-        for c in rows:
-            _print_row(c)
-        print(f"— {len(rows)} résultat(s)")
-        return 0
-
-    if args.cmd == "list":
-        tags = [t.strip() for t in args.tags.split(",")] if args.tags else None
-        rows = search(root, tags=tags) if tags else load_index(root)["clips"]
-        for c in rows:
-            _print_row(c)
-        return 0
-
-    if args.cmd == "show":
-        entry = get(root, args.clip_id)
-        if entry is None:
-            print(f"clip inconnu : {args.clip_id}")
-            return 1
-        print(json.dumps(entry, ensure_ascii=False, indent=2))
-        return 0
-
-    return 2
+def _main(argv: list[str]) -> int:
+    """CLI de la bibliothèque : argv -> code retour (0 succès, 1 échec métier)."""
+    args = _build_parser().parse_args(argv)
+    return _COMMANDS[args.cmd](DEFAULT_ROOT, args)
 
 
 if __name__ == "__main__":

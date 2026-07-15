@@ -140,3 +140,15 @@ def test_cli_ingest_glob(tmp_path, monkeypatch, capsys):
     rc = cl._main(["ingest", str(src / "*.mp4"), "--tags", "abstrait-corporate"])
     assert rc == 0
     assert len(cl.load_index(tmp_path / "lib")["clips"]) == 2
+
+
+def test_cli_ingest_no_match_returns_1(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cl, "DEFAULT_ROOT", tmp_path / "lib")
+    rc = cl._main(["ingest", str(tmp_path / "none-*.mp4"), "--tags", "x"])
+    assert rc == 1
+
+
+def test_cli_show_unknown_returns_1(tmp_path, monkeypatch, capsys):
+    monkeypatch.setattr(cl, "DEFAULT_ROOT", tmp_path / "lib")
+    rc = cl._main(["show", "inconnu"])
+    assert rc == 1
