@@ -152,3 +152,22 @@ def test_cli_show_unknown_returns_1(tmp_path, monkeypatch, capsys):
     monkeypatch.setattr(cl, "DEFAULT_ROOT", tmp_path / "lib")
     rc = cl._main(["show", "inconnu"])
     assert rc == 1
+
+
+def test_add_clip_idempotent_on_nonslug_id(tmp_path, fake_mp4, monkeypatch):
+    monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
+    root = tmp_path / "lib"
+    a = cl.add_clip(root, fake_mp4, ["x"], "d1", clip_id="Mon Clip")
+    b = cl.add_clip(root, fake_mp4, ["y"], "d2", clip_id="Mon Clip")
+    assert a["id"] == "mon-clip" and b["id"] == "mon-clip"
+    assert len(cl.load_index(root)["clips"]) == 1
+
+
+def test_cli_ingest_idempotent(tmp_path, monkeypatch):
+    monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
+    monkeypatch.setattr(cl, "DEFAULT_ROOT", tmp_path / "lib")
+    src = tmp_path / "src"; src.mkdir()
+    (src / "a.mp4").write_bytes(b"X")
+    cl._main(["ingest", str(src / "*.mp4"), "--tags", "t"])
+    cl._main(["ingest", str(src / "*.mp4"), "--tags", "t"])
+    assert len(cl.load_index(tmp_path / "lib")["clips"]) == 1

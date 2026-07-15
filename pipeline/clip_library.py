@@ -105,10 +105,11 @@ def add_clip(root: Path, mp4_path, tags: list[str], description: str, *,
     data = load_index(root)
     existing = {c["id"] for c in data["clips"]}
 
-    if clip_id and clip_id in existing:
-        cid = clip_id  # upsert idempotent
+    if clip_id:
+        base = slugify(clip_id)
+        cid = base if base in existing else _unique_id(base, existing)
     else:
-        base = slugify(clip_id or description or (tags[0] if tags else "clip"))
+        base = slugify(description or (tags[0] if tags else "clip"))
         cid = _unique_id(base, existing)
 
     dest = root / "clips" / f"{cid}.mp4"
@@ -213,7 +214,8 @@ def _cmd_ingest(root, args) -> int:
         return 1
     tags = _split_tags(args.tags)
     for f in files:
-        add_clip(root, f, tags, args.desc or Path(f).stem)
+        stem = Path(f).stem
+        add_clip(root, f, tags, args.desc or stem, clip_id=stem)
     print(f"OK {len(files)} clip(s) catalogué(s).")
     return 0
 
