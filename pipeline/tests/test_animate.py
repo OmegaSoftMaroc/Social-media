@@ -7,6 +7,7 @@ import pipeline.clip_library as cl
 
 
 def test_reuse_tags_skips_fal(tmp_path, monkeypatch):
+    """Un clip taggé présent sur disque est réutilisé sans aucun appel fal."""
     root = tmp_path / "lib"
     src = tmp_path / "src.mp4"
     src.write_bytes(b"CLIPBYTES")
@@ -27,6 +28,7 @@ def test_reuse_tags_skips_fal(tmp_path, monkeypatch):
 
 
 def test_no_reuse_tags_still_calls_fal(tmp_path, monkeypatch):
+    """Sans reuse_tags, le comportement fal historique est conservé (post appelé)."""
     monkeypatch.setenv("FAL_KEY", "k")
     called = {"post": False}
 
@@ -38,4 +40,28 @@ def test_no_reuse_tags_still_calls_fal(tmp_path, monkeypatch):
     (tmp_path / "still.png").write_bytes(b"\x89PNG\r\n")
     with pytest.raises(RuntimeError):
         an.animate_image(tmp_path / "still.png", tmp_path / "o.mp4")
+    assert called["post"] is True
+
+
+def test_reuse_tags_falls_back_to_fal_when_clip_file_missing(tmp_path, monkeypatch):
+    """Binaire catalogué purgé (MP4 non versionnés) → génération fal, pas de crash."""
+    root = tmp_path / "lib"
+    src = tmp_path / "src.mp4"
+    src.write_bytes(b"CLIPBYTES")
+    monkeypatch.setattr(cl, "make_thumb", lambda *a, **k: False)
+    monkeypatch.setattr(cl, "DEFAULT_ROOT", root)
+    entry = cl.add_clip(root, src, ["flux-donnees"], "Flux", clip_id="gone")
+    (root / entry["file"]).unlink()  # binaire purgé, index conservé
+    monkeypatch.setenv("FAL_KEY", "k")
+    called = {"post": False}
+
+    def _fake_post(*a, **k):
+        called["post"] = True
+        raise RuntimeError("stop après soumission")
+
+    monkeypatch.setattr(an.requests, "post", _fake_post)
+    (tmp_path / "still.png").write_bytes(b"\x89PNG\r\n")
+    with pytest.raises(RuntimeError):
+        an.animate_image(tmp_path / "still.png", tmp_path / "o.mp4",
+                         reuse_tags=["flux-donnees"])
     assert called["post"] is True
