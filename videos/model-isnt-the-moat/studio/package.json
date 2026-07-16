@@ -1,0 +1,36 @@
+{
+  "name": "model-isnt-the-moat-studio",
+  "version": "1.0.0",
+  "description": "Projet Remotion autonome de la vidéo « model-isnt-the-moat » (shorts verticaux narration-illustrée)",
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion bundle",
+    "render:fusion": "remotion render NarrationIllustree out/short-fusion.mp4 --props=props/short-fusion-props.json",
+    "render:a": "remotion render NarrationIllustree out/short-A.mp4 --props=props/short-A-props.json",
+    "render:b": "remotion render NarrationIllustree out/short-B.mp4 --props=props/short-B-props.json",
+    "upgrade": "remotion upgrade",
+    "lint": "eslint src && tsc"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "@remotion/zod-types": "^4.0.0",
+    "@remotion/animation-utils": "^4.0.0",
+    "@remotion/layout-utils": "^4.0.0",
+    "@remotion/media-utils": "^4.0.0",
+    "@remotion/captions": "^4.0.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "^4.0.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@remotion/eslint-config-flat": "^4.0.0",
+    "@types/react": "19.2.7",
+    "@types/web": "0.0.166",
+    "eslint": "9.19.0",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3"
+  },
+  "private": true
+}
