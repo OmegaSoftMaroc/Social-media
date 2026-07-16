@@ -1,0 +1,48 @@
+# Texte-maître (v3) — « Le verrou n'a jamais été le modèle »
+> Réécriture EN PROFONDEUR (idées d'Abdelilah conservées, actualité juillet 2026 tissée,
+> faits vérifiés + sourcés, solution renforcée). Base des 4 formats. Zéro CTA — finit sur une conviction.
+> Faits ancrés : Fable 5 inclus PROLONGÉ au 12 juillet (in extremis le 7/07, face au lancement GPT-5.6),
+> expiré 12/07 → compteur 10/50 $/M ; Anthropic dit « capacité, pas prix » · Copilot token-métré (1er juin)
+> · Uber budget IA 2026 cramé en avril · DeepSeek ~centimes/M · GLM-5.2 MIT · ~⅔ des tokens OpenRouter
+> open-weight chinois (mai 2026) · Qwen > 1 Md téléchargements · Mistral Large 3 Apache 2.0 · Li Qiang /
+> USCC « arme industrielle » · thèse « 6 mois à vivre pour les modèles ouverts ».
+
+---
+
+Regardez bien, parce que ça se joue en direct, cette semaine.
+
+Anthropic devait retirer son meilleur modèle, Fable 5, des abonnements Claude le 7 juillet. Il l'a prolongé au 12. Puis au 19. Chaque fois in extremis, chaque fois au moment où OpenAI pousse GPT-5.6 — pour ne pas voir ses abonnés filer. Une guerre de subventions, à ciel ouvert.
+
+Mais ne vous y trompez pas : chaque prolongation est un sursis, pas un renoncement. Anthropic le dit lui-même — l'inclusion est une question de capacité, pas de prix. Le jour où la fenêtre se referme, retour au compteur : dix dollars le million de tokens en entrée, cinquante en sortie. Ce qui est inclus aujourd'hui sera facturé demain, au gré d'une infrastructure que vous ne maîtrisez pas.
+
+Et ce n'est pas un cas isolé. GitHub a fait basculer Copilot au token près. Uber a brûlé la totalité de son budget IA 2026… au mois d'avril. L'ère du « vingt dollars illimité » se referme — OpenAI le dit à demi-mot : vendre l'IA en illimité, c'est comme vendre l'électricité en illimité, ça ne tient pas. L'Occident ferme les robinets et se met, enfin, à facturer l'intelligence à son vrai prix.
+
+Sauf que le vrai prix de l'intelligence, lui, ne monte pas. Il s'effondre — sur une autre courbe d'offre, du côté chinois.
+
+DeepSeek tombe à quelques centimes le million de tokens. GLM 5.2 va plus loin : licence MIT, poids téléchargeables, hébergeables sur votre propre infrastructure. Contrôle total. Et ce n'est pas un cas isolé : au mois de mai, les modèles ouverts chinois représentaient déjà près de deux tiers des tokens consommés sur le plus grand routeur neutre du marché. Qwen a passé le milliard de téléchargements. La capacité cognitive — celle qui inquiète pour l'emploi — n'a jamais été aussi bon marché.
+
+Soyons précis, et gardons un certain recul. Auto-héberger ces modèles ne devient rentable qu'à très gros volume. Pour un particulier, une petite ou une moyenne entreprise, cette solution reste théorique. C'est exactement ce détail qui protège encore les géants du cloud d'une désertion de masse.
+
+Mais pour une entreprise qui opère à l'échelle, c'est un changement de paradigme. Et face à une instabilité pareille, la posture défensive est suicidaire. Il faut passer à l'offensive : rendre votre organisation incontestable — que la bulle éclate ou que la rareté s'installe. Cinq mouvements.
+
+**Un. Saturez le milieu de gamme.** Arrêtez d'économiser vos jetons à tout prix. Les modèles intermédiaires ne coûtent presque rien : utilisez-les massivement, faites-les voter entre eux, fabriquez des consensus pour traiter des tâches complexes. Cessez d'escalader par réflexe vers la pointe — ce sommet des coûts qui ruine votre économie unitaire.
+
+**Deux. Vampirisez l'expertise américaine pour calibrer.** Servez-vous des modèles de pointe pour générer et valider le cadrage de vos requêtes. L'objectif : extraire cette logique et la verrouiller dans votre harness d'orchestration. L'exécution pure, elle, revient à de petits modèles ouverts, hébergés localement, qui jouent une partition déjà écrite.
+
+**Trois. Restez contractuellement liquide.** Fuyez les engagements de capacité à long terme. Uber vient d'en donner la démonstration : le surcoût immédiat de la souplesse vaut infiniment mieux que le risque de se retrouver enchaîné à une architecture qui perd toute sa valeur au premier stress de l'écosystème.
+
+**Quatre. Cartographiez votre travail.** Au centre de la distribution, le gros du quotidien : des problèmes déjà vus mille fois, dont la sortie se vérifie d'un coup d'œil — un site, une présentation, une synthèse, du code courant. Là, le modèle ouvert chinois égale la pointe américaine, et la dépasse souvent pour une fraction du prix. Au bord — les tâches rares, ambiguës, à fort enjeu — la pointe garde toute sa valeur et mérite son tarif. Les analystes résument déjà l'après-subvention d'une phrase : la frontière chère pour les rares qui en ont vraiment besoin, du pas cher pour tout le reste. Le problème : presque personne n'a mesuré quelle part de son travail penche d'un côté ou de l'autre. Alors on envoie tout vers le sommet, et on paie le prix fort pour une intelligence que le milieu de gamme fournissait déjà.
+
+**Cinq. Recrutez l'efficience.** La compétence clé en 2026, ce n'est plus de connaître les subtilités du modèle à la mode. C'est de faire accomplir des tâches de très haut niveau par des modèles médiocres. Routage intelligent, évaluation systémique des réponses, spécialisation des flux. Un architecte du harness vaut aujourd'hui cent fois plus qu'un simple utilisateur de requêtes.
+
+Récapitulons. En mettant son haut de gamme sous cloche, Washington laisse le champ libre. La Chine ne cherche plus forcément à battre la frontière technologique : elle sature la majorité des tâches quotidiennes avec des modèles bradés — vers lesquels les entreprises américaines basculent déjà, en silence.
+
+Le verrou s'est déplacé. Les États-Unis reculent dans la guerre des coûts, mais reportent le combat sur le harness d'orchestration, pour capturer votre contexte. Pendant que le grand public confond la fin des subventions avec un mur technologique, les prix, eux, s'effondrent du côté chinois.
+
+Et l'Europe, dans cette équation ? La question est légitime. Nous avons la chance de compter sur Mistral : son Large 3 est sous licence Apache, hébergeable localement, avec résidence des données en Europe — un vrai atout de souveraineté. Mais loin des micros, la vérité que les conseils d'administration ont déjà intégrée, c'est qu'à l'instant T, la rentabilité a un passeport chinois. Même les Américains l'ont compris, et s'en servent en coulisses. Ne pas jouer cette carte, c'est choisir de perdre avec les honneurs.
+
+Cependant — et c'est vrai dans toutes mes analyses — cette carte n'est pas éternelle. Si la Chine publie ses poids, ce n'est pas par philanthropie : c'est une stratégie assumée jusqu'au sommet de l'État, que les rapports américains qualifient désormais d'arme industrielle. Elle est encore en rattrapage ; elle cherche à assécher les laboratoires occidentaux qui vivent de l'API, tout en imposant ses modèles comme standard. Certains donnent déjà six mois à vivre aux modèles ouverts. Le jour où la Chine passera devant, elle n'aura plus aucune raison d'offrir son avance au monde. Le prochain DeepSeek peut très bien sortir fermé, sans rompre la moindre promesse. Et ça, je n'entends personne le dire.
+
+Le modèle que vous avez téléchargé reste à vous — mais vous n'en détenez qu'une photographie, à un instant donné. Puissant aujourd'hui ; rien ne garantit qu'il sera encore au niveau dans trois mois. Une fois le robinet coupé, votre modèle vieillit pendant que la frontière avance.
+
+Alors montez en compétence pendant que c'est ouvert des deux côtés. Et bâtissez pour le jour où la porte se fermera — des deux côtés. Parce que le verrou, au fond, n'a jamais été le modèle. C'est ce que vous construisez autour.

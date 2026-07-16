@@ -1,0 +1,6 @@
+Lundi, huit heures. Une usine de transformation de poisson à Agadir. Le stock d'emballages frôle la rupture. Il y a un an, cette alerte finissait dans un tableau Excel, traitée le soir.
+Avec ChatGPT Work, lancé cette semaine, l'IA ne se contente plus de suggérer. Elle exécute : elle cherche un fournisseur, prépare un bon de commande, rapproche des factures, directement dans vos systèmes connectés.
+Deux lignes rouges viennent d'être franchies. L'IA passe du conseil à l'exécution. Et elle enchaîne des tâches en autonomie, pendant des heures, sans reprise humaine à chaque étape.
+Pour un ERP industriel, Odoo ou Sage, ce n'est plus une question technique. C'est une question de gouvernance. Certaines tâches peuvent basculer côté machine. Mais d'autres doivent rester sous contrôle humain : tout engagement de trésorerie, la conformité sanitaire et export, vos clients stratégiques.
+La vraie compétence de cette année, ce n'est pas d'utiliser l'IA. C'est de cartographier, processus par processus, où placer le garde-fou humain.
+La PME qui gagnera cette manche ne sera pas celle qui adopte l'IA le plus vite. Mais celle qui aura le mieux tracé cette frontière.

@@ -1,4 +1,5 @@
 .credentials.md
+.secrets.env
 videos/*/public/*.mp4
 videos/*/public/*.mp3
 videos/*/audio.mp3
@@ -10,3 +11,12 @@ hyper-studio/node_modules/
 # Bibliothèque de clips : binaires locaux, index versionné
 clip-library/clips/
 clip-library/thumbs/
+
+# Médias vidéo générés (reproductibles, lourds — archivage Drive, jamais GitHub)
+video-studio/public/illus/
+video-studio/temp/
+video-studio/out/
+videos/**/*.mp4
+videos/**/*.mp3
+videos/**/illus/
+video-studio/public/*.mp3

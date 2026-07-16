@@ -5,7 +5,7 @@
 # dont on extrait la voix.
 #
 # Règles visuelles (cf. ../Hermes social media/philosophy/templates.md) :
-#   - signature sur 2 lignes (Enseignant-Chercheur / Expert en SI & IA)
+#   - signature 3 lignes : Abdelilah Kahaji / Enseignant-Chercheur / Expert en SI & IA
 #   - ZÉRO invitation à commenter / partager / s'abonner.
 #
 # Usage : ./montage-narration.sh <voix.mp3|video.mp4> [sortie.mp4] [--frames=A-B]

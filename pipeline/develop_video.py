@@ -16,7 +16,7 @@ import sys
 import traceback
 from pathlib import Path
 
-from pipeline.config import VIDEO_FORMATS, GOOGLE_SOURCES_PARENT
+from pipeline.config import VIDEO_FORMATS, GOOGLE_VALIDATION_FOLDER
 from pipeline.orchestrator import send_telegram
 
 PROFILE = Path("/opt/hermes/data/profiles/social-media")
@@ -81,11 +81,14 @@ def make_video(script: dict, audio_path: Path, out_path: Path, fmt: str) -> Path
     return Path(wait_and_download(video_id, str(out_path)))
 
 
-def upload_to_drive(path: Path, name: str) -> str:
-    """Dépose le mp4 dans le dossier Drive Videos ; retourne le lien."""
-    from pipeline.google_workspace import find_or_create_folder, upload_file
-    folder = find_or_create_folder("Videos", GOOGLE_SOURCES_PARENT)
-    f = upload_file(name, str(path), folder, mime="video/mp4")
+def upload_to_drive(path: Path, name: str, folder_id: str = GOOGLE_VALIDATION_FOLDER) -> str:
+    """Dépose le mp4 dans l'espace d'échange convenu et retourne le lien.
+
+    Par défaut → 04_Validation (livrable prêt à être revu par Abdelilah). Ne PAS
+    utiliser 01_Resources/Videos, qui est un fourre-tout d'assets bruts non suivi
+    dans le pipeline (cf. mémoire feedback-drive-dossier-echange)."""
+    from pipeline.google_workspace import upload_file
+    f = upload_file(name, str(path), folder_id, mime="video/mp4")
     return f.get("webViewLink", "")
 
 

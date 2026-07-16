@@ -1,0 +1,29 @@
+{
+  "src": "short-fusion-voice.mp3",
+  "ideas": [
+    {
+      "start": 0.0,
+      "src": "illus/fusion-1-robinet.mp4",
+      "kind": "video",
+      "clipSec": 6
+    },
+    {
+      "start": 7.6,
+      "src": "illus/fusion-2-compteur.mp4",
+      "kind": "video",
+      "clipSec": 6
+    },
+    {
+      "start": 25.0,
+      "src": "illus/fusion-3-effondre.mp4",
+      "kind": "video",
+      "clipSec": 6
+    },
+    {
+      "start": 39.7,
+      "src": "illus/fusion-4-courbes.mp4",
+      "kind": "video",
+      "clipSec": 6
+    }
+  ]
+}

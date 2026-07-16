@@ -33,6 +33,12 @@ export const calculatePresenterPiPMetadata: CalculateMetadataFunction<
   return { fps, durationInFrames: Math.floor(metadata.durationInSeconds * fps) };
 };
 
+// TheBoldFont est une police tout-capitales sans glyphe majuscule accentué (É, È, Ç…) :
+// on désaccentue le texte affiché pour éviter les « SYSTèMES » (les accents en capitales
+// disparaissent de toute façon, conformément à l'usage typographique).
+const deaccent = (s: string): string =>
+  s.normalize("NFD").replace(/[̀-ͯ]/g, "");
+
 type Sentence = { words: Caption[]; startMs: number; endMs: number; text: string };
 
 // Regroupe les mots (captions whisper) en phrases : ponctuation forte ou 9 mots max
@@ -137,11 +143,22 @@ export const AnimatedBackground: React.FC = () => {
   );
 };
 
-// Pile de phrases : la courante (kinétique, mot à mot) + les 2 précédentes (estompées)
+// Pile de phrases : la courante (kinétique, mot à mot) + les précédentes (estompées).
 // `bottomInset` réserve l'espace bas (470 = zone du PiP presentateur ; plus petit
 // quand il n'y a pas de PiP, le texte occupe alors davantage l'écran).
-export const SentenceStack: React.FC<{ sentences: Sentence[]; bottomInset?: number }> = ({
-  sentences, bottomInset = 470,
+// `topInset`/`justify`/`fontScale`/`maxPrev` permettent de repositionner la pile
+// (ex. bandeau HAUT pour le template narration-illustree, où le centre est occupé
+// par une scène média illustrée).
+export const SentenceStack: React.FC<{
+  sentences: Sentence[];
+  bottomInset?: number;
+  topInset?: number;
+  justify?: React.CSSProperties["justifyContent"];
+  fontScale?: number;
+  maxPrev?: number;
+}> = ({
+  sentences, bottomInset = 470, topInset = 90, justify = "center",
+  fontScale = 1, maxPrev = 2,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -151,15 +168,18 @@ export const SentenceStack: React.FC<{ sentences: Sentence[]; bottomInset?: numb
   for (let i = 0; i < sentences.length; i++) {
     if (sentences[i].startMs <= nowMs) currentIdx = i;
   }
-  const firstVisible = Math.max(0, currentIdx - 2);
+  const firstVisible = Math.max(0, currentIdx - maxPrev);
   const visible = sentences.slice(firstVisible, currentIdx + 1);
+
+  const curSize = Math.round(66 * fontScale);
+  const prevSize = Math.round(46 * fontScale);
 
   return (
     <div style={{
-      // Texte centré sur le « tableau », centrage vertical dans l'espace disponible
-      position: "absolute", top: 90, left: 60, right: 60, bottom: bottomInset,
-      display: "flex", flexDirection: "column", gap: 40,
-      justifyContent: "center",
+      // Texte centré horizontalement, positionné dans la région [topInset, bottomInset]
+      position: "absolute", top: topInset, left: 60, right: 60, bottom: bottomInset,
+      display: "flex", flexDirection: "column", gap: Math.round(40 * fontScale),
+      justifyContent: justify,
       fontFamily: TheBoldFont, textAlign: "center",
     }}>
       {visible.map((s, vi) => {
@@ -168,10 +188,10 @@ export const SentenceStack: React.FC<{ sentences: Sentence[]; bottomInset?: numb
           // Phrase déjà dite : reste affichée, plus petite et estompée
           return (
             <div key={s.startMs} style={{
-              fontSize: 46, lineHeight: 1.15, color: `${WHITE}77`,
+              fontSize: prevSize, lineHeight: 1.15, color: `${WHITE}77`,
               textShadow: "0 4px 18px rgba(0,0,0,0.45)",
             }}>
-              {s.text}
+              {deaccent(s.text)}
             </div>
           );
         }
@@ -192,13 +212,13 @@ export const SentenceStack: React.FC<{ sentences: Sentence[]; bottomInset?: numb
               const isKeyword = word.text.trim().length >= 8;
               return (
                 <span key={i} style={{
-                  fontSize: 66, lineHeight: 1.1,
+                  fontSize: curSize, lineHeight: 1.1,
                   color: isNow ? ACCENT : isKeyword ? TEAL : WHITE,
                   opacity: isSpoken ? 1 : 0,
                   transform: `scale(${isSpoken ? scale : 0.6})`,
                   textShadow: "0 6px 26px rgba(0,0,0,0.55)",
                 }}>
-                  {word.text.trim()}
+                  {deaccent(word.text.trim())}
                 </span>
               );
             })}
@@ -270,7 +290,7 @@ export const useSentences = (src: string): Sentence[] => {
   return useMemo(() => groupSentences(captions), [captions]);
 };
 
-// Signature bas-gauche — RÈGLE STRICTE Abdelilah (2026-07-07) : nom + titre sur 2 lignes.
+// Signature bas-gauche — RÈGLE STRICTE Abdelilah : signature 3 lignes (nom / Enseignant-Chercheur / Expert...).
 export const Signature: React.FC = () => (
   <div style={{
     position: "absolute", left: 56, bottom: 96, fontFamily: TheBoldFont,
@@ -280,7 +300,7 @@ export const Signature: React.FC = () => (
     <div style={{ marginTop: 8, fontSize: 19, letterSpacing: 0.3, color: `${WHITE}99`, lineHeight: 1.4 }}>
       Enseignant-Chercheur
       <br />
-      Expert en Systèmes d'Information & Intelligence Artificielle
+      {deaccent("Expert en Systèmes d'Information & Intelligence Artificielle")}
     </div>
   </div>
 );

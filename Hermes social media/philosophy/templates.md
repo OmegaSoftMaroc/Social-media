@@ -4,6 +4,7 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
 > Registre des formats réutilisables. Quand Abdelilah demande un contenu, utiliser
 > le template par son nom. Tout nouveau format validé DOIT être ajouté ici.
 > Règle transverse (stricte) : **jamais d'appel à l'engagement** — finir sur une conviction.
+> Règle transverse (stricte, 2026-07-10) : **aucune musique de fond** dans les vidéos — voix off seule (pas de piste `music-track`).
 > **Format vidéo FAVORISÉ** (le plus performant sur LinkedIn, à privilégier pour les vidéos
 > importantes) : `recut-dynamique`. Les formats Remotion (`presentateur-anime`, `narration-animee`)
 > restent des alternatives automatiques plus légères/rapides.
@@ -45,7 +46,13 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
 - **Règles** : cartes synchronisées aux timings du transcript ; signature (voir presentateur-anime) ;
   **zéro CTA**, chute = conviction.
 - **Projet de référence (gold standard)** : `videos/cadrage-metier/` (`storyboard.json` +
-  `index-template.html` + cartes) — repartir de sa structure. Skill : `talking-head-recut`.
+  `index-template.html` + cartes) — repartir de son **système visuel** (thème, craft des
+  cartes, animations, transitions vidéo full-bleed→framed→pip). Skill : `talking-head-recut`.
+- ⚠️ **NE PAS cloner son storyboard** : le gold standard donne le *look*, jamais l'*arc narratif*.
+  Choisir les archétypes ET leur ordre à partir de CE transcript (varier ouverture, nombre de
+  cartes, rythme). Vérifier aussi la **non-redondance de sujet** avec les vidéos déjà publiées —
+  deux vidéos ne portent pas la même thèse. (Retour Abdelilah 2026-07-09, essai « business-prompt »
+  rejeté : trop proche de cadrage-metier en forme et en fond.)
 - **Specs** : 1080×1920 (9:16), source avatar 720×1280@25fps OK.
 - **Exemple publié (le plus performant)** : cadrage-metier — LinkedIn + YouTube Short `c-Xi6fb8otg`.
 
@@ -92,6 +99,32 @@ Version : 1.0 (créée le 2026-07-06, validée par Abdelilah)
 - **Specs** : 1080×1920 (9:16). Vérifié bout-en-bout sous hermes (2026-07-09).
 - **Exemple validé & publié** (2026-07-09, idée 1 « interprétabilité / audit des IA ») :
   LinkedIn `urn:li:ugcPost:7480975831482376192` · YouTube Short `j3SlbnEpkaI`.
+
+## narration-illustree — narration-animee ENRICHIE (texte haut + scène média animée) (créé 2026-07-12)
+- **Usage** : montée en gamme de `narration-animee` — le texte kinétique passe en **bandeau
+  HAUT** et le centre accueille une **scène média** (illustration par idée) qui **bouge vraiment**.
+  Pour les vidéos où l'on veut de l'illustration vivante sans avatar.
+- **Recette** :
+  1. Voix off (ElevenLabs ou audio Hermes) → `montage-narration.sh` → `narration.json` (whisper).
+  2. Découper la narration en **~7 idées** (par concept), noter le timing de départ de chacune.
+  3. **1 illustration Ideogram par idée** via `pipeline/visuals.generate_image` (abstrait, navy/teal,
+     **sans personnage ni texte** — vérifier : Ideogram incruste parfois des mots, régénérer si besoin).
+  4. **Animer chaque still en clip** via `pipeline/animate.py` (fal.ai, défaut **`kling-turbo`** =
+     Kling 2.5 Turbo Pro, 0,07 $/s ; prompt de mouvement SUBTIL non déformant ; 5 s courtes, 10 s longues).
+     Clé `FAL_KEY`. **NE PAS utiliser `kling-master`** (0,28 $/s = 4× plus cher, sans gain visible).
+  5. Compo Remotion **NarrationIllustree** : `ideas:[{start, src:"illus/idea-N.mp4", kind:"video", clipSec}]`
+     dans `Root.tsx` ; la vidéo est **étirée** sur la durée de l'idée (`playbackRate`), Ken Burns coupé.
+     Fallback still `.png` si un clip manque (mode « A » motion-polish : Ken Burns varié + entrée + FX).
+- **Identité** : fond navy animé, bandeau texte haut (accent/teal), scène média centrale (cadre arrondi
+  liseré teal, particules + balayage lumière), signature 3 lignes + photo, **zéro musique**.
+- **Coût fal (réel, vérifié)** : Kling 2.5 Turbo 0,07 $/s → 5 s ≈ 0,35 $, 10 s ≈ 0,70 $ ; **7 clips ≈ 3-4 $**.
+  Encore moins cher : Hailuo-02 std 0,045 $/s, **LTX ~0,02 $/clip** (7 ≈ 0,15 $, à tester). ⚠️ Kling
+  **master** = 0,28 $/s → une vidéo a coûté **16,80 $** (erreur 2026-07-12, à ne pas refaire). Générer en parallèle (3-8 min/clip).
+- **Specs** : 1080×1920 (9:16). Briques partagées avec `PresenterPiP` (SentenceStack étendue : bandeau haut).
+- **⚠️ Animation à améliorer** : v1 correcte mais mouvement encore un peu sage (retour Abdelilah
+  2026-07-12) — pour la prochaine, prompts de mouvement plus marqués / tester Hailuo-Luma, viser plus de vie.
+- **Exemple publié** (2026-07-12, « IA & sécurité — le copier-coller qui expose vos données ») :
+  YouTube Short `IE0mCBevTWg` · LinkedIn `urn:li:ugcPost:7482188610788745216`.
 
 ## Comment ajouter un template
 1. Itérer le format avec Abdelilah jusqu'à validation explicite.

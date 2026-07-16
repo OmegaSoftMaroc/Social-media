@@ -32,8 +32,16 @@ GOOGLE_SCOPES = [
 # Délégation à l'échelle du domaine : le compte de service agit AU NOM de cet
 # utilisateur (fichiers créés lui appartiennent). Mettre "" pour désactiver.
 GOOGLE_IMPERSONATE = "a.kahaji@omegasoft.ma"
-# Dossier racine des sources (contient Articles, Videos, Recherche… et Visuels)
+# Dossier racine des sources (= 01_Resources : Articles, Videos, Recherche… et Visuels).
+# ATTENTION : fourre-tout d'assets bruts — NE PAS y déposer les livrables à valider.
 GOOGLE_SOURCES_PARENT = "1CLXIjvxD3Y5jolA9FcX9WTfM_k46Bum4"
+# Espace d'échange convenu « Omega Media AI - Social Media » et ses dossiers d'étape.
+# Un livrable rendu (vidéo/visuel) prêt à être revu par Abdelilah va dans 04_Validation ;
+# validé → 05_Final ; publié → 06_Published. (cf. mémoire feedback-drive-dossier-echange)
+GOOGLE_WORKSPACE_PARENT = "10l9rc-tx0FwoDFEqtPRLxxQ7tusmxoc2"
+GOOGLE_VALIDATION_FOLDER = "18F5OETXbo_OjDm-LfxycqPVx6F42PXFL"  # 04_Validation
+GOOGLE_FINAL_FOLDER = "1mSuslsW-HKf6J2Cg7mt1Xxe26FYyMgMg"       # 05_Final
+GOOGLE_PUBLISHED_FOLDER = "18fJtf718n8YnMIjpxnSaMuORiMTXlyr-"   # 06_Published
 
 # --- Génération visuelle (Ideogram) -----------------------------------------
 # Clé lue depuis l'environnement / config/.env : IDEOGRAM_API_KEY

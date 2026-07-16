@@ -92,6 +92,88 @@
       "origin_video": "model-isnt-the-moat"
     },
     {
+      "id": "fusion-1-robinet",
+      "file": "clips/fusion-1-robinet.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "robinet",
+        "tokens",
+        "infini",
+        "illimite",
+        "flux-lumiere",
+        "accroche",
+        "hailuo",
+        "teal",
+        "frais"
+      ],
+      "description": "Robinet de tokens lumineux coulant à travers un ∞ — l'IA illimitée qui se tarit",
+      "thumb": "thumbs/fusion-1-robinet.jpg",
+      "model": "hailuo",
+      "cost_usd": 0.27,
+      "origin_video": "model-isnt-the-moat-short-fusion"
+    },
+    {
+      "id": "fusion-2-compteur",
+      "file": "clips/fusion-2-compteur.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "compteur",
+        "jauge",
+        "vanne",
+        "conduite",
+        "facturation",
+        "metering",
+        "hailuo",
+        "frais"
+      ],
+      "description": "Jauge + vanne sur conduite — retour au compteur / facturation qui reprend",
+      "thumb": "thumbs/fusion-2-compteur.jpg",
+      "model": "hailuo",
+      "cost_usd": 0.27,
+      "origin_video": "model-isnt-the-moat-short-fusion"
+    },
+    {
+      "id": "fusion-3-effondre",
+      "file": "clips/fusion-3-effondre.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "courbe",
+        "effondrement",
+        "prix",
+        "serveur",
+        "telechargement",
+        "open-source",
+        "local",
+        "hailuo",
+        "frais"
+      ],
+      "description": "Courbe de prix qui plonge + serveur avec flèche descendante — le prix s'effondre, hébergeable",
+      "thumb": "thumbs/fusion-3-effondre.jpg",
+      "model": "hailuo",
+      "cost_usd": 0.27,
+      "origin_video": "model-isnt-the-moat-short-fusion"
+    },
+    {
+      "id": "fusion-4-courbes",
+      "file": "clips/fusion-4-courbes.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "courbes",
+        "croisement",
+        "divergence",
+        "occident-chine",
+        "accent-orange",
+        "these",
+        "hailuo",
+        "frais"
+      ],
+      "description": "Deux courbes en X avec étincelle — l'Occident ferme, la Chine ouvre",
+      "thumb": "thumbs/fusion-4-courbes.jpg",
+      "model": "hailuo",
+      "cost_usd": 0.27,
+      "origin_video": "model-isnt-the-moat-short-fusion"
+    },
+    {
       "id": "serveur-bouclier-hologramme",
       "file": "clips/serveur-bouclier-hologramme.mp4",
       "tags": [
@@ -127,6 +209,26 @@
       "description": "Serveur isométrique avec pin de localisation, cadenas orange et pile de pièces — souveraineté/hébergement",
       "thumb": "thumbs/serveur-cadenas-souverainete.jpg",
       "origin_video": "model-isnt-the-moat"
+    },
+    {
+      "id": "short-a-hero-contrat-hailuo",
+      "file": "clips/short-a-hero-contrat-hailuo.mp4",
+      "tags": [
+        "abstrait-corporate",
+        "gratte-ciel",
+        "contrat",
+        "document",
+        "dissolution",
+        "sursis",
+        "hailuo",
+        "teal",
+        "bleu-nuit"
+      ],
+      "description": "Contrat/document se désintégrant au sommet d'un gratte-ciel — clip hailuo frais pour Short A « le sursis »",
+      "thumb": "thumbs/short-a-hero-contrat-hailuo.jpg",
+      "model": "hailuo",
+      "cost_usd": 0.27,
+      "origin_video": "model-isnt-the-moat-short-A"
     }
   ]
 }

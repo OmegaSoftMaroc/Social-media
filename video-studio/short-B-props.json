@@ -1,0 +1,29 @@
+{
+  "src": "short-B-voice.mp3",
+  "ideas": [
+    {
+      "start": 0.0,
+      "src": "illus/idea-2.mp4",
+      "kind": "video",
+      "clipSec": 10
+    },
+    {
+      "start": 12.0,
+      "src": "illus/idea-6.mp4",
+      "kind": "video",
+      "clipSec": 10
+    },
+    {
+      "start": 22.0,
+      "src": "illus/idea-3.mp4",
+      "kind": "video",
+      "clipSec": 5
+    },
+    {
+      "start": 33.0,
+      "src": "illus/idea-5.mp4",
+      "kind": "video",
+      "clipSec": 5
+    }
+  ]
+}
