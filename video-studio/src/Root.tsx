@@ -24,6 +24,11 @@ import {
   calculateMotionBriefMetadata,
   motionBriefSchema,
 } from "./MotionBrief";
+import {
+  PresenterTemplate,
+  calculatePresenterTemplateMetadata,
+  presenterTemplateSchema,
+} from "./PresenterTemplate";
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -100,6 +105,20 @@ export const RemotionRoot: React.FC = () => {
       width={1080}
       height={1920}
       defaultProps={{ src: staticFile("narration.mp3") }}
+    />
+    <Composition
+      id="PresenterTemplate"
+      component={PresenterTemplate}
+      calculateMetadata={calculatePresenterTemplateMetadata}
+      schema={presenterTemplateSchema}
+      width={1080}
+      height={1920}
+      defaultProps={{
+        // NOUVEAU workflow overlay : avatar HeyGen fourni par Abdelilah, centre transparent.
+        // Rendu alpha : npx remotion render PresenterTemplate out/overlay.mov \
+        //   --codec=prores --prores-profile=4444 --props='{"avatar":"verrou-avatar.mp4"}'
+        avatar: "idee2.mp4",
+      }}
     />
     </>
   );
