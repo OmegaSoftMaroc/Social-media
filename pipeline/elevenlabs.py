@@ -15,11 +15,17 @@ def tts_url(voice_id: str) -> str:
 
 
 def build_tts_payload(script: str) -> dict:
-    """Payload TTS : texte + modèle multilingue + réglages voix stables."""
+    """Payload TTS : texte + modèle multilingue + réglages voix VALIDÉS.
+
+    Config validée par Abdelilah (16/07/2026) : naturelle (stabilité 0.5, style 0),
+    cadence via speed 1.05 (~2,9 mots/s). Ne pas baisser la stabilité ni ajouter du
+    style : voix hachée/artificielle (cf. mémoire feedback-voix-tts-cadence).
+    """
     return {
         "text": script,
         "model_id": ELEVENLABS_MODEL,
-        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75},
+        "voice_settings": {"stability": 0.5, "similarity_boost": 0.75,
+                           "style": 0.0, "use_speaker_boost": True, "speed": 1.05},
     }
 
 

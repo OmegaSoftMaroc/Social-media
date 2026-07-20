@@ -1,0 +1,18 @@
+{
+  "avatar": "gpt56-avatar.mp4",
+  "mode": "montage",
+  "pastille": "GPT-5.6 SOL ULTRA",
+  "titre": "GPT-5.6 vient-il de résoudre un problème mathématique vieux de 50 ans ?",
+  "phases": { "introSplit": 13.6, "introFin": 17.4 },
+  "cropSource": { "x0": 0, "largeur": 720, "srcW": 720, "srcH": 1280 },
+  "centre": [
+    { "start": 17.4,  "src": "illus/cdc-reseau.mp4",  "kind": "video", "clipSec": 12 },
+    { "start": 20.1,  "src": "illus/cdc-boucles.mp4", "kind": "video", "clipSec": 12 },
+    { "start": 35.0,  "src": "illus/cdc-agents.mp4",  "kind": "video", "clipSec": 12 },
+    { "start": 52.6,  "src": "illus/cdc-paper2.png",  "kind": "image" },
+    { "start": 64.3,  "src": "illus/cdc-boucles.mp4", "kind": "video", "clipSec": 12 },
+    { "start": 78.9,  "src": "illus/cdc-paper1.png",  "kind": "image" },
+    { "start": 97.2,  "src": "illus/unit-paper1.png", "kind": "image" },
+    { "start": 109.9, "src": "illus/cdc-partenaire.png", "kind": "image" }
+  ]
+}

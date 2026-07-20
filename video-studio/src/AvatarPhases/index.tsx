@@ -18,6 +18,7 @@ import {
   Signature,
   useSentences,
 } from "../PresenterPiP";
+import { MediaStage } from "../NarrationIllustree";
 import { TheBoldFont } from "../load-font";
 
 // Charte OmegaSoft
@@ -53,7 +54,28 @@ export const avatarPhasesSchema = z.object({
       zoomFin: z.number().optional(),
     })
     .optional(),
-  cropSource: z.object({ x0: z.number(), largeur: z.number() }).optional(),
+  // Bande utile du mp4 avatar + dimensions source (défaut : export HeyGen 1920×1080
+  // pillarboxé ; un avatar portrait natif 720×1280 = {x0:0, largeur:720, srcW:720, srcH:1280}).
+  cropSource: z
+    .object({
+      x0: z.number(),
+      largeur: z.number(),
+      srcW: z.number().optional(),
+      srcH: z.number().optional(),
+    })
+    .optional(),
+  // Scène média centrale (mode montage pris en charge par Claude) : mêmes items que
+  // NarrationIllustree — {start (s, absolu), src (public/), kind image|video, clipSec}.
+  centre: z
+    .array(
+      z.object({
+        start: z.number(),
+        src: z.string(),
+        kind: z.enum(["image", "video"]).optional(),
+        clipSec: z.number().optional(),
+      }),
+    )
+    .optional(),
 });
 type Props = z.infer<typeof avatarPhasesSchema>;
 
@@ -118,6 +140,7 @@ export const AvatarPhases: React.FC<Props> = ({
   titre = "",
   phases = DEFAULT_PHASES,
   cropSource = DEFAULT_CROP,
+  centre = [],
 }) => {
   const src = resolveSrc(avatar);
   const sentences = useSentences(src);
@@ -128,14 +151,20 @@ export const AvatarPhases: React.FC<Props> = ({
   const b = boxAt(t, phases);
   const CX0 = cropSource.x0;
   const CW = cropSource.largeur;
-  const CH = SRC_H;
-  // Mise à l'échelle du contenu utile (bande CW×CH, sans les bords blancs)
-  const visibleH = CH * (1 - b.cropTop);
+  const SRCW = cropSource.srcW ?? SRC_W;
+  const CH = cropSource.srcH ?? SRC_H;
+  // Mise à l'échelle du contenu utile (bande CW×CH, sans les bords blancs).
+  // Les cropTop/vAlign des boîtes sont calés pour un avatar PAYSAGE (visage haut dans
+  // le cadre) ; un avatar PORTRAIT natif est déjà cadré sur le visage → on atténue.
+  const isPortrait = CH > SRCW;
+  const cropTop = b.cropTop * (isPortrait ? 0.25 : 1);
+  const vAlign = b.vAlign * (isPortrait ? 0.5 : 1);
+  const visibleH = CH * (1 - cropTop);
   const scale = Math.max(b.w / CW, b.h / visibleH);
   const dispW = CW * scale;
   const dispVisH = visibleH * scale;
   const left = -(CX0 * scale) - (dispW - b.w) / 2;
-  const top = -(b.cropTop * CH * scale) - (dispVisH - b.h) * b.vAlign;
+  const top = -(cropTop * CH * scale) - (dispVisH - b.h) * vAlign;
 
   // Opacités des couches par phase
   const { introSplit: T1, introFin: T2 } = phases;
@@ -146,6 +175,13 @@ export const AvatarPhases: React.FC<Props> = ({
   return (
     <AbsoluteFill>
       <AnimatedBackground />
+
+      {/* Scène média centrale (montage pris en charge) — visible à partir du corps. */}
+      {mode === "montage" && centre.length > 0 ? (
+        <div style={{ position: "absolute", inset: 0, opacity: topCapsOp }}>
+          <MediaStage ideas={centre} />
+        </div>
+      ) : null}
 
       {/* Avatar : une seule vidéo, sa boîte se transforme entre les phases. */}
       <div
@@ -166,8 +202,8 @@ export const AvatarPhases: React.FC<Props> = ({
           src={src}
           style={{
             position: "absolute",
-            width: SRC_W * scale,
-            height: SRC_H * scale,
+            width: SRCW * scale,
+            height: CH * scale,
             left,
             top,
             maxWidth: "none",
@@ -197,8 +233,10 @@ export const AvatarPhases: React.FC<Props> = ({
           <div
             style={{
               color: WHITE,
-              fontSize: 92,
-              lineHeight: 1.08,
+              // Auto-ajustement : les titres longs descendent en corps pour tenir
+              // sur 2-3 lignes dans le tiers haut.
+              fontSize: titre.length > 55 ? 62 : 92,
+              lineHeight: 1.12,
               textShadow: "0 8px 34px rgba(0,0,0,0.75)",
             }}
           >

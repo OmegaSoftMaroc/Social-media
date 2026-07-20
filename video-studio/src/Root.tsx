@@ -34,6 +34,7 @@ import {
   calculateAvatarPhasesMetadata,
   avatarPhasesSchema,
 } from "./AvatarPhases";
+import { CdcAnim, calculateCdcAnimMetadata, cdcAnimSchema } from "./CdcAnims";
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -141,6 +142,15 @@ export const RemotionRoot: React.FC = () => {
         phases: { introSplit: 6.5, introFin: 17.5 },
         cropSource: { x0: 712, largeur: 495 },
       }}
+    />
+    <Composition
+      id="CdcAnim"
+      component={CdcAnim}
+      calculateMetadata={calculateCdcAnimMetadata}
+      schema={cdcAnimSchema}
+      width={900}
+      height={940}
+      defaultProps={{ variant: "reseau" }}
     />
     </>
   );

@@ -43,6 +43,7 @@ export const narrationIllustreeSchema = z.object({
 });
 
 type Props = z.infer<typeof narrationIllustreeSchema>;
+export type CentreIdea = Props["ideas"][number];
 
 // Accepte un src déjà résolu (staticFile → "/x", ou http) OU un nom de fichier brut
 // (résolu via staticFile au runtime). Rend le rendu via --props possible : un nom brut
@@ -214,7 +215,7 @@ const LightSweep: React.FC = () => {
   );
 };
 
-const MediaStage: React.FC<{ ideas: Props["ideas"] }> = ({ ideas }) => {
+export const MediaStage: React.FC<{ ideas: Props["ideas"] }> = ({ ideas }) => {
   return (
     <div
       style={{
