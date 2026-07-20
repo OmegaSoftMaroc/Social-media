@@ -30,10 +30,10 @@ import {
   presenterTemplateSchema,
 } from "./PresenterTemplate";
 import {
-  MetiersDemain,
-  calculateMetiersDemainMetadata,
-  metiersDemainSchema,
-} from "./MetiersDemain";
+  AvatarPhases,
+  calculateAvatarPhasesMetadata,
+  avatarPhasesSchema,
+} from "./AvatarPhases";
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -126,16 +126,20 @@ export const RemotionRoot: React.FC = () => {
       }}
     />
     <Composition
-      id="MetiersDemain"
-      component={MetiersDemain}
-      calculateMetadata={calculateMetiersDemainMetadata}
-      schema={metiersDemainSchema}
+      id="AvatarPhases"
+      component={AvatarPhases}
+      calculateMetadata={calculateAvatarPhasesMetadata}
+      schema={avatarPhasesSchema}
       width={1080}
       height={1920}
       defaultProps={{
-        // « Les métiers de demain » : intro plein écran → carte+texte → PiP rect
-        // avec centre libre → avatar agrandi (vérification 45→64.6s) → PiP.
+        // TEMPLATE multi-phases paramétrable — 1 fichier de props par vidéo.
+        // Rendu : npx remotion render AvatarPhases out/x.mp4 --props=<video>-props.json
         avatar: "metiers-avatar.mp4",
+        pastille: "PRODUIRE NE SUFFIT PLUS",
+        titre: "L'IA produit à votre place",
+        phases: { introSplit: 6.5, introFin: 17.5, zoomDebut: 45.0, zoomFin: 64.6 },
+        cropSource: { x0: 712, largeur: 495 },
       }}
     />
     </>
