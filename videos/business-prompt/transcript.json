@@ -1,0 +1,372 @@
+[
+  {
+    "text": "On",
+    "start": 0.08,
+    "end": 0.16
+  },
+  {
+    "text": "me",
+    "start": 0.16,
+    "end": 0.32
+  },
+  {
+    "text": "vend",
+    "start": 0.32,
+    "end": 0.8
+  },
+  {
+    "text": "le",
+    "start": 0.8,
+    "end": 0.85
+  },
+  {
+    "text": "business",
+    "start": 0.85,
+    "end": 1.43
+  },
+  {
+    "text": "en",
+    "start": 1.43,
+    "end": 1.59
+  },
+  {
+    "text": "imprompte.",
+    "start": 1.59,
+    "end": 2.76
+  },
+  {
+    "text": "Un",
+    "start": 2.76,
+    "end": 2.88
+  },
+  {
+    "text": "clic",
+    "start": 2.88,
+    "end": 3.12
+  },
+  {
+    "text": "et",
+    "start": 3.12,
+    "end": 3.24
+  },
+  {
+    "text": "l'entreprise",
+    "start": 3.24,
+    "end": 3.96
+  },
+  {
+    "text": "tournerait",
+    "start": 3.96,
+    "end": 4.57
+  },
+  {
+    "text": "toute",
+    "start": 4.57,
+    "end": 4.86
+  },
+  {
+    "text": "seule.",
+    "start": 4.86,
+    "end": 5.38
+  },
+  {
+    "text": "Dans",
+    "start": 5.38,
+    "end": 5.7
+  },
+  {
+    "text": "une",
+    "start": 5.7,
+    "end": 5.94
+  },
+  {
+    "text": "PME",
+    "start": 5.94,
+    "end": 6.18
+  },
+  {
+    "text": "industrielle,",
+    "start": 6.18,
+    "end": 7.38
+  },
+  {
+    "text": "ça",
+    "start": 7.38,
+    "end": 7.53
+  },
+  {
+    "text": "ne",
+    "start": 7.53,
+    "end": 7.67
+  },
+  {
+    "text": "marche",
+    "start": 7.67,
+    "end": 8.09
+  },
+  {
+    "text": "pas",
+    "start": 8.09,
+    "end": 8.3
+  },
+  {
+    "text": "comme",
+    "start": 8.3,
+    "end": 8.75
+  },
+  {
+    "text": "ça.",
+    "start": 8.75,
+    "end": 9.08
+  },
+  {
+    "text": "L'IA",
+    "start": 9.08,
+    "end": 9.41
+  },
+  {
+    "text": "n'invente",
+    "start": 9.41,
+    "end": 10.17
+  },
+  {
+    "text": "pas",
+    "start": 10.17,
+    "end": 10.43
+  },
+  {
+    "text": "ton",
+    "start": 10.43,
+    "end": 10.69
+  },
+  {
+    "text": "business.",
+    "start": 10.69,
+    "end": 11.48
+  },
+  {
+    "text": "Elle",
+    "start": 11.48,
+    "end": 11.79
+  },
+  {
+    "text": "accélère",
+    "start": 11.79,
+    "end": 12.42
+  },
+  {
+    "text": "ce",
+    "start": 12.42,
+    "end": 12.56
+  },
+  {
+    "text": "qui",
+    "start": 12.56,
+    "end": 12.75
+  },
+  {
+    "text": "est",
+    "start": 12.75,
+    "end": 12.95
+  },
+  {
+    "text": "déjà",
+    "start": 12.95,
+    "end": 13.35
+  },
+  {
+    "text": "cadré.",
+    "start": 13.35,
+    "end": 13.8
+  },
+  {
+    "text": "Tes",
+    "start": 13.8,
+    "end": 14.03
+  },
+  {
+    "text": "deux",
+    "start": 14.03,
+    "end": 14.34
+  },
+  {
+    "text": "vies,",
+    "start": 14.34,
+    "end": 14.79
+  },
+  {
+    "text": "ton",
+    "start": 14.79,
+    "end": 15.02
+  },
+  {
+    "text": "reporting,",
+    "start": 15.02,
+    "end": 15.97
+  },
+  {
+    "text": "ta",
+    "start": 15.97,
+    "end": 16.07
+  },
+  {
+    "text": "documentation",
+    "start": 16.07,
+    "end": 17.17
+  },
+  {
+    "text": "ERP,",
+    "start": 17.17,
+    "end": 17.72
+  },
+  {
+    "text": "tes",
+    "start": 17.72,
+    "end": 17.81
+  },
+  {
+    "text": "relances.",
+    "start": 17.81,
+    "end": 18.58
+  },
+  {
+    "text": "Le",
+    "start": 18.58,
+    "end": 18.71
+  },
+  {
+    "text": "vrai",
+    "start": 18.71,
+    "end": 18.97
+  },
+  {
+    "text": "levier,",
+    "start": 18.97,
+    "end": 19.5
+  },
+  {
+    "text": "ce",
+    "start": 19.5,
+    "end": 19.64
+  },
+  {
+    "text": "n'est",
+    "start": 19.64,
+    "end": 19.93
+  },
+  {
+    "text": "pas",
+    "start": 19.93,
+    "end": 20.19
+  },
+  {
+    "text": "le",
+    "start": 20.19,
+    "end": 20.26
+  },
+  {
+    "text": "prompt",
+    "start": 20.26,
+    "end": 20.65
+  },
+  {
+    "text": "magique.",
+    "start": 20.65,
+    "end": 21.38
+  },
+  {
+    "text": "C'est",
+    "start": 21.38,
+    "end": 21.8
+  },
+  {
+    "text": "un",
+    "start": 21.8,
+    "end": 21.97
+  },
+  {
+    "text": "processus",
+    "start": 21.97,
+    "end": 22.75
+  },
+  {
+    "text": "clair",
+    "start": 22.75,
+    "end": 23.26
+  },
+  {
+    "text": "que",
+    "start": 23.26,
+    "end": 23.45
+  },
+  {
+    "text": "l'IA",
+    "start": 23.45,
+    "end": 23.74
+  },
+  {
+    "text": "vient",
+    "start": 23.74,
+    "end": 24.12
+  },
+  {
+    "text": "exécuter",
+    "start": 24.12,
+    "end": 24.82
+  },
+  {
+    "text": "plus",
+    "start": 24.82,
+    "end": 25.1
+  },
+  {
+    "text": "vite.",
+    "start": 25.1,
+    "end": 25.68
+  },
+  {
+    "text": "Un",
+    "start": 25.68,
+    "end": 25.85
+  },
+  {
+    "text": "prompt",
+    "start": 25.85,
+    "end": 26.53
+  },
+  {
+    "text": "ne",
+    "start": 26.53,
+    "end": 26.59
+  },
+  {
+    "text": "remplace",
+    "start": 26.59,
+    "end": 27.28
+  },
+  {
+    "text": "pas",
+    "start": 27.28,
+    "end": 27.45
+  },
+  {
+    "text": "un",
+    "start": 27.45,
+    "end": 27.62
+  },
+  {
+    "text": "processus.",
+    "start": 27.62,
+    "end": 28.66
+  },
+  {
+    "text": "il",
+    "start": 28.75,
+    "end": 28.77
+  },
+  {
+    "text": "l'accélère.",
+    "start": 28.77,
+    "end": 29.6
+  }
+]

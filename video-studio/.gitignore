@@ -1,0 +1,6 @@
+node_modules/
+whisper.cpp/
+out/
+public/input.mp4
+public/input.json
+public/idee2.*

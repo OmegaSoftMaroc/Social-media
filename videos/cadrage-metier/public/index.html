@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face { font-family: "Inter"; src: url("fonts/Inter-400-latin.woff2") format("woff2"); font-weight: 400; font-display: block; }
+      @font-face { font-family: "Inter"; src: url("fonts/Inter-700-latin.woff2") format("woff2"); font-weight: 700; font-display: block; }
+      :root { --bg:#0B1E33; --bg2:#122C4A; --teal:#2AA7A0; --accent:#FFB454; --text:#FFFFFF; }
+      * { box-sizing: border-box; }
+      html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden;
+        background: linear-gradient(160deg, #0B1E33 55%, #122C4A);
+        font-family: "Inter", ui-sans-serif, system-ui, sans-serif; }
+      #stage { position:relative; width:100%; height:100%; overflow:hidden; }
+      /* décor de marque discret derrière les cartes (statique, déterministe) */
+      .deco { position:absolute; border-radius:50%; }
+      .deco.a { width:640px; height:640px; border:3px solid rgba(42,167,160,0.16); left:-200px; top:180px; }
+      .deco.b { width:360px; height:360px; border:2px solid rgba(42,167,160,0.12); right:-110px; top:700px; }
+      .deco.c { width:260px; height:260px; border:2px solid rgba(255,180,84,0.12); left:90px; bottom:240px; border-radius:0; transform:rotate(45deg); }
+
+      .video-wrapper { position:absolute; left:0; top:0; width:1080px; height:1920px; overflow:hidden; border-radius:0; }
+      .video-wrapper video { width:100%; height:100%; object-fit:cover; object-position:center 15%; }
+      .video-wrapper.framed { border-radius:22px; box-shadow:0 16px 50px rgba(0,0,0,0.5); border:2px solid rgba(255,255,255,0.14); }
+      .video-wrapper.pip-pill { border-radius:50%; box-shadow:0 16px 50px rgba(0,0,0,0.55); border:6px solid #FFFFFF; }
+      /* Centrage visage calculé : fenêtre cover 720px, centre visage source ≈ 47% → position 45% */
+      .video-wrapper.pip-pill video { object-position:center 45%; }
+
+      .card-host { position:absolute; pointer-events:none; overflow:hidden; }
+      .card-host .card { position:relative; width:100%; height:100%; overflow:hidden; }
+    </style>
+  </head>
+  <body>
+    <div id="stage" data-composition-id="cadrage-metier" data-start="0" data-duration="34.72" data-fps="25" data-width="1080" data-height="1920">
+      <div class="deco a"></div><div class="deco b"></div><div class="deco c"></div>
+
+      <!-- Vidéo source (muette ; la voix est une piste audio séparée) -->
+      <div class="video-wrapper" id="video-wrap">
+        <video id="bg-video" src="input-video.mp4" muted playsinline data-start="0" data-duration="34.72" data-track-index="1"></video>
+      </div>
+
+      <!-- Pistes audio : voix (pleine) + musique (basse) -->
+      <audio id="voice-track" src="voice.mp3" data-start="0" data-duration="34.72" data-track-index="5"></audio>
+      <audio id="music-track" src="music.mp3" data-start="0" data-duration="34.72" data-track-index="6" data-volume="0.12"></audio>
+
+      <!-- card-01 : hook plein écran (overlay sur vidéo full-bleed) -->
+      <div id="host-card-01" class="card-host clip" data-card-id="card-01" data-start="0.50" data-duration="4.80" data-track-index="2"
+           style="left:0;top:0;width:1080px;height:1920px;visibility:hidden;opacity:0;">
+        <div class="card" data-card-id="card-01">
+  <style>
+    .card[data-card-id="card-01"] .root { width:100%; height:100%; display:flex; flex-direction:column; justify-content:flex-start; align-items:center; padding:150px 60px 0; background:transparent; text-align:center; }
+    .card[data-card-id="card-01"] .kicker { font:700 22px/1 'Inter'; letter-spacing:4px; color:#2AA7A0; background:rgba(11,30,51,0.72); padding:14px 22px; border-radius:999px; border:1px solid rgba(42,167,160,0.5); }
+    .card[data-card-id="card-01"] .title { margin-top:26px; font:700 92px/1.08 'Inter'; color:#fff; text-shadow:0 8px 30px rgba(0,0,0,0.65); }
+    .card[data-card-id="card-01"] .stamp { margin-top:34px; font:700 58px/1 'Inter'; letter-spacing:2px; color:#0B1E33; background:#FFB454; padding:18px 30px; border-radius:14px; transform:rotate(-4deg); box-shadow:0 14px 40px rgba(0,0,0,0.5); }
+  </style>
+  <div class="root">
+    <div class="kicker" id="c1-kicker">ON ME DEMANDE SOUVENT</div>
+    <div class="title" id="c1-title">« Quel est le meilleur<br/>modèle d'IA ? »</div>
+    <div class="stamp" id="c1-stamp">MAUVAISE QUESTION</div>
+  </div>
+</div>
+
+      </div>
+
+      <!-- card-02 : stat 6 mois (zone basse, vidéo en stack haut) -->
+      <div id="host-card-02" class="card-host clip" data-card-id="card-02" data-start="5.60" data-duration="5.00" data-track-index="2"
+           style="left:0;top:880px;width:1080px;height:1040px;visibility:hidden;opacity:0;">
+        <div class="card" data-card-id="card-02">
+  <style>
+    .card[data-card-id="card-02"] .root { width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:40px 64px 90px; background:transparent; text-align:center; }
+    .card[data-card-id="card-02"] .big { font:700 190px/0.95 'Inter'; color:#FFB454; text-shadow:0 10px 36px rgba(0,0,0,0.45); }
+    .card[data-card-id="card-02"] .detail { margin-top:20px; font:700 52px/1.15 'Inter'; color:#fff; }
+    .card[data-card-id="card-02"] .rule { height:6px; width:0; background:#2AA7A0; border-radius:3px; margin:34px 0; }
+    .card[data-card-id="card-02"] .sub { font:400 38px/1.3 'Inter'; color:rgba(255,255,255,0.85); }
+    .card[data-card-id="card-02"] .sub b { color:#2AA7A0; font-weight:700; }
+  </style>
+  <div class="root">
+    <div class="big" id="c2-big">6 MOIS</div>
+    <div class="detail" id="c2-detail">et tous les modèles seront dépassés</div>
+    <div class="rule" id="c2-rule"></div>
+    <div class="sub" id="c2-sub">Ce n'est pas là que <b>ta PME</b> fera la différence.</div>
+  </div>
+</div>
+
+      </div>
+
+      <!-- card-03 : liste unique (même zone basse) -->
+      <div id="host-card-03" class="card-host clip" data-card-id="card-03" data-start="10.90" data-duration="9.00" data-track-index="2"
+           style="left:0;top:880px;width:1080px;height:1040px;visibility:hidden;opacity:0;">
+        <div class="card" data-card-id="card-03">
+  <style>
+    .card[data-card-id="card-03"] .root { width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:30px 60px 80px; background:transparent; text-align:center; }
+    .card[data-card-id="card-03"] .title { font:700 64px/1.1 'Inter'; color:#fff; margin-bottom:44px; }
+    .card[data-card-id="card-03"] .chips { display:flex; flex-direction:column; gap:20px; width:100%; max-width:760px; }
+    .card[data-card-id="card-03"] .chip { font:700 46px/1 'Inter'; letter-spacing:1px; color:#0B1E33; background:#2AA7A0; padding:24px 20px; border-radius:16px; box-shadow:0 10px 28px rgba(0,0,0,0.4); }
+    .card[data-card-id="card-03"] .chip:nth-child(2n) { background:#e8f6f5; }
+    .card[data-card-id="card-03"] .footer { margin-top:40px; font:400 36px/1.3 'Inter'; color:#FFB454; }
+  </style>
+  <div class="root">
+    <div class="title" id="c3-title">Ce qui te rend <span style="color:#FFB454">unique</span></div>
+    <div class="chips">
+      <div class="chip" id="c3-chip1">TON MÉTIER</div>
+      <div class="chip" id="c3-chip2">TES PROCESS</div>
+      <div class="chip" id="c3-chip3">TES DONNÉES</div>
+      <div class="chip" id="c3-chip4">TES RÈGLES</div>
+    </div>
+    <div class="footer" id="c3-footer">Aucun concurrent ne peut le copier en un clic.</div>
+  </div>
+</div>
+
+      </div>
+
+      <!-- card-04 : la vraie force (plein écran, vidéo en pip rond) -->
+      <div id="host-card-04" class="card-host clip" data-card-id="card-04" data-start="20.20" data-duration="9.90" data-track-index="2"
+           style="left:0;top:0;width:1080px;height:1450px;visibility:hidden;opacity:0;">
+        <div class="card" data-card-id="card-04">
+  <style>
+    .card[data-card-id="card-04"] .root { width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:flex-start; padding:0 84px; background:transparent; text-align:left; }
+    .card[data-card-id="card-04"] .kicker { font:700 24px/1 'Inter'; letter-spacing:5px; color:#2AA7A0; margin-bottom:38px; }
+    .card[data-card-id="card-04"] .strike { position:relative; font:400 46px/1.25 'Inter'; color:rgba(255,255,255,0.55); margin-bottom:48px; }
+    .card[data-card-id="card-04"] .strike .bar { position:absolute; left:0; top:54%; height:7px; width:0; background:#FFB454; border-radius:4px; }
+    .card[data-card-id="card-04"] .main { font:700 84px/1.12 'Inter'; color:#fff; }
+    .card[data-card-id="card-04"] .second { margin-top:28px; font:700 50px/1.2 'Inter'; color:#2AA7A0; }
+  </style>
+  <div class="root">
+    <div class="kicker" id="c4-kicker">LA VRAIE FORCE</div>
+    <div class="strike" id="c4-strike">Brancher le dernier modèle à la mode<span class="bar" id="c4-bar"></span></div>
+    <div class="main" id="c4-main">Savoir quel problème<br/>tu résous</div>
+    <div class="second" id="c4-second">— et comment ton métier<br/>fonctionne vraiment.</div>
+  </div>
+</div>
+
+      </div>
+
+      <!-- card-05 : punchline + signature (plein écran, pip conservé) -->
+      <div id="host-card-05" class="card-host clip" data-card-id="card-05" data-start="30.40" data-duration="4.32" data-track-index="2"
+           style="left:0;top:0;width:1080px;height:1450px;visibility:hidden;opacity:0;">
+        <div class="card" data-card-id="card-05">
+  <style>
+    .card[data-card-id="card-05"] .root { width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; padding:0 70px; background:transparent; text-align:center; }
+    .card[data-card-id="card-05"] .l1 { font:700 66px/1.1 'Inter'; color:rgba(255,255,255,0.9); }
+    .card[data-card-id="card-05"] .eq { margin:30px 0; height:6px; width:0; background:#2AA7A0; border-radius:3px; }
+    .card[data-card-id="card-05"] .l2 { font:700 88px/1.1 'Inter'; color:#FFB454; text-shadow:0 10px 34px rgba(0,0,0,0.5); }
+    .card[data-card-id="card-05"] .sig { margin-top:70px; font:700 32px/1.2 'Inter'; letter-spacing:1px; color:rgba(255,255,255,0.85); }
+    .card[data-card-id="card-05"] .sig .role { display:block; margin-top:10px; font:400 20px/1.3 'Inter'; letter-spacing:0.3px; color:rgba(255,255,255,0.6); white-space:nowrap; }
+  </style>
+  <div class="root">
+    <div class="l1" id="c5-l1">LE MODÈLE = UN OUTIL</div>
+    <div class="eq" id="c5-eq"></div>
+    <div class="l2" id="c5-l2">LE CADRAGE MÉTIER =<br/>TON ACTIF DURABLE</div>
+    <div class="sig" id="c5-sig">Abdelilah Kahaji<span class="role">Enseignant-Chercheur | Expert en Systèmes d'Information &amp; Intelligence Artificielle</span></div>
+  </div>
+</div>
+
+      </div>
+
+      <script src="vendor/gsap.min.js"></script>
+      <script>
+        (function () {
+          const tl = window.gsap.timeline({ paused: true });
+
+          // ── card-01 : hook (0.50 → 5.30) ──
+          tl.set('.card-host[data-card-id="card-01"]', { visibility: "visible" }, 0.50);
+          tl.fromTo('.card-host[data-card-id="card-01"]', { opacity: 0 }, { opacity: 1, duration: 0.40, ease: "power2.out" }, 0.50);
+          tl.fromTo('.card[data-card-id="card-01"] #c1-kicker', { opacity: 0, y: -26 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 0.60);
+          tl.fromTo('.card[data-card-id="card-01"] #c1-title', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.50, ease: "power2.out" }, 1.16);
+          tl.fromTo('.card[data-card-id="card-01"] #c1-stamp', { opacity: 0, scale: 0.5, rotation: -14 }, { opacity: 1, scale: 1, rotation: -4, duration: 0.45, ease: "back.out(1.8)" }, 3.04);
+          tl.to('.card-host[data-card-id="card-01"]', { opacity: 0, duration: 0.35, ease: "power2.in" }, 4.95);
+          tl.set('.card-host[data-card-id="card-01"]', { visibility: "hidden" }, 5.30);
+
+          // ── vidéo : full-bleed → stack haut (5.30 → 5.90) ──
+          tl.set("#video-wrap", { className: "video-wrapper framed" }, 5.28);
+          tl.to("#video-wrap", { left: 12, top: 12, width: 1056, height: 844, duration: 0.60, ease: "power2.inOut" }, 5.30);
+
+          // ── card-02 : 6 mois (5.60 → 10.60) ──
+          tl.set('.card-host[data-card-id="card-02"]', { visibility: "visible" }, 5.60);
+          tl.fromTo('.card-host[data-card-id="card-02"]', { opacity: 0 }, { opacity: 1, duration: 0.40, ease: "power2.out" }, 5.60);
+          tl.fromTo('.card[data-card-id="card-02"] #c2-big', { opacity: 0, scale: 0.55 }, { opacity: 1, scale: 1, duration: 0.50, ease: "back.out(1.6)" }, 5.84);
+          tl.fromTo('.card[data-card-id="card-02"] #c2-detail', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 6.64);
+          tl.fromTo('.card[data-card-id="card-02"] #c2-rule', { width: 0 }, { width: 380, duration: 0.50, ease: "power2.out" }, 7.32);
+          tl.fromTo('.card[data-card-id="card-02"] #c2-sub', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 8.00);
+          tl.to('.card-host[data-card-id="card-02"]', { opacity: 0, duration: 0.35, ease: "power2.in" }, 10.24);
+          tl.set('.card-host[data-card-id="card-02"]', { visibility: "hidden" }, 10.60);
+
+          // ── card-03 : unique (10.90 → 19.90) ──
+          tl.set('.card-host[data-card-id="card-03"]', { visibility: "visible" }, 10.90);
+          tl.fromTo('.card-host[data-card-id="card-03"]', { opacity: 0 }, { opacity: 1, duration: 0.40, ease: "power2.out" }, 10.90);
+          tl.fromTo('.card[data-card-id="card-03"] #c3-title', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" }, 11.00);
+          tl.fromTo('.card[data-card-id="card-03"] #c3-chip1', { opacity: 0, scale: 0.7, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.40, ease: "back.out(1.5)" }, 13.16);
+          tl.fromTo('.card[data-card-id="card-03"] #c3-chip2', { opacity: 0, scale: 0.7, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.40, ease: "back.out(1.5)" }, 14.08);
+          tl.fromTo('.card[data-card-id="card-03"] #c3-chip3', { opacity: 0, scale: 0.7, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.40, ease: "back.out(1.5)" }, 15.12);
+          tl.fromTo('.card[data-card-id="card-03"] #c3-chip4', { opacity: 0, scale: 0.7, y: 16 }, { opacity: 1, scale: 1, y: 0, duration: 0.40, ease: "back.out(1.5)" }, 16.00);
+          tl.fromTo('.card[data-card-id="card-03"] #c3-footer', { opacity: 0 }, { opacity: 1, duration: 0.50, ease: "power2.out" }, 17.00);
+          tl.to('.card-host[data-card-id="card-03"]', { opacity: 0, duration: 0.35, ease: "power2.in" }, 19.52);
+          tl.set('.card-host[data-card-id="card-03"]', { visibility: "hidden" }, 19.90);
+
+          // ── vidéo : stack → pip rond bas-droite (19.90 → 20.50) ──
+          tl.set("#video-wrap", { className: "video-wrapper pip-pill" }, 19.88);
+          tl.to("#video-wrap", { left: 700, top: 1470, width: 330, height: 330, duration: 0.60, ease: "power2.inOut" }, 19.90);
+
+          // ── card-04 : la vraie force (20.20 → 30.10) ──
+          tl.set('.card-host[data-card-id="card-04"]', { visibility: "visible" }, 20.20);
+          tl.fromTo('.card-host[data-card-id="card-04"]', { opacity: 0 }, { opacity: 1, duration: 0.40, ease: "power2.out" }, 20.20);
+          tl.fromTo('.card[data-card-id="card-04"] #c4-kicker', { opacity: 0, x: -40 }, { opacity: 1, x: 0, duration: 0.45, ease: "power2.out" }, 20.36);
+          tl.fromTo('.card[data-card-id="card-04"] #c4-strike', { opacity: 0 }, { opacity: 1, duration: 0.45, ease: "power2.out" }, 22.12);
+          tl.fromTo('.card[data-card-id="card-04"] #c4-bar', { width: 0 }, { width: 640, duration: 0.50, ease: "power2.inOut" }, 23.92);
+          tl.fromTo('.card[data-card-id="card-04"] #c4-main', { opacity: 0, y: 34 }, { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" }, 24.84);
+          tl.fromTo('.card[data-card-id="card-04"] #c4-second', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.50, ease: "power2.out" }, 27.88);
+          tl.to('.card-host[data-card-id="card-04"]', { opacity: 0, duration: 0.35, ease: "power2.in" }, 29.72);
+          tl.set('.card-host[data-card-id="card-04"]', { visibility: "hidden" }, 30.10);
+
+          // ── card-05 : punchline finale (30.40 → 34.72) ──
+          tl.set('.card-host[data-card-id="card-05"]', { visibility: "visible" }, 30.40);
+          tl.fromTo('.card-host[data-card-id="card-05"]', { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power2.out" }, 30.40);
+          tl.fromTo('.card[data-card-id="card-05"] #c5-l1', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.45, ease: "back.out(1.5)" }, 30.52);
+          tl.fromTo('.card[data-card-id="card-05"] #c5-eq', { width: 0 }, { width: 330, duration: 0.40, ease: "power2.out" }, 31.92);
+          tl.fromTo('.card[data-card-id="card-05"] #c5-l2', { opacity: 0, scale: 0.7 }, { opacity: 1, scale: 1, duration: 0.50, ease: "back.out(1.5)" }, 32.44);
+          tl.fromTo('.card[data-card-id="card-05"] #c5-sig', { opacity: 0 }, { opacity: 1, duration: 0.50, ease: "power2.out" }, 33.60);
+
+          window.__timelines = window.__timelines || {};
+          window.__timelines["cadrage-metier"] = tl;
+        })();
+      </script>
+    </div>
+  </body>
+</html>

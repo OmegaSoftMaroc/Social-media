@@ -1,0 +1,163 @@
+1
+00:00:00,219 --> 00:00:02,440
+Pendant des années, nous avons construit les carrières
+
+2
+00:00:02,500 --> 00:00:03,880
+autour d'une idée simple :
+
+3
+00:00:03,939 --> 00:00:05,859
+plus vous savez produire, plus vous avez de
+
+4
+00:00:05,920 --> 00:00:06,239
+valeur.
+
+5
+00:00:06,480 --> 00:00:07,379
+Produire du texte.
+
+6
+00:00:07,579 --> 00:00:08,559
+Produire du code.
+
+7
+00:00:08,619 --> 00:00:09,959
+Produire des présentations.
+
+8
+00:00:10,019 --> 00:00:11,219
+Produire des analyses.
+
+9
+00:00:11,259 --> 00:00:14,119
+Mais que se passe-t-il lorsque l'intelligence artificielle peut
+
+10
+00:00:14,179 --> 00:00:16,459
+produire tout cela en quelques secondes et pour
+
+11
+00:00:16,520 --> 00:00:17,460
+quelques centimes ?
+
+12
+00:00:17,520 --> 00:00:21,159
+La production intellectuelle standardisée perd progressivement sa rareté.
+
+13
+00:00:21,619 --> 00:00:23,579
+Cela ne signifie pas que le travail humain
+
+14
+00:00:23,639 --> 00:00:24,119
+disparaît.
+
+15
+00:00:24,519 --> 00:00:26,599
+Cela signifie que la valeur se déplace vers
+
+16
+00:00:26,659 --> 00:00:28,139
+trois compétences fondamentales.
+
+17
+00:00:28,279 --> 00:00:29,639
+La première, c'est le jugement.
+
+18
+00:00:29,959 --> 00:00:32,719
+Savoir choisir le bon problème, distinguer une solution
+
+19
+00:00:32,779 --> 00:00:36,139
+acceptable d'une excellente solution et assumer la responsabilité
+
+20
+00:00:36,180 --> 00:00:36,899
+de la décision.
+
+21
+00:00:37,239 --> 00:00:38,579
+La deuxième, c'est l'accès.
+
+22
+00:00:38,879 --> 00:00:41,099
+L'accès à des données fiables, à une expertise
+
+23
+00:00:41,159 --> 00:00:43,319
+métier, à un réseau professionnel ou à une
+
+24
+00:00:43,360 --> 00:00:45,019
+relation de confiance avec le client.
+
+25
+00:00:45,159 --> 00:00:46,979
+La troisième, c'est la vérification.
+
+26
+00:00:47,319 --> 00:00:50,219
+Car une intelligence artificielle peut produire rapidement un
+
+27
+00:00:50,279 --> 00:00:53,799
+résultat cohérent, convaincant… et pourtant complètement faux.
+
+28
+00:00:54,059 --> 00:00:56,259
+Les métiers d'avenir ne seront donc pas seulement
+
+29
+00:00:56,319 --> 00:00:59,379
+ceux qui utilisent l'intelligence artificielle pour produire plus
+
+30
+00:00:59,439 --> 00:01:00,119
+rapidement.
+
+31
+00:01:00,159 --> 00:01:02,879
+Ce seront ceux qui sauront encadrer, auditer et
+
+32
+00:01:02,959 --> 00:01:04,619
+certifier ce qu'elle produit.
+
+33
+00:01:04,659 --> 00:01:08,419
+Cela concerne la cybersécurité, les statistiques, la conformité,
+
+34
+00:01:08,479 --> 00:01:11,159
+l'ingénierie des systèmes, mais également tous les domaines
+
+35
+00:01:11,220 --> 00:01:12,660
+ancrés dans le monde physique :
+
+36
+00:01:12,699 --> 00:01:15,680
+l'énergie, la santé, l'industrie ou la construction.
+
+37
+00:01:16,040 --> 00:01:17,300
+La règle devient simple :
+
+38
+00:01:17,339 --> 00:01:19,899
+ne construisez pas uniquement votre carrière autour de
+
+39
+00:01:19,979 --> 00:01:21,339
+ce que vous savez produire.
+
+40
+00:01:21,379 --> 00:01:23,599
+Construisez-la autour de ce que vous êtes capable
+
+41
+00:01:23,639 --> 00:01:25,659
+de juger, de vérifier et d'assumer.

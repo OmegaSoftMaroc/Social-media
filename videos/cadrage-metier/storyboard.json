@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 3,
+  "composition": {
+    "fps": 25,
+    "width": 1080,
+    "height": 1920,
+    "durationSeconds": 34.72,
+    "layout": "portrait",
+    "themeId": "custom-omegasoft",
+    "seed": 7
+  },
+  "videoTrack": {
+    "sourcePath": "input-video.mp4",
+    "startSec": 0,
+    "endSec": 34.72,
+    "bounds": { "x": 0, "y": 0, "width": 1080, "height": 1920 }
+  },
+  "subtitles": { "enabled": false },
+  "cards": [
+    {
+      "id": "card-01",
+      "intent": "Hook : la mauvaise question — tampon MAUVAISE QUESTION quand il le dit (3.04s)",
+      "startSec": 0.5, "endSec": 5.3, "accentIndex": 2, "zone": "video-overlay",
+      "contentHints": { "kicker": "ON ME DEMANDE SOUVENT", "title": "« Quel est le meilleur modèle d'IA ? »", "stamp": "MAUVAISE QUESTION" }
+    },
+    {
+      "id": "card-02",
+      "intent": "Stat 6 mois : les modèles se ressemblent et seront dépassés ; pas là que ta PME fait la différence (8.0s)",
+      "startSec": 5.6, "endSec": 10.6, "accentIndex": 0, "zone": "lower-third",
+      "contentHints": { "big": "6 MOIS", "detail": "et tous les modèles seront dépassés", "sub": "Ce n'est pas là que ta PME fera la différence." }
+    },
+    {
+      "id": "card-03",
+      "intent": "Liste : ce qui te rend unique — 4 chips calées sur les mots (13.16/14.06/15.10/15.98) + incopiable (17.0)",
+      "startSec": 10.9, "endSec": 19.9, "accentIndex": 1, "zone": "lower-third",
+      "contentHints": { "title": "Ce qui te rend unique", "chips": ["TON MÉTIER", "TES PROCESS", "TES DONNÉES", "TES RÈGLES"], "footer": "Aucun concurrent ne peut le copier en un clic." }
+    },
+    {
+      "id": "card-04",
+      "intent": "La vraie force : barrer 'le dernier modèle à la mode' (23.9) puis révéler le vrai savoir (24.9, 27.9)",
+      "startSec": 20.2, "endSec": 30.1, "accentIndex": 2, "zone": "fullscreen",
+      "contentHints": { "kicker": "LA VRAIE FORCE", "strike": "Brancher le dernier modèle à la mode", "main": "Savoir quel problème tu résous", "second": "— et comment ton métier fonctionne vraiment." }
+    },
+    {
+      "id": "card-05",
+      "intent": "Punchline finale en deux temps (30.5 / 32.4) + signature (33.6) — conviction, pas de CTA",
+      "startSec": 30.4, "endSec": 34.72, "accentIndex": 2, "zone": "fullscreen",
+      "contentHints": { "line1": "LE MODÈLE = UN OUTIL", "line2": "LE CADRAGE MÉTIER = TON ACTIF DURABLE", "signature": "Abdelilah Kahaji — OmegaSoft" }
+    }
+  ]
+}
