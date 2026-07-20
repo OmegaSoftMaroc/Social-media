@@ -29,6 +29,11 @@ import {
   calculatePresenterTemplateMetadata,
   presenterTemplateSchema,
 } from "./PresenterTemplate";
+import {
+  MetiersDemain,
+  calculateMetiersDemainMetadata,
+  metiersDemainSchema,
+} from "./MetiersDemain";
 
 // Each <Composition> is an entry in the sidebar!
 
@@ -118,6 +123,19 @@ export const RemotionRoot: React.FC = () => {
         // Rendu alpha : npx remotion render PresenterTemplate out/overlay.mov \
         //   --codec=prores --prores-profile=4444 --props='{"avatar":"verrou-avatar.mp4"}'
         avatar: "idee2.mp4",
+      }}
+    />
+    <Composition
+      id="MetiersDemain"
+      component={MetiersDemain}
+      calculateMetadata={calculateMetiersDemainMetadata}
+      schema={metiersDemainSchema}
+      width={1080}
+      height={1920}
+      defaultProps={{
+        // « Les métiers de demain » : intro plein écran → carte+texte → PiP rect
+        // avec centre libre → avatar agrandi (vérification 45→64.6s) → PiP.
+        avatar: "metiers-avatar.mp4",
       }}
     />
     </>

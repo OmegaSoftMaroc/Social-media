@@ -36,7 +36,7 @@ export const calculatePresenterPiPMetadata: CalculateMetadataFunction<
 // TheBoldFont est une police tout-capitales sans glyphe majuscule accentué (É, È, Ç…) :
 // on désaccentue le texte affiché pour éviter les « SYSTèMES » (les accents en capitales
 // disparaissent de toute façon, conformément à l'usage typographique).
-const deaccent = (s: string): string =>
+export const deaccent = (s: string): string =>
   s.normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 type Sentence = { words: Caption[]; startMs: number; endMs: number; text: string };
