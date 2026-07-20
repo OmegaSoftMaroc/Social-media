@@ -138,7 +138,7 @@ export const RemotionRoot: React.FC = () => {
         avatar: "metiers-avatar.mp4",
         pastille: "PRODUIRE NE SUFFIT PLUS",
         titre: "L'IA produit à votre place",
-        phases: { introSplit: 6.5, introFin: 17.5, zoomDebut: 45.0, zoomFin: 64.6 },
+        phases: { introSplit: 6.5, introFin: 17.5 },
         cropSource: { x0: 712, largeur: 495 },
       }}
     />

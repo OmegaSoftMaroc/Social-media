@@ -43,8 +43,10 @@ export const avatarPhasesSchema = z.object({
     .object({
       introSplit: z.number(),
       introFin: z.number(),
-      zoomDebut: z.number(),
-      zoomFin: z.number(),
+      // Phase « avatar agrandi » OPTIONNELLE : omettre zoomDebut/zoomFin la supprime
+      // (l'avatar reste en PiP bas-droite après l'intro, centre libre en continu).
+      zoomDebut: z.number().optional(),
+      zoomFin: z.number().optional(),
     })
     .optional(),
   cropSource: z.object({ x0: z.number(), largeur: z.number() }).optional(),
@@ -52,7 +54,8 @@ export const avatarPhasesSchema = z.object({
 type Props = z.infer<typeof avatarPhasesSchema>;
 
 // Défauts = vidéo « produire-ne-suffit-plus » (première vidéo produite avec ce template)
-const DEFAULT_PHASES = { introSplit: 6.5, introFin: 17.5, zoomDebut: 45.0, zoomFin: 64.6 };
+type Phases = { introSplit: number; introFin: number; zoomDebut?: number; zoomFin?: number };
+const DEFAULT_PHASES: Phases = { introSplit: 6.5, introFin: 17.5 };
 const DEFAULT_CROP = { x0: 712, largeur: 495 };
 
 const resolveSrc = (s: string): string =>
@@ -80,16 +83,19 @@ const BIG: Box = { x: 190, y: 610, w: 700, h: 1010, r: 40, cropTop: 0.3, vAlign:
 
 const TRANS = 0.5; // durée des transitions (s)
 
-const boxAt = (t: number, ph: typeof DEFAULT_PHASES): Box => {
+const boxAt = (t: number, ph: Phases): Box => {
   const keys: (keyof Box)[] = ["x", "y", "w", "h", "r", "cropTop", "vAlign", "border"];
-  const seq: Box[] = [FULL, FULL, CARD, CARD, PIP, PIP, BIG, BIG, PIP];
+  const seq: Box[] = [FULL, FULL, CARD, CARD, PIP];
   const times = [
     0,
     ph.introSplit, ph.introSplit + TRANS,
     ph.introFin, ph.introFin + TRANS,
-    ph.zoomDebut, ph.zoomDebut + TRANS,
-    ph.zoomFin, ph.zoomFin + TRANS,
   ];
+  // Phase « agrandi » seulement si demandée dans les props
+  if (ph.zoomDebut !== undefined && ph.zoomFin !== undefined) {
+    seq.push(PIP, BIG, BIG, PIP);
+    times.push(ph.zoomDebut, ph.zoomDebut + TRANS, ph.zoomFin, ph.zoomFin + TRANS);
+  }
   const out = {} as Box;
   for (const k of keys) {
     out[k] = interpolate(t, times, seq.map((b) => b[k]), {
