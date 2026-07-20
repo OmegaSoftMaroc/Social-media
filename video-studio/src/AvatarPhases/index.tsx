@@ -37,6 +37,10 @@ const WHITE = "#FFFFFF";
 
 export const avatarPhasesSchema = z.object({
   avatar: z.string(),
+  // « montage » (défaut) : sous-titres en bandeau haut, CENTRE LIBRE pour le montage
+  // manuel. « autonome » : texte kinétique centré/agrandi au milieu — vidéo publiable
+  // directement sans intervention (retour Abdelilah : ni zoom avatar, ni icônes).
+  mode: z.enum(["montage", "autonome"]).optional(),
   pastille: z.string().optional(),
   titre: z.string().optional(),
   phases: z
@@ -109,6 +113,7 @@ const boxAt = (t: number, ph: Phases): Box => {
 
 export const AvatarPhases: React.FC<Props> = ({
   avatar,
+  mode = "montage",
   pastille = "",
   titre = "",
   phases = DEFAULT_PHASES,
@@ -207,9 +212,14 @@ export const AvatarPhases: React.FC<Props> = ({
         <SentenceStack sentences={sentences} topInset={1000} bottomInset={170} justify="center" fontScale={1.2} maxPrev={0} />
       </div>
 
-      {/* P2+ — sous-titres en bandeau haut (template narration-illustree) */}
+      {/* P2+ — « montage » : bandeau haut (centre libre) ; « autonome » : texte
+          kinétique centré/agrandi au milieu (vidéo publiable sans montage). */}
       <div style={{ position: "absolute", inset: 0, opacity: topCapsOp }}>
-        <SentenceStack sentences={sentences} topInset={60} bottomInset={1460} justify="center" fontScale={0.82} maxPrev={1} />
+        {mode === "autonome" ? (
+          <SentenceStack sentences={sentences} topInset={430} bottomInset={560} justify="center" fontScale={1.15} maxPrev={1} />
+        ) : (
+          <SentenceStack sentences={sentences} topInset={60} bottomInset={1460} justify="center" fontScale={0.82} maxPrev={1} />
+        )}
       </div>
 
       {/* Signature à partir de P2 */}
